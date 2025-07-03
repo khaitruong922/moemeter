@@ -16,7 +16,9 @@ const UserRow = ({ user, rank }: Props) => {
 			</td>
 			<td className="px-4 py-2 whitespace-nowrap">
 				<div className="flex items-center align-start">
-					<UserAvatar avatarUrl={user.avatar_url} name={user.name} size={12} />
+					<a href={bookmeterUrl} target="_blank" rel="noopener noreferrer">
+						<UserAvatar avatarUrl={user.avatar_url} name={user.name} size={12} />
+					</a>
 					<div className="ml-4">
 						<div className="text-base font-semibold text-gray-900">
 							<a

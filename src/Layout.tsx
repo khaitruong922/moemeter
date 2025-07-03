@@ -33,30 +33,32 @@ export const Layout: React.FC<Props> = ({ children, title }: Props) => {
 			<Helmet>
 				<title>{title ? `${title} | 読書メーター Plus` : '読書メーター Plus'}</title>
 			</Helmet>
-			<header className="bookmeter-green text-white shadow-sm">
-				<div className="container mx-auto px-4">
-					<nav className="flex justify-between items-center">
-						<div className="flex items-center">
-							<h1 className="text-xl font-bold text-white pr-4">📚</h1>
-							<Link to="/leaderboard" className={tabStyle('/leaderboard')}>
-								読書ランキング
-							</Link>
-							<Link to="/books" className={tabStyle('/books')}>
-								本一覧
-							</Link>
-							<Link to="/reads" className={tabStyle('/shared')}>
-								共読
-							</Link>
-						</div>
-						<div className="flex items-center space-x-4">
-							<Link to="/join" className="join-button">
-								グループに参加
-							</Link>
-						</div>
-					</nav>
-				</div>
-			</header>
-			{children}
+			<div className="min-h-screen flex flex-col relative">
+				<header className="bookmeter-green text-white shadow-md fixed w-full top-0 z-50">
+					<div className="container mx-auto px-4">
+						<nav className="flex justify-between items-center h-14">
+							<div className="flex items-center">
+								<h1 className="text-xl font-bold text-white pr-4">📚</h1>
+								<Link to="/leaderboard" className={tabStyle('/leaderboard')}>
+									読書ランキング
+								</Link>
+								<Link to="/books" className={tabStyle('/books')}>
+									本一覧
+								</Link>
+								<Link to="/reads" className={tabStyle('/reads')}>
+									共読
+								</Link>
+							</div>
+							<div className="flex items-center space-x-4">
+								<Link to="/join" className="join-button">
+									グループに参加
+								</Link>
+							</div>
+						</nav>
+					</div>
+				</header>
+				<main className="flex-grow bg-[#f5f5f5] pt-14">{children}</main>
+			</div>
 		</>
 	);
 };
