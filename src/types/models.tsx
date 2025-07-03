@@ -14,6 +14,7 @@ export interface Book {
 	author_url: string;
 	thumbnail_url: string;
 	read_count: number;
+	user_ids: number[];
 }
 
 export interface CommonRead {
@@ -42,9 +43,14 @@ export interface PageInfo {
 
 export interface PaginatedResponse<T> {
 	count: number;
-	totalCount: number;
+	total_count: number;
 	pageInfo: PageInfo;
 	books: T[];
 }
 
 export interface BooksResponse extends PaginatedResponse<Book> {}
+
+export interface BooksApiResponse extends Omit<PaginatedResponse<Book>, 'books'> {
+	books: Book[];
+	users: { [key: string]: User };
+}

@@ -26,9 +26,10 @@ const BooksPage = () => {
 
 	const groupName = groupsData?.[0]?.name || 'グループ';
 
-	// Combine all books from all pages
+	// Combine all books from all pages and get users
 	const books = data?.pages.flatMap((page) => page.books) || [];
-	const totalCount = data?.pages[0]?.totalCount || 0;
+	const users = data?.pages[0]?.users || {};
+	const totalCount = data?.pages[0]?.total_count || 0;
 
 	// Infinite scroll implementation
 	const observerTarget = useRef<HTMLDivElement>(null);
@@ -101,7 +102,7 @@ const BooksPage = () => {
 				<p className="text-sm text-gray-500 mt-1">全{totalCount}冊</p>
 			</div>
 			<div className="w-full px-4">
-				<BookList books={books} />
+				<BookList books={books} users={users} />
 				{isFetchingNextPage && (
 					<div className="flex justify-center my-4">
 						<div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>

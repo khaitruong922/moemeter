@@ -28,7 +28,8 @@ export const joinGroup = async (data: JoinGroupRequest): Promise<JoinResponse> =
 
 	if (!response.ok) {
 		const error = await response.json();
-		throw new Error(error.error);
+		if (error.error) throw new Error(error.error);
+		throw new Error('エラーが発生しました');
 	}
 
 	return response.json();

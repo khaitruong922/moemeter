@@ -1,7 +1,7 @@
 import type { Book, User } from '../types/models';
-import { BookCover } from './BookCover';
-import { UserAvatar } from './UserAvatar';
 import { getBookBookmeterUrl } from '../utils/bookmeter';
+import { BookCover } from './BookCover';
+import { UserAvatarGroup } from './UserAvatarGroup';
 
 interface BookReadCardProps {
 	book: Book;
@@ -41,17 +41,7 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({ book, readCount, com
 					<p className="text-gray-600 text-left mt-2 mb-4">
 						共通の読者数: <span className="font-bold bookmeter-green-text">{readCount}人</span>
 					</p>
-					<div className="flex flex-wrap gap-2">
-						{commonUsers.map((user) => (
-							<UserAvatar
-								key={user.id}
-								userId={user.id}
-								name={user.name}
-								avatarUrl={user.avatar_url}
-								size="md"
-							/>
-						))}
-					</div>
+					<UserAvatarGroup users={commonUsers} />
 				</div>
 			</div>
 		</div>

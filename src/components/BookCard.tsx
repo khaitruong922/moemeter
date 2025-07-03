@@ -1,49 +1,44 @@
-import type { Book } from '../types/models';
-import { getBookBookmeterUrl } from '../utils/bookmeter';
+import type { Book, User } from '../types/models';
 import { BookCover } from './BookCover';
+import { UserAvatarGroup } from './UserAvatarGroup';
 
 interface Props {
 	book: Book;
 	index: number;
+	users: { [key: string]: User };
 }
 
-export const BookCard: React.FC<Props> = ({ book, index }) => {
+export const BookCard: React.FC<Props> = ({ book, index, users }) => {
+	const bookUsers = book.user_ids.map((id) => users[id]).filter(Boolean);
+
 	return (
-		<div className="flex items-start space-x-6 p-4 border-b border-gray-200">
-			<div className="flex-shrink-0 pl-2 flex items-center justify-center text-gray-600 font-medium self-center">
-				{index}
+		<div className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors duration-200">
+			<div className="flex-none w-16 text-center">
+				<div className="text-2xl font-bold bookmeter-green-text">#{index}</div>
+				<div className="text-sm text-gray-500">{book.read_count}人</div>
 			</div>
-			<div className="flex-shrink-0">
+			<div className="flex-none">
 				<BookCover
 					bookId={book.id}
 					title={book.title}
 					thumbnailUrl={book.thumbnail_url}
-					size="md"
+					size="sm"
 				/>
 			</div>
-			<div className="flex-grow flex flex-col">
-				<a
-					href={getBookBookmeterUrl(book.id)}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="text-[#219315] font-bold text-base mb-1 text-left"
-				>
+			<div className="flex-1 min-w-0 flex flex-col">
+				<h3 className="text-lg bookmeter-green-text font-bold mb-1 line-clamp-2 text-left">
 					{book.title}
-				</a>
+				</h3>
 				<a
 					href={book.author_url}
 					target="_blank"
 					rel="noopener noreferrer"
-					onClick={(e) => e.stopPropagation()}
-					className="text-[#219315] text-sm block text-left"
+					className="text-sm bookmeter-green-text text-left"
 				>
 					{book.author}
 				</a>
-			</div>
-			<div className="flex-shrink-0 text-right self-center">
-				<div className="text-[#219315] text-sm flex items-center">
-					<span className="font-bold text-base">{book.read_count}</span>
-					<span className="ml-1">読了</span>
+				<div className="mt-2">
+					<UserAvatarGroup users={bookUsers} />
 				</div>
 			</div>
 		</div>
