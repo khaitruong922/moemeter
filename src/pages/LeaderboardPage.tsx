@@ -12,12 +12,14 @@ const LeaderboardPage = () => {
 
 	const users = usersData || [];
 	const groupName = groupsData?.[0]?.name || 'グループ';
+	const totalCount = usersData?.length || 0;
 
 	return (
 		<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
 			<div className="mb-8 text-center">
 				<h2 className="text-2xl font-bold text-gray-800 mb-2">読書ランキング</h2>
 				<p className="text-base text-gray-600">{groupName}のユーザーの読書量ランキングです。</p>
+				<p className="text-sm text-gray-500 mt-1">全{totalCount}人</p>
 			</div>
 			<LeaderboardTable users={users} />
 			<div className="mt-8 text-center text-xs text-gray-400">
