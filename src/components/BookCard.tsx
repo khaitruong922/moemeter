@@ -1,4 +1,5 @@
 import type { Book, User } from '../types/models';
+import { getBookBookmeterUrl } from '../utils/bookmeter';
 import { BookCover } from './BookCover';
 import { UserAvatarGroup } from './UserAvatarGroup';
 
@@ -26,9 +27,14 @@ export const BookCard: React.FC<Props> = ({ book, index, users }) => {
 				/>
 			</div>
 			<div className="flex-1 min-w-0 flex flex-col">
-				<h3 className="text-lg bookmeter-green-text font-bold mb-1 line-clamp-2 text-left">
+				<a
+					href={getBookBookmeterUrl(book.id)}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="text-lg bookmeter-green-text font-bold mb-1 line-clamp-2 text-left"
+				>
 					{book.title}
-				</h3>
+				</a>
 				<a
 					href={book.author_url}
 					target="_blank"
