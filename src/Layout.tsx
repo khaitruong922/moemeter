@@ -33,7 +33,7 @@ export const Layout: React.FC<Props> = ({ children, title }: Props) => {
 			<Helmet>
 				<title>{title ? `${title} | 読書メーター Plus` : '読書メーター Plus'}</title>
 			</Helmet>
-			<header className="bookmeter-green text-white shadow-md">
+			<header className="bookmeter-green text-white shadow-sm">
 				<div className="container mx-auto px-4">
 					<nav className="flex justify-between items-center">
 						<div className="flex items-center">

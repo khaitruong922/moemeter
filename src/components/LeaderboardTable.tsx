@@ -7,7 +7,7 @@ type LeaderboardTableProps = {
 
 export const LeaderboardTable = ({ users }: LeaderboardTableProps) => {
 	return (
-		<div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 mx-4 w-3/4 max-w-[1200px]">
+		<div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 mx-4 w-3/4 max-w-[1200px]">
 			<div className="bookmeter-green text-white px-8 py-4 text-xl font-bold">読書ランキング</div>
 			<table className="min-w-full">
 				<thead className="bg-gray-50 border-b border-gray-200">

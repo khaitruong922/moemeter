@@ -3,36 +3,46 @@ import { getBookBookmeterUrl } from '../utils/bookmeter';
 
 interface Props {
 	book: Book;
+	index: number;
 }
 
-export const BookCard: React.FC<Props> = ({ book }) => {
-	console.log(book);
-	const bookUrl = getBookBookmeterUrl(book.id);
-
+export const BookCard: React.FC<Props> = ({ book, index }) => {
 	return (
-		<div className="bg-white rounded-lg shadow-md overflow-visible hover:shadow-lg transition-shadow duration-200">
-			<div
-				className="cursor-pointer"
-				onClick={() => window.open(bookUrl, '_blank', 'noopener,noreferrer')}
-			>
-				<div className="aspect-[3/4] relative">
-					<img src={book.thumbnail_url} alt={book.title} className="w-full h-full object-cover" />
-					<div className="absolute -top-3 -right-3 bg-green-600 text-white w-10 h-10 rounded-full flex flex-col items-center justify-center text-xs font-bold shadow-lg">
-						<span>{book.read_count}</span>
-						<span className="text-[10px] -mt-1">読</span>
-					</div>
-				</div>
-				<div className="p-4">
-					<h3 className="text-gray-800 font-medium text-sm line-clamp-2 mb-2">{book.title}</h3>
-					<span
-						onClick={(e) => {
-							e.stopPropagation();
-							window.open(book.author_url, '_blank', 'noopener,noreferrer');
-						}}
-						className="text-gray-600 text-sm hover:text-bookmeter-green cursor-pointer"
-					>
-						{book.author}
-					</span>
+		<div className="flex items-start space-x-6 p-4 border-b border-gray-200">
+			<div className="flex-shrink-0 pl-2 flex items-center justify-center text-gray-600 font-medium self-center">
+				{index}
+			</div>
+			<div className="flex-shrink-0">
+				<img
+					src={book.thumbnail_url}
+					alt={book.title}
+					className="w-28 h-40 object-cover rounded shadow-sm cursor-pointer"
+					onClick={() => window.open(getBookBookmeterUrl(book.id), '_blank', 'noopener,noreferrer')}
+				/>
+			</div>
+			<div className="flex-grow flex flex-col">
+				<a
+					href={getBookBookmeterUrl(book.id)}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="text-[#219315] font-bold text-base mb-1 text-left"
+				>
+					{book.title}
+				</a>
+				<a
+					href={book.author_url}
+					target="_blank"
+					rel="noopener noreferrer"
+					onClick={(e) => e.stopPropagation()}
+					className="text-[#219315] text-sm block text-left"
+				>
+					{book.author}
+				</a>
+			</div>
+			<div className="flex-shrink-0 text-right self-center">
+				<div className="text-[#219315] text-sm flex items-center">
+					<span className="font-bold text-base">{book.read_count}</span>
+					<span className="ml-1">読了</span>
 				</div>
 			</div>
 		</div>
