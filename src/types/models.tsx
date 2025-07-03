@@ -32,3 +32,19 @@ export interface JoinResponse {
 	user: User;
 	message: string;
 }
+
+export interface PageInfo {
+	currentPage: number;
+	prevPage: number | null;
+	nextPage: number | null;
+	lastPage: number;
+}
+
+export interface PaginatedResponse<T> {
+	count: number;
+	totalCount: number;
+	pageInfo: PageInfo;
+	books: T[];
+}
+
+export interface BooksResponse extends PaginatedResponse<Book> {}
