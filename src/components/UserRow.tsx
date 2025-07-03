@@ -1,6 +1,6 @@
 import type { User } from '../types/models';
 import { getUserBookmeterUrl } from '../utils/bookmeter';
-import UserAvatar from './UserAvatar';
+import { UserAvatar } from './UserAvatar';
 
 type Props = {
 	user: User;
@@ -16,9 +16,7 @@ const UserRow = ({ user, rank }: Props) => {
 			</td>
 			<td className="px-4 py-2 whitespace-nowrap">
 				<div className="flex items-center align-start">
-					<a href={bookmeterUrl} target="_blank" rel="noopener noreferrer">
-						<UserAvatar avatarUrl={user.avatar_url} name={user.name} size={12} />
-					</a>
+					<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="sm" />
 					<div className="ml-4">
 						<div className="text-base font-semibold text-gray-900">
 							<a

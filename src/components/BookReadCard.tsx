@@ -1,5 +1,7 @@
 import type { Book, User } from '../types/models';
-import { getBookBookmeterUrl, getUserBookmeterUrl } from '../utils/bookmeter';
+import { BookCover } from './BookCover';
+import { UserAvatar } from './UserAvatar';
+import { getBookBookmeterUrl } from '../utils/bookmeter';
 
 interface BookReadCardProps {
 	book: Book;
@@ -11,18 +13,14 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({ book, readCount, com
 	return (
 		<div className="p-4 bg-white rounded-lg shadow">
 			<div className="flex items-start space-x-4">
-				<a
-					href={getBookBookmeterUrl(book.id)}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="block flex-shrink-0"
-				>
-					<img
-						src={book.thumbnail_url}
-						alt={book.title}
-						className="w-28 h-40 object-cover rounded shadow-sm"
+				<div className="flex-shrink-0">
+					<BookCover
+						bookId={book.id}
+						title={book.title}
+						thumbnailUrl={book.thumbnail_url}
+						size="md"
 					/>
-				</a>
+				</div>
 				<div className="flex-grow flex flex-col">
 					<a
 						href={getBookBookmeterUrl(book.id)}
@@ -45,19 +43,13 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({ book, readCount, com
 					</p>
 					<div className="flex flex-wrap gap-2">
 						{commonUsers.map((user) => (
-							<a
+							<UserAvatar
 								key={user.id}
-								href={getUserBookmeterUrl(user.id)}
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								<img
-									src={user.avatar_url}
-									alt={user.name}
-									title={user.name}
-									className="w-12 h-12 rounded-full"
-								/>
-							</a>
+								userId={user.id}
+								name={user.name}
+								avatarUrl={user.avatar_url}
+								size="md"
+							/>
 						))}
 					</div>
 				</div>

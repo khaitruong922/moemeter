@@ -1,5 +1,6 @@
 import type { Book } from '../types/models';
 import { getBookBookmeterUrl } from '../utils/bookmeter';
+import { BookCover } from './BookCover';
 
 interface Props {
 	book: Book;
@@ -13,11 +14,11 @@ export const BookCard: React.FC<Props> = ({ book, index }) => {
 				{index}
 			</div>
 			<div className="flex-shrink-0">
-				<img
-					src={book.thumbnail_url}
-					alt={book.title}
-					className="w-28 h-40 object-cover rounded shadow-sm cursor-pointer"
-					onClick={() => window.open(getBookBookmeterUrl(book.id), '_blank', 'noopener,noreferrer')}
+				<BookCover
+					bookId={book.id}
+					title={book.title}
+					thumbnailUrl={book.thumbnail_url}
+					size="md"
 				/>
 			</div>
 			<div className="flex-grow flex flex-col">

@@ -1,28 +1,27 @@
-type Props = {
-	avatarUrl?: string | null;
-	name?: string | null;
-	size?: number;
+import { getUserBookmeterUrl } from '../utils/bookmeter';
+
+interface UserAvatarProps {
+	userId: number;
+	name: string;
+	avatarUrl: string;
+	size?: 'sm' | 'md' | 'lg';
+}
+
+const sizeClasses = {
+	sm: 'w-8 h-8',
+	md: 'w-12 h-12',
+	lg: 'w-16 h-16',
 };
 
-const UserAvatar = ({ avatarUrl, name, size = 48 }: Props) => {
-	const sizeClass = `h-[${size}px] w-[${size}px]`;
-	if (avatarUrl) {
-		return (
-			<img
-				className={`rounded-full border-2 border-gray-200 h-[48px] w-[48px]`}
-				src={avatarUrl}
-				alt=""
-			/>
-		);
-	}
-
+export const UserAvatar: React.FC<UserAvatarProps> = ({ userId, name, avatarUrl, size = 'md' }) => {
 	return (
-		<div
-			className={`rounded-full border-2 border-gray-200 bg-white flex items-center justify-center ${sizeClass}`}
-		>
-			<span className="text-gray-400 text-sm font-medium">{name?.[0]?.toUpperCase() ?? '?'}</span>
-		</div>
+		<a href={getUserBookmeterUrl(userId)} target="_blank" rel="noopener noreferrer">
+			<img
+				src={avatarUrl}
+				alt={name}
+				title={name}
+				className={`${sizeClasses[size]} rounded-full`}
+			/>
+		</a>
 	);
 };
-
-export default UserAvatar;

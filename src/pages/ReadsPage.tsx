@@ -59,7 +59,13 @@ const ReadsPage = () => {
 				commonBooks,
 			};
 		})
-		.sort((a, b) => b.readCount - a.readCount);
+		.sort((a, b) => {
+			// First sort by read count in descending order
+			const countDiff = b.readCount - a.readCount;
+			if (countDiff !== 0) return countDiff;
+			// If read counts are equal, sort by user ID in ascending order for stability
+			return a.user.id - b.user.id;
+		});
 
 	const bookReadCounts: BookReadCount[] = Object.values(books)
 		.map((book) => {
@@ -71,7 +77,13 @@ const ReadsPage = () => {
 				commonUsers,
 			};
 		})
-		.sort((a, b) => b.readCount - a.readCount);
+		.sort((a, b) => {
+			// First sort by read count in descending order
+			const countDiff = b.readCount - a.readCount;
+			if (countDiff !== 0) return countDiff;
+			// If read counts are equal, sort by book ID in ascending order for stability
+			return a.book.id - b.book.id;
+		});
 
 	return (
 		<div className="container mx-auto px-4 py-8 max-w-4xl">

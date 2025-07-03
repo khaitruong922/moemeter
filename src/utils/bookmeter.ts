@@ -1,7 +1,9 @@
-export const getUserBookmeterUrl = (userId: number) => {
-	return `https://bookmeter.com/users/${userId}`;
+const BOOKMETER_BASE_URL = 'https://bookmeter.com';
+
+export const getUserBookmeterUrl = (userId: number): string => {
+	return `${BOOKMETER_BASE_URL}/users/${userId}`;
 };
 
-export const getBookBookmeterUrl = (bookId: number) => {
-	return `https://bookmeter.com/books/${bookId}`;
+export const getBookBookmeterUrl = (bookId: number): string => {
+	return `${BOOKMETER_BASE_URL}/books/${bookId}`;
 };
