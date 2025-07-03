@@ -16,7 +16,7 @@ export const UserReadCard: React.FC<UserReadCardProps> = ({ user, readCount, com
 				<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="md" />
 				<div className="flex-grow flex flex-col items-start">
 					<a href={getUserBookmeterUrl(user.id)} target="_blank" rel="noopener noreferrer">
-						<h3 className="text-lg font-semibold text-[#219315]">{user.name}</h3>
+						<h3 className="text-lg font-semibold bookmeter-green-text">{user.name}</h3>
 					</a>
 					<p className="text-gray-600">
 						共通の読書数: <span className="font-bold bookmeter-green-text">{readCount}冊</span>

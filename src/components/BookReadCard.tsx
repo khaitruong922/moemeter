@@ -26,7 +26,7 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({ book, readCount, com
 						href={getBookBookmeterUrl(book.id)}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="text-[#219315] font-bold text-base mb-1 text-left"
+						className="bookmeter-green-text font-bold text-base mb-1 text-left"
 					>
 						{book.title}
 					</a>
@@ -34,7 +34,7 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({ book, readCount, com
 						href={book.author_url}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="text-[#219315] text-sm block text-left"
+						className="bookmeter-green-text text-sm block text-left"
 					>
 						{book.author}
 					</a>
