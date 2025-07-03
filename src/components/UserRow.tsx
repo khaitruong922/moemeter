@@ -1,4 +1,5 @@
 import type { User } from '../types/models';
+import { getUserBookmeterUrl } from '../utils/bookmeter';
 import UserAvatar from './UserAvatar';
 
 type Props = {
@@ -7,9 +8,10 @@ type Props = {
 };
 
 const UserRow = ({ user, rank }: Props) => {
+	const bookmeterUrl = getUserBookmeterUrl(user.id);
 	return (
 		<tr className="hover:bg-gray-50 align-middle">
-			<td className="px-4 py-2 whitespace-nowrap text-base font-semibold text-gray-900 text-left">
+			<td className="px-4 py-2 whitespace-nowrap text-base font-semibold text-gray-900 text-center">
 				{rank}位
 			</td>
 			<td className="px-4 py-2 whitespace-nowrap">
@@ -18,7 +20,7 @@ const UserRow = ({ user, rank }: Props) => {
 					<div className="ml-4">
 						<div className="text-base font-semibold text-gray-900">
 							<a
-								href={`https://bookmeter.com/users/${user.id}`}
+								href={bookmeterUrl}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="bookmeter-link hover:underline"
@@ -26,18 +28,13 @@ const UserRow = ({ user, rank }: Props) => {
 								{user.name ?? '匿名'}
 							</a>
 						</div>
-						{user.bookmeter_url && (
-							<a href={user.bookmeter_url} target="_blank" className="bookmeter-link text-sm">
-								プロフィール
-							</a>
-						)}
 					</div>
 				</div>
 			</td>
-			<td className="px-4 py-2 whitespace-nowrap text-left text-base font-bold bookmeter-green-text">
+			<td className="px-4 py-2 whitespace-nowrap text-center text-base font-bold bookmeter-green-text">
 				{user.books_read ?? 0}冊
 			</td>
-			<td className="px-4 py-2 whitespace-nowrap text-base text-gray-700 text-left">
+			<td className="px-4 py-2 whitespace-nowrap text-base text-gray-700 text-center">
 				{user.pages_read?.toLocaleString() ?? 0}
 			</td>
 		</tr>
