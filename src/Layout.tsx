@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet';
 import { Link, useLocation } from 'react-router-dom';
+import { useUser } from './context/userContext';
 
 type Props = {
 	children: React.ReactNode;
@@ -8,6 +9,7 @@ type Props = {
 
 export const Layout: React.FC<Props> = ({ children, title }: Props) => {
 	const location = useLocation();
+	const { user, logout } = useUser();
 
 	const isActiveTab = (path: string) => {
 		if (
@@ -50,9 +52,35 @@ export const Layout: React.FC<Props> = ({ children, title }: Props) => {
 								</Link>
 							</div>
 							<div className="flex items-center space-x-4">
-								<Link to="/join" className="join-button">
-									グループに参加
-								</Link>
+								{user ? (
+									<div className="flex items-center space-x-4">
+										<div className="flex items-center space-x-2">
+											<img src={user.avatar_url} alt={user.name} className="w-8 h-8 rounded-full" />
+											<span className="text-sm font-medium">{user.name}</span>
+										</div>
+										<button
+											onClick={logout}
+											className="text-white hover:text-white/80 transition-colors duration-200 cursor-pointer"
+										>
+											ログアウト
+										</button>
+									</div>
+								) : (
+									<div className="flex items-center space-x-6">
+										<Link
+											to="/signin"
+											className="text-white hover:text-white/80 transition-colors duration-200"
+										>
+											サインイン
+										</Link>
+										<Link
+											to="/join"
+											className="text-white hover:text-white/80 transition-colors duration-200"
+										>
+											グループに参加
+										</Link>
+									</div>
+								)}
 							</div>
 						</nav>
 					</div>

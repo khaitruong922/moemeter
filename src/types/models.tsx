@@ -27,3 +27,8 @@ export interface CommonReadsResponse {
 	books: { [key: string]: Book };
 	users: { [key: string]: User };
 }
+
+export interface JoinResponse {
+	user: User;
+	message: string;
+}

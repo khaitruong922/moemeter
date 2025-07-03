@@ -1,11 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { getLeaderboard } from '../api/users';
 import { LeaderboardTable } from '../components/LeaderboardTable';
+import { getGroups } from '../api/groups';
 
 const LeaderboardPage = () => {
-	const { data } = useQuery({ queryKey: ['todos'], queryFn: getLeaderboard });
-	const users = data || [];
-	const groupName = 'TMW Novel Club';
+	const { data: usersData } = useQuery({ queryKey: ['leaderboard'], queryFn: getLeaderboard });
+	const { data: groupsData } = useQuery({
+		queryKey: ['groups'],
+		queryFn: getGroups,
+	});
+
+	const users = usersData || [];
+	const groupName = groupsData?.[0]?.name || 'グループ';
 
 	return (
 		<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">

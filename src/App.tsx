@@ -3,7 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LeaderboardPage from './pages/LeaderboardPage';
 import BooksPage from './pages/BooksPage';
 import ReadsPage from './pages/ReadsPage';
+import JoinPage from './pages/JoinPage';
+import SignInPage from './pages/SignInPage';
 import { Layout } from './Layout';
+import { UserProvider } from './context/UserProvider';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -19,16 +22,20 @@ const queryClient = new QueryClient({
 function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<BrowserRouter>
-				<Layout title="読書ランキング">
-					<Routes>
-						<Route path="/leaderboard" element={<LeaderboardPage />} />
-						<Route path="/books" element={<BooksPage />} />
-						<Route path="/reads" element={<ReadsPage />} />
-						<Route path="/" element={<Navigate to="/leaderboard" replace />} />
-					</Routes>
-				</Layout>
-			</BrowserRouter>
+			<UserProvider>
+				<BrowserRouter>
+					<Layout title="読書ランキング">
+						<Routes>
+							<Route path="/leaderboard" element={<LeaderboardPage />} />
+							<Route path="/books" element={<BooksPage />} />
+							<Route path="/reads" element={<ReadsPage />} />
+							<Route path="/join" element={<JoinPage />} />
+							<Route path="/signin" element={<SignInPage />} />
+							<Route path="/" element={<Navigate to="/leaderboard" replace />} />
+						</Routes>
+					</Layout>
+				</BrowserRouter>
+			</UserProvider>
 		</QueryClientProvider>
 	);
 }
