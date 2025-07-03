@@ -39,7 +39,7 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({ book, readCount, com
 						{book.author}
 					</a>
 					<p className="text-gray-600 text-left mt-2 mb-4">
-						共通の読者数: <span className="font-bold bookmeter-green-text">{readCount}人</span>
+						仲間: <span className="font-bold bookmeter-green-text">{readCount}人</span>
 					</p>
 					<UserAvatarGroup users={commonUsers} />
 				</div>
