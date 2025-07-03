@@ -20,11 +20,11 @@ export const Layout: React.FC<Props> = ({ children, title }: Props) => {
 	};
 
 	const tabStyle = (path: string) => `
-		px-6 py-4 text-sm font-medium transition-colors duration-200
+		px-6 py-4 text-sm font-medium transition-colors duration-200 border-b-2
 		${
 			isActiveTab(path)
-				? 'text-white border-b-2 border-white'
-				: 'text-white/80 hover:text-white hover:border-b-2 hover:border-white/50'
+				? 'text-white border-white'
+				: 'text-white/80 hover:text-white border-transparent hover:border-white/50'
 		}
 	`;
 

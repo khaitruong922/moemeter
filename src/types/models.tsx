@@ -15,3 +15,15 @@ export interface Book {
 	thumbnail_url: string;
 	read_count: number;
 }
+
+export interface CommonRead {
+	user_id: number;
+	book_id: number;
+	date: string;
+}
+
+export interface CommonReadsResponse {
+	reads: CommonRead[];
+	books: { [key: string]: Book };
+	users: { [key: string]: User };
+}
