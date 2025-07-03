@@ -8,13 +8,15 @@ type Props = {
 
 const UserRow = ({ user, rank }: Props) => {
 	return (
-		<tr className="hover:bg-gray-50">
-			<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{rank}位</td>
-			<td className="px-6 py-4 whitespace-nowrap">
+		<tr className="hover:bg-gray-50 h-20 align-middle">
+			<td className="px-8 py-4 whitespace-nowrap text-base font-semibold text-gray-900">
+				{rank}位
+			</td>
+			<td className="px-8 py-4 whitespace-nowrap">
 				<div className="flex items-center">
-					<UserAvatar avatarUrl={user.avatar_url} name={user.name} />
+					<UserAvatar avatarUrl={user.avatar_url} name={user.name} size={48} />
 					<div className="ml-4">
-						<div className="text-sm font-medium text-gray-900">
+						<div className="text-base font-semibold text-gray-900">
 							<a
 								href={`https://bookmeter.com/users/${user.id}`}
 								target="_blank"
@@ -32,12 +34,12 @@ const UserRow = ({ user, rank }: Props) => {
 					</div>
 				</div>
 			</td>
-			<td className="px-6 py-4 whitespace-nowrap">
-				<span className="px-2 inline-flex text-sm font-medium bookmeter-green-text">
+			<td className="px-8 py-4 whitespace-nowrap">
+				<span className="px-2 inline-flex text-base font-bold bookmeter-green-text">
 					{user.books_read ?? 0}冊
 				</span>
 			</td>
-			<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+			<td className="px-8 py-4 whitespace-nowrap text-base text-gray-700">
 				{user.pages_read?.toLocaleString() ?? 0}
 			</td>
 		</tr>
