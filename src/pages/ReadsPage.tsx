@@ -122,10 +122,10 @@ const ReadsPage = () => {
 		<div className="container mx-auto px-4 py-8 max-w-4xl">
 			<div className="flex space-x-2 mb-4">
 				<TabButton isActive={activeTab === 'users'} onClick={() => setActiveTab('users')}>
-					共通の本を読んでいるユーザー
+					共読仲間
 				</TabButton>
 				<TabButton isActive={activeTab === 'books'} onClick={() => setActiveTab('books')}>
-					共通の本
+					共読本
 				</TabButton>
 			</div>
 

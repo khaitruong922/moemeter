@@ -13,7 +13,7 @@ export const LeaderboardTable = ({ users }: LeaderboardTableProps) => {
 				<thead className="bg-gray-50 border-b border-gray-200">
 					<tr>
 						<th className="px-4 py-2 text-center text-sm font-semibold text-gray-500">順位</th>
-						<th className="px-4 py-2 text-center text-sm font-semibold text-gray-500">ユーザー</th>
+						<th className="px-4 py-2 text-center text-sm font-semibold text-gray-500">メンバー</th>
 						<th className="px-4 py-2 text-center text-sm font-semibold text-gray-500">読んだ本</th>
 						<th className="px-4 py-2 text-center text-sm font-semibold text-gray-500">
 							読んだページ

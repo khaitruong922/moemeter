@@ -45,7 +45,7 @@ export const Layout: React.FC<Props> = ({ children, title }: Props) => {
 									読書ランキング
 								</Link>
 								<Link to="/books" className={tabStyle('/books')}>
-									本一覧
+									みんなの本棚
 								</Link>
 								<Link to="/reads" className={tabStyle('/reads')}>
 									共読
