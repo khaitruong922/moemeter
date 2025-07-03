@@ -8,13 +8,13 @@ type Props = {
 
 const UserRow = ({ user, rank }: Props) => {
 	return (
-		<tr className="hover:bg-gray-50 h-20 align-middle">
-			<td className="px-8 py-4 whitespace-nowrap text-base font-semibold text-gray-900">
+		<tr className="hover:bg-gray-50 align-middle">
+			<td className="px-4 py-2 whitespace-nowrap text-base font-semibold text-gray-900 text-left">
 				{rank}位
 			</td>
-			<td className="px-8 py-4 whitespace-nowrap">
-				<div className="flex items-center">
-					<UserAvatar avatarUrl={user.avatar_url} name={user.name} size={48} />
+			<td className="px-4 py-2 whitespace-nowrap">
+				<div className="flex items-center align-start">
+					<UserAvatar avatarUrl={user.avatar_url} name={user.name} size={12} />
 					<div className="ml-4">
 						<div className="text-base font-semibold text-gray-900">
 							<a
@@ -34,12 +34,10 @@ const UserRow = ({ user, rank }: Props) => {
 					</div>
 				</div>
 			</td>
-			<td className="px-8 py-4 whitespace-nowrap">
-				<span className="px-2 inline-flex text-base font-bold bookmeter-green-text">
-					{user.books_read ?? 0}冊
-				</span>
+			<td className="px-4 py-2 whitespace-nowrap text-left text-base font-bold bookmeter-green-text">
+				{user.books_read ?? 0}冊
 			</td>
-			<td className="px-8 py-4 whitespace-nowrap text-base text-gray-700">
+			<td className="px-4 py-2 whitespace-nowrap text-base text-gray-700 text-left">
 				{user.pages_read?.toLocaleString() ?? 0}
 			</td>
 		</tr>

@@ -9,7 +9,7 @@ const UserAvatar = ({ avatarUrl, name, size = 48 }: Props) => {
 	if (avatarUrl) {
 		return (
 			<img
-				className={`rounded-full border-2 border-gray-200 ${sizeClass}`}
+				className={`rounded-full border-2 border-gray-200 h-[48px] w-[48px]`}
 				src={avatarUrl}
 				alt=""
 			/>

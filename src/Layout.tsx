@@ -23,7 +23,7 @@ export const Layout: React.FC<Props> = ({ children, title }: Props) => {
 					</div>
 				</div>
 			</header>
-			<div className="container mx-auto">{children}</div>
+			{children}
 		</>
 	);
 };
