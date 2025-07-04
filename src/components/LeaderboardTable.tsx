@@ -3,9 +3,10 @@ import UserRow from './UserRow';
 
 type LeaderboardTableProps = {
 	users: User[];
+	loading?: boolean;
 };
 
-export const LeaderboardTable = ({ users }: LeaderboardTableProps) => {
+export const LeaderboardTable = ({ users, loading }: LeaderboardTableProps) => {
 	return (
 		<div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 mx-4 w-3/4 max-w-[1200px]">
 			<div className="bookmeter-green text-white px-8 py-4 text-xl font-bold">読書ランキング</div>
@@ -21,9 +22,16 @@ export const LeaderboardTable = ({ users }: LeaderboardTableProps) => {
 					</tr>
 				</thead>
 				<tbody className="bg-white divide-y divide-gray-200">
-					{users.map((user, index) => (
-						<UserRow user={user} rank={index + 1} key={user.id} />
-					))}
+					{loading ? (
+						<tr>
+							<td colSpan={4} className="py-8 text-center text-gray-400">
+								<span className="inline-block animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-300 mr-2 align-middle"></span>
+								読書ランキングを読み込み中...
+							</td>
+						</tr>
+					) : (
+						users.map((user, index) => <UserRow user={user} rank={index + 1} key={user.id} />)
+					)}
 				</tbody>
 			</table>
 		</div>

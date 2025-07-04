@@ -1,10 +1,14 @@
-import { useEffect, useRef, useCallback } from 'react';
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useRef } from 'react';
 import { getBooks } from '../api/books';
-import { BookList } from '../components/BookList';
 import { getGroups } from '../api/groups';
+import { getMetadata } from '../api/metadata';
+import { BookList } from '../components/BookList';
+import { formatDatetime } from '../utils/datetime';
+import { useDocumentTitle } from '../utils/useDocumentTitle';
 
 const BooksPage = () => {
+	useDocumentTitle('みんなの本棚 | 読書メーター Plus');
 	const {
 		data,
 		isLoading: isBooksLoading,
@@ -23,6 +27,7 @@ const BooksPage = () => {
 		queryKey: ['groups'],
 		queryFn: getGroups,
 	});
+	const { data: metadata } = useQuery({ queryKey: ['metadata'], queryFn: getMetadata });
 
 	const groupName = groupsData?.[0]?.name || 'グループ';
 
@@ -63,8 +68,9 @@ const BooksPage = () => {
 
 	if (isBooksLoading) {
 		return (
-			<div className="flex justify-center items-center min-h-[70vh]">
-				<div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+			<div className="flex flex-col justify-center items-center min-h-[70vh]">
+				<div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900 mb-4"></div>
+				<div className="text-gray-400 text-sm">みんなの本棚を読み込み中...</div>
 			</div>
 		);
 	}
@@ -95,25 +101,29 @@ const BooksPage = () => {
 	}
 
 	return (
-		<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
-			<div className="mb-8 text-center">
-				<h2 className="text-2xl font-bold text-gray-800 mb-2">みんなの本棚</h2>
-				<p className="text-base text-gray-600">{groupName}のメンバーが読んでいる本の一覧です。</p>
-				<p className="text-sm text-gray-500 mt-1">全{totalCount}冊</p>
-			</div>
-			<div className="w-full px-4">
-				<BookList books={books} users={users} />
-				{isFetchingNextPage && (
-					<div className="flex justify-center my-4">
-						<div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>
-					</div>
-				)}
-				<div ref={observerTarget} className="h-4" />
-				<div className="mt-8 text-center text-xs text-gray-400">
-					最終更新: {new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}
+		<>
+			<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
+				<div className="mb-4 text-center">
+					<h2 className="text-2xl font-bold text-gray-800 mb-2">みんなの本棚</h2>
+					<p className="mt-1 text-center text-xs text-gray-400">
+						最終更新: {formatDatetime(metadata?.last_updated)}
+					</p>
+					<p className="mt-2 text-base text-gray-600">
+						{groupName}のメンバーが読んでいる本の一覧です。
+					</p>
+					<p className="text-sm text-gray-500 mt-1">全{totalCount}冊</p>
+				</div>
+				<div className="w-full px-4">
+					<BookList books={books} users={users} />
+					{isFetchingNextPage && (
+						<div className="flex justify-center my-4">
+							<div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>
+						</div>
+					)}
+					<div ref={observerTarget} className="h-4" />
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

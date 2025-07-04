@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { Layout } from './Layout';
 import { ENABLE_JOIN_GROUP } from './constants';
 import { UserProvider } from './context/UserProvider';
 import BooksPage from './pages/BooksPage';
@@ -8,14 +7,15 @@ import JoinPage from './pages/JoinPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import LoginPage from './pages/LoginPage';
 import ReadsPage from './pages/ReadsPage';
+import { Layout } from './Layout';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			staleTime: 1000 * 60 * 15, // Data is considered fresh for 15 minutes
-			gcTime: 1000 * 60 * 60, // Cache is kept for 60 minutes
+			staleTime: 1000 * 60 * 5, // Data is considered fresh for 5 minutes
+			gcTime: 1000 * 60 * 30, // Cache is kept for 30 minutes
 			refetchOnWindowFocus: false, // Don't refetch when window regains focus
-			retry: 0, // Disable automatic retries on failure
+			retry: 1, // Only retry failed requests once
 		},
 	},
 });
@@ -25,7 +25,7 @@ function App() {
 		<QueryClientProvider client={queryClient}>
 			<UserProvider>
 				<BrowserRouter>
-					<Layout title="読書ランキング">
+					<Layout>
 						<Routes>
 							<Route path="/leaderboard" element={<LeaderboardPage />} />
 							<Route path="/books" element={<BooksPage />} />

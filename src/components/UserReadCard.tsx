@@ -19,7 +19,7 @@ export const UserReadCard: React.FC<UserReadCardProps> = ({ user, readCount, com
 						<h3 className="text-lg font-semibold bookmeter-green-text">{user.name}</h3>
 					</a>
 					<p className="text-gray-600">
-						共通の読書数: <span className="font-bold bookmeter-green-text">{readCount}冊</span>
+						共読数: <span className="font-bold bookmeter-green-text">{readCount}冊</span>
 					</p>
 				</div>
 			</div>

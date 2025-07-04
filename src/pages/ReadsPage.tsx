@@ -8,6 +8,9 @@ import { BookReadCard } from '../components/BookReadCard';
 import { useUser } from '../context/userContext';
 import { Link } from 'react-router-dom';
 import { ENABLE_JOIN_GROUP } from '../constants';
+import { formatDatetime } from '../utils/datetime';
+import { getMetadata } from '../api/metadata';
+import { useDocumentTitle } from '../utils/useDocumentTitle';
 
 type TabType = 'users' | 'books';
 
@@ -24,6 +27,7 @@ interface BookReadCount {
 }
 
 const ReadsPage = () => {
+	useDocumentTitle('共読 | 読書メーター Plus');
 	const [activeTab, setActiveTab] = useState<TabType>('users');
 	const { user } = useUser();
 	const userId = user?.id;
@@ -33,6 +37,7 @@ const ReadsPage = () => {
 		queryKey: ['commonReads', userId],
 		queryFn: () => getCommonReads(userId!),
 	});
+	const { data: metadata } = useQuery({ queryKey: ['metadata'], queryFn: getMetadata });
 
 	if (!user) {
 		return (
@@ -66,8 +71,9 @@ const ReadsPage = () => {
 
 	if (isLoading) {
 		return (
-			<div className="flex justify-center items-center min-h-[70vh]">
-				<div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+			<div className="flex flex-col justify-center items-center min-h-[70vh]">
+				<div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900 mb-4"></div>
+				<div className="text-gray-400 text-sm">共読データを読み込み中...</div>
 			</div>
 		);
 	}
@@ -121,30 +127,36 @@ const ReadsPage = () => {
 		});
 
 	return (
-		<div className="container mx-auto px-4 py-8 max-w-4xl">
-			<div className="flex space-x-2 mb-4">
-				<TabButton isActive={activeTab === 'users'} onClick={() => setActiveTab('users')}>
-					共読仲間
-				</TabButton>
-				<TabButton isActive={activeTab === 'books'} onClick={() => setActiveTab('books')}>
-					共読本
-				</TabButton>
-			</div>
+		<>
+			<div className="container mx-auto px-4 py-8 max-w-4xl">
+				<div className="flex space-x-2 mb-4">
+					<TabButton isActive={activeTab === 'users'} onClick={() => setActiveTab('users')}>
+						共読仲間
+					</TabButton>
+					<TabButton isActive={activeTab === 'books'} onClick={() => setActiveTab('books')}>
+						共読本
+					</TabButton>
+				</div>
 
-			{activeTab === 'users' ? (
-				<div className="space-y-4">
-					{userReadCounts.map((userReadCount) => (
-						<UserReadCard key={userReadCount.user.id} {...userReadCount} />
-					))}
-				</div>
-			) : (
-				<div className="space-y-4">
-					{bookReadCounts.map((bookReadCount) => (
-						<BookReadCard key={bookReadCount.book.id} {...bookReadCount} />
-					))}
-				</div>
-			)}
-		</div>
+				{activeTab === 'users' ? (
+					<div className="space-y-4">
+						{userReadCounts.map((userReadCount) => (
+							<UserReadCard key={userReadCount.user.id} {...userReadCount} />
+						))}
+					</div>
+				) : (
+					<div className="space-y-4">
+						{bookReadCounts.map((bookReadCount) => (
+							<BookReadCard key={bookReadCount.book.id} {...bookReadCount} />
+						))}
+					</div>
+				)}
+
+				<p className="mt-4 text-center text-xs text-gray-400">
+					最終更新: {formatDatetime(metadata?.last_updated)}
+				</p>
+			</div>
+		</>
 	);
 };
 
