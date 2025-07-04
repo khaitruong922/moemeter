@@ -45,7 +45,7 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 									みんなの本棚
 								</Link>
 								<Link to="/reads" className={tabStyle('/reads')}>
-									共通読書
+									共読
 								</Link>
 							</div>
 						</div>
@@ -58,7 +58,9 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 											alt={user.name}
 											className="w-6 h-6 md:w-8 md:h-8 rounded-full"
 										/>
-										<span className="text-xs md:text-sm font-medium">{user.name}</span>
+										<span className="hidden md:inline text-xs md:text-sm font-medium">
+											{user.name}
+										</span>
 									</div>
 									<button
 										onClick={logout}
