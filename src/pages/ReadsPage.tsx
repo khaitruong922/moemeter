@@ -7,6 +7,7 @@ import { UserReadCard } from '../components/UserReadCard';
 import { BookReadCard } from '../components/BookReadCard';
 import { useUser } from '../context/userContext';
 import { Link } from 'react-router-dom';
+import { ENABLE_JOIN_GROUP } from '../constants';
 
 type TabType = 'users' | 'books';
 
@@ -37,25 +38,26 @@ const ReadsPage = () => {
 		return (
 			<div className="container mx-auto px-4 py-8">
 				<div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 text-center">
-					<h2 className="text-xl font-bold mb-4 text-gray-800">
-						共読を見るにはサインインが必要です
-					</h2>
+					<h2 className="text-xl font-bold mb-4 text-gray-800">共読を見るにはログインが必要です</h2>
 					<p className="text-gray-600 mb-6">
-						共読機能を利用するには、サインインまたはグループへの参加が必要です。
+						共読機能を利用するには、ログイン{ENABLE_JOIN_GROUP ? 'またはグループへの参加' : ''}
+						が必要です。
 					</p>
 					<div className="flex justify-center space-x-4">
 						<Link
-							to="/signin"
+							to="/login"
 							className="px-6 py-2 rounded bg-white text-green-700 border-2 border-green-700 hover:bg-green-50 transition-colors duration-200 cursor-pointer"
 						>
-							サインイン
+							ログイン
 						</Link>
-						<Link
-							to="/join"
-							className="px-6 py-2 rounded bookmeter-green text-white hover:bg-[#69a73c] transition-colors duration-200 cursor-pointer"
-						>
-							グループに参加
-						</Link>
+						{ENABLE_JOIN_GROUP && (
+							<Link
+								to="/join"
+								className="px-6 py-2 rounded bookmeter-green text-white hover:bg-[#69a73c] transition-colors duration-200 cursor-pointer"
+							>
+								グループに参加
+							</Link>
+						)}
 					</div>
 				</div>
 			</div>

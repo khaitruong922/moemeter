@@ -5,29 +5,20 @@ import { getGroups, type Group } from '../api/groups';
 import { joinGroup } from '../api/users';
 import { extractUserIdFromBookmeterUrl } from '../utils/bookmeter';
 import { useUser } from '../context/userContext';
+import { ENABLE_JOIN_GROUP } from '../constants';
 
 export default function JoinPage() {
+	const navigate = useNavigate();
 	const [userInput, setUserInput] = useState('');
 	const [selectedGroup, setSelectedGroup] = useState<number | ''>('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
-	const navigate = useNavigate();
 	const { setUser } = useUser();
-
 	const { data: groups, isLoading: isLoadingGroups } = useQuery({
 		queryKey: ['groups'],
 		queryFn: getGroups,
 	});
-
-	// Auto-select first group when data is loaded
-	useEffect(() => {
-		if (groups && groups.length > 0 && !selectedGroup) {
-			setSelectedGroup(groups[0].id);
-		}
-	}, [groups, selectedGroup]);
-
 	const queryClient = useQueryClient();
-
 	const joinMutation = useMutation({
 		mutationFn: joinGroup,
 		onSuccess: (response) => {
@@ -40,6 +31,19 @@ export default function JoinPage() {
 			setError(error instanceof Error ? error.message : 'ユーザーが見つかりませんでした');
 		},
 	});
+	useEffect(() => {
+		if (!ENABLE_JOIN_GROUP) {
+			navigate('/leaderboard');
+		}
+	}, [navigate]);
+	useEffect(() => {
+		if (groups && groups.length > 0 && !selectedGroup) {
+			setSelectedGroup(groups[0].id);
+		}
+	}, [groups, selectedGroup]);
+	if (!ENABLE_JOIN_GROUP) {
+		return null;
+	}
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();

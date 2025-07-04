@@ -5,13 +5,13 @@ import { getUser } from '../api/users';
 import { extractUserIdFromBookmeterUrl } from '../utils/bookmeter';
 import { useUser } from '../context/userContext';
 
-export default function SignInPage() {
+export default function LoginPage() {
 	const [userInput, setUserInput] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const navigate = useNavigate();
 	const { setUser } = useUser();
 
-	const signInMutation = useMutation({
+	const loginMutation = useMutation({
 		mutationFn: getUser,
 		onSuccess: (user) => {
 			setError(null);
@@ -33,13 +33,13 @@ export default function SignInPage() {
 			return;
 		}
 
-		signInMutation.mutate(userId);
+		loginMutation.mutate(userId);
 	};
 
 	return (
 		<div className="container mx-auto px-4 py-8">
 			<div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
-				<h1 className="text-2xl font-bold mb-6 text-center text-gray-800">サインイン</h1>
+				<h1 className="text-2xl font-bold mb-6 text-center text-gray-800">ログイン</h1>
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<div>
 						<label
@@ -66,10 +66,10 @@ export default function SignInPage() {
 
 					<button
 						type="submit"
-						disabled={signInMutation.isPending}
+						disabled={loginMutation.isPending}
 						className="w-full bookmeter-green text-white py-3 px-4 rounded-lg hover:bg-[#69a73c] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium cursor-pointer"
 					>
-						{signInMutation.isPending ? 'サインイン中...' : 'サインイン'}
+						{loginMutation.isPending ? 'ログイン中...' : 'ログイン'}
 					</button>
 				</form>
 			</div>
