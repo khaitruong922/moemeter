@@ -93,7 +93,7 @@ const BooksPage = () => {
 			<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
 				<div className="mb-8 text-center">
 					<h2 className="text-2xl font-bold text-gray-800 mb-2">みんなの本棚</h2>
-					<p className="text-base text-gray-600">{groupName}のメンバーが読んでいる本の一覧です。</p>
+					<p className="text-base text-gray-600">{groupName}のメンバーが読んだ本の一覧です。</p>
 				</div>
 				<div className="text-gray-600 bg-gray-50 p-4 rounded-lg">まだ本が登録されていません</div>
 			</div>
@@ -109,7 +109,7 @@ const BooksPage = () => {
 						最終更新: {formatDatetime(metadata?.last_updated)}
 					</p>
 					<p className="mt-2 text-base text-gray-600">
-						{groupName}のメンバーが読んでいる本の一覧です。
+						{groupName}のメンバーが読んだ本の一覧です。
 					</p>
 					<p className="text-sm text-gray-500 mt-1">全{totalCount}冊</p>
 				</div>
