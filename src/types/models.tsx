@@ -17,14 +17,13 @@ export interface Book {
 	user_ids: number[];
 }
 
-export interface CommonRead {
+export interface Read {
 	user_id: number;
 	book_id: number;
-	date: string;
 }
 
 export interface CommonReadsResponse {
-	reads: CommonRead[];
+	reads: Read[];
 	books: { [key: string]: Book };
 	users: { [key: string]: User };
 }
