@@ -69,7 +69,7 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 										onClick={logout}
 										className="text-white hover:text-white/80 transition-colors duration-200 cursor-pointer text-xs md:text-sm flex items-center"
 									>
-										<span className="hidden max-[375px]:inline">
+										<span className="hidden max-[500px]:inline">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
 												className="h-5 w-5"
@@ -90,7 +90,7 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 												/>
 											</svg>
 										</span>
-										<span className="inline max-[375px]:hidden">ログアウト</span>
+										<span className="inline max-[500px]:hidden">ログアウト</span>
 									</button>
 								</div>
 							) : (
