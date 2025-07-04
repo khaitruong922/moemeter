@@ -38,13 +38,16 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 							<img src="/bookmeter.svg" alt="読書メーター Plus" className="w-5 h-5 md:w-6 md:h-6" />
 							<span className="hidden md:block text-lg font-bold ml-2">読書メーター Plus</span>
 							<div className="ml-4 md:ml-6 flex items-center">
-								<Link to="/leaderboard" className={tabStyle('/leaderboard')}>
+								<Link
+									to="/leaderboard"
+									className={tabStyle('/leaderboard') + ' text-xs md:text-sm'}
+								>
 									読書ランキング
 								</Link>
-								<Link to="/books" className={tabStyle('/books')}>
+								<Link to="/books" className={tabStyle('/books') + ' text-xs md:text-sm'}>
 									みんなの本棚
 								</Link>
-								<Link to="/reads" className={tabStyle('/reads')}>
+								<Link to="/reads" className={tabStyle('/reads') + ' text-xs md:text-sm'}>
 									共読
 								</Link>
 							</div>
