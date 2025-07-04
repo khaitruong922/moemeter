@@ -14,12 +14,7 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({ book, readCount, com
 		<div className="p-4 bg-white rounded-lg shadow">
 			<div className="flex items-start space-x-4">
 				<div className="flex-shrink-0">
-					<BookCover
-						bookId={book.id}
-						title={book.title}
-						thumbnailUrl={book.thumbnail_url}
-						size="md"
-					/>
+					<BookCover bookId={book.id} title={book.title} thumbnailUrl={book.thumbnail_url} />
 				</div>
 				<div className="flex-grow flex flex-col">
 					<a

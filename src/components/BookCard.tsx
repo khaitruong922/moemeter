@@ -14,7 +14,7 @@ export const BookCard: React.FC<Props> = ({ book, index, users }) => {
 	const bookUsers = book.user_ids.map((id) => users[id]).filter(Boolean);
 
 	return (
-		<div className="flex items-center gap-2 sm:gap-4 p-2 sm:p-4 hover:bg-gray-50 transition-colors duration-200">
+		<div className="flex items-start gap-2 sm:gap-4 p-2 sm:p-4 hover:bg-gray-50 transition-colors duration-200">
 			<div className="flex-none w-12 sm:w-16 text-center">
 				<div
 					className={`text-lg sm:text-2xl font-bold ${getRankTextColorStyle(index, 'bookmeter-green-text')}`}
@@ -24,12 +24,7 @@ export const BookCard: React.FC<Props> = ({ book, index, users }) => {
 				<div className="text-xs sm:text-sm text-gray-500">{book.read_count}人</div>
 			</div>
 			<div className="flex-none">
-				<BookCover
-					bookId={book.id}
-					title={book.title}
-					thumbnailUrl={book.thumbnail_url}
-					size="sm"
-				/>
+				<BookCover bookId={book.id} title={book.title} thumbnailUrl={book.thumbnail_url} />
 			</div>
 			<div className="flex-1 min-w-0 flex flex-col">
 				<a

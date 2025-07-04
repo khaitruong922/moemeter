@@ -23,14 +23,13 @@ export const UserReadCard: React.FC<UserReadCardProps> = ({ user, readCount, com
 					</p>
 				</div>
 			</div>
-			<div className="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-4">
+			<div className="flex flex-wrap gap-2 sm:gap-1 mt-4 sm:mt-2">
 				{commonBooks.map((book) => (
 					<BookCover
 						key={book.id}
 						bookId={book.id}
 						title={book.title}
 						thumbnailUrl={book.thumbnail_url}
-						size="sm"
 					/>
 				))}
 			</div>
