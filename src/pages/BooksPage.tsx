@@ -9,7 +9,7 @@ import { useDocumentTitle } from '../utils/useDocumentTitle';
 import { useSearchParams } from 'react-router-dom';
 
 const BooksPage = () => {
-	useDocumentTitle('みんなの本棚 | 読書メーター Plus');
+	useDocumentTitle('みんなの本棚 | 萌メーター');
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [searchInput, setSearchInput] = useState(searchParams.get('q') || '');
 	const searchQuery = searchParams.get('q') || '';
@@ -162,8 +162,8 @@ const BooksPage = () => {
 				<form onSubmit={handleSearch} className="flex">
 					<input
 						type="search"
-						id="bookmeter-plus-q"
-						name="bookmeter-plus-q"
+						id="moemeter-q"
+						name="moemeter-q"
 						value={searchInput}
 						onChange={(e) => setSearchInput(e.target.value)}
 						placeholder="タイトル・著者名"

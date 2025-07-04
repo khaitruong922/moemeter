@@ -7,7 +7,7 @@ import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
 
 const LeaderboardPage = () => {
-	useDocumentTitle('読書ランキング | 読書メーター Plus');
+	useDocumentTitle('読書ランキング | 萌メーター');
 	const { data: usersData, isLoading: isLeaderboardLoading } = useQuery({
 		queryKey: ['leaderboard'],
 		queryFn: getLeaderboard,

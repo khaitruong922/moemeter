@@ -12,7 +12,7 @@ const LoginPage = () => {
 	const navigate = useNavigate();
 	const { setUser } = useUser();
 
-	useDocumentTitle('ログイン | 読書メーター Plus');
+	useDocumentTitle('ログイン | 萌メーター');
 
 	const loginMutation = useMutation({
 		mutationFn: getUser,

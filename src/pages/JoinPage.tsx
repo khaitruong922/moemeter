@@ -9,7 +9,7 @@ import { extractUserIdFromBookmeterUrl } from '../utils/bookmeter';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
 
 export default function JoinPage() {
-	useDocumentTitle('グループに参加 | 読書メーター Plus');
+	useDocumentTitle('グループに参加 | 萌メーター');
 	const navigate = useNavigate();
 	const [userInput, setUserInput] = useState('');
 	const [selectedGroup, setSelectedGroup] = useState<number | ''>('');

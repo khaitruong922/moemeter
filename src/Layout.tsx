@@ -35,8 +35,8 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 				<div className="container mx-auto px-2 md:px-4">
 					<nav className="flex justify-between items-center h-14">
 						<div className="flex items-center">
-							<img src="/bookmeter.svg" alt="読書メーター Plus" className="w-5 h-5 md:w-6 md:h-6" />
-							<span className="hidden md:block text-lg font-bold ml-2">読書メーター Plus</span>
+							<img src="/bookmeter.svg" alt="萌メーター" className="w-5 h-5 md:w-6 md:h-6" />
+							<span className="hidden md:block text-lg font-bold ml-2">萌メーター</span>
 							<div className="ml-4 md:ml-6 flex items-center">
 								<Link
 									to="/leaderboard"

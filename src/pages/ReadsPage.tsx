@@ -27,7 +27,7 @@ interface BookReadCount {
 }
 
 const ReadsPage = () => {
-	useDocumentTitle('共読 | 読書メーター Plus');
+	useDocumentTitle('共読 | 萌メーター');
 	const [activeTab, setActiveTab] = useState<TabType>('users');
 	const { user } = useUser();
 	const userId = user?.id;
