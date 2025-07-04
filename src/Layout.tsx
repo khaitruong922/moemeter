@@ -67,16 +67,37 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 									</div>
 									<button
 										onClick={logout}
-										className="text-white hover:text-white/80 transition-colors duration-200 cursor-pointer text-xs md:text-sm"
+										className="text-white hover:text-white/80 transition-colors duration-200 cursor-pointer text-xs md:text-sm flex items-center"
 									>
-										ログアウト
+										<span className="hidden max-[375px]:inline">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												className="h-5 w-5"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
+												strokeWidth={2}
+											>
+												<path
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15"
+												/>
+												<path
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													d="M18 12H9m0 0l3-3m-3 3l3 3"
+												/>
+											</svg>
+										</span>
+										<span className="inline max-[375px]:hidden">ログアウト</span>
 									</button>
 								</div>
 							) : (
 								<div className="flex items-center space-x-3 md:space-x-6">
 									<Link
 										to="/login"
-										className="text-white hover:text-white/80 transition-colors duration-200 text-xs md:text-sm"
+										className="text-white hover:text-white/80 transition-colors duration-200 text-xs md:text-sm flex items-center"
 									>
 										ログイン
 									</Link>
