@@ -1,5 +1,6 @@
 import type { User } from '../types/models';
 import { getUserBookmeterUrl } from '../utils/bookmeter';
+import { getRankTextColorStyle } from '../utils/rank';
 import { UserAvatar } from './UserAvatar';
 
 type Props = {
@@ -9,9 +10,12 @@ type Props = {
 
 const UserRow = ({ user, rank }: Props) => {
 	const bookmeterUrl = getUserBookmeterUrl(user.id);
+
 	return (
 		<tr className="hover:bg-gray-50 align-middle">
-			<td className="px-4 py-2 whitespace-nowrap text-base font-semibold text-gray-900 text-center">
+			<td
+				className={`px-4 py-2 whitespace-nowrap text-base font-semibold text-center ${getRankTextColorStyle(rank)}`}
+			>
 				{rank}位
 			</td>
 			<td className="px-4 py-2 whitespace-nowrap">
