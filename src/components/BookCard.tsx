@@ -1,6 +1,5 @@
 import type { Book, User } from '../types/models';
 import { getBookBookmeterUrl } from '../utils/bookmeter';
-import { getRankTextColorStyle } from '../utils/rank';
 import { BookCover } from './BookCover';
 import { UserAvatarGroup } from './UserAvatarGroup';
 
@@ -16,11 +15,7 @@ export const BookCard: React.FC<Props> = ({ book, index, users }) => {
 	return (
 		<div className="flex items-start gap-2 sm:gap-4 p-2 sm:p-4 hover:bg-gray-50 transition-colors duration-200">
 			<div className="flex-none w-12 sm:w-16 text-center">
-				<div
-					className={`text-lg sm:text-2xl font-bold ${getRankTextColorStyle(index, 'bookmeter-green-text')}`}
-				>
-					#{index}
-				</div>
+				<div className={`text-lg sm:text-2xl font-bold bookmeter-green-text`}>#{index}</div>
 				<div className="text-xs sm:text-sm text-gray-500">{book.read_count}人</div>
 			</div>
 			<div className="flex-none">
