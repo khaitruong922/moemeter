@@ -33,7 +33,8 @@ const BooksPage = () => {
 
 	// Combine all books from all pages and get users
 	const books = data?.pages.flatMap((page) => page.books) || [];
-	const users = data?.pages[0]?.users || {};
+	// Aggregate users from all pages
+	const users = data?.pages.reduce((acc, page) => ({ ...acc, ...page.users }), {}) || {};
 	const totalCount = data?.pages[0]?.total_count || 0;
 
 	// Infinite scroll implementation
