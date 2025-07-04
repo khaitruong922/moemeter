@@ -33,7 +33,9 @@ const LeaderboardPage = () => {
 					<p className="mt-2 text-base text-gray-600">
 						{groupName}のメンバーの読書量ランキングです。
 					</p>
-					<p className="text-sm text-gray-500 mt-1">全{total_count}人</p>
+					<p className="text-sm text-gray-500 mt-1">
+						{isLeaderboardLoading ? '読み込み中...' : `全${total_count}人`}
+					</p>
 				</div>
 				<LeaderboardTable users={users} loading={isLeaderboardLoading} />
 			</div>
