@@ -162,6 +162,8 @@ const BooksPage = () => {
 				<form onSubmit={handleSearch} className="flex">
 					<input
 						type="search"
+						id="bookmeter-plus-q"
+						name="bookmeter-plus-q"
 						value={searchInput}
 						onChange={(e) => setSearchInput(e.target.value)}
 						placeholder="タイトル・著者名"
