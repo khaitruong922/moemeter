@@ -1,14 +1,19 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getBooks } from '../api/books';
 import { getGroups } from '../api/groups';
 import { getMetadata } from '../api/metadata';
 import { BookList } from '../components/BookList';
 import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
+import { useSearchParams } from 'react-router-dom';
 
 const BooksPage = () => {
 	useDocumentTitle('みんなの本棚 | 読書メーター Plus');
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchInput, setSearchInput] = useState(searchParams.get('q') || '');
+	const searchQuery = searchParams.get('q') || '';
+
 	const {
 		data,
 		isLoading: isBooksLoading,
@@ -17,8 +22,8 @@ const BooksPage = () => {
 		hasNextPage,
 		isFetchingNextPage,
 	} = useInfiniteQuery({
-		queryKey: ['books'],
-		queryFn: ({ pageParam = 1 }) => getBooks(pageParam),
+		queryKey: ['books', searchQuery],
+		queryFn: ({ pageParam = 1 }) => getBooks(pageParam, searchQuery),
 		getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
 		initialPageParam: 1,
 	});
@@ -36,6 +41,16 @@ const BooksPage = () => {
 	// Aggregate users from all pages
 	const users = data?.pages.reduce((acc, page) => ({ ...acc, ...page.users }), {}) || {};
 	const totalCount = data?.pages[0]?.total_count || 0;
+
+	// Handle search input
+	const handleSearch = (e: React.FormEvent) => {
+		e.preventDefault();
+		if (searchInput.trim()) {
+			setSearchParams({ q: searchInput.trim() });
+		} else {
+			setSearchParams({});
+		}
+	};
 
 	// Infinite scroll implementation
 	const observerTarget = useRef<HTMLDivElement>(null);
@@ -96,7 +111,9 @@ const BooksPage = () => {
 					<h2 className="text-2xl font-bold text-gray-800 mb-2">みんなの本棚</h2>
 					<p className="text-base text-gray-600">{groupName}のメンバーが読んだ本の一覧です。</p>
 				</div>
-				<div className="text-gray-600 bg-gray-50 p-4 rounded-lg">まだ本が登録されていません</div>
+				<div className="text-gray-600 bg-gray-50 p-4 rounded-lg">
+					{searchQuery ? '検索結果が見つかりませんでした' : 'まだ本が登録されていません'}
+				</div>
 			</div>
 		);
 	}
@@ -112,8 +129,43 @@ const BooksPage = () => {
 					<p className="mt-2 text-base text-gray-600">
 						{groupName}のメンバーが読んだ本の一覧です。
 					</p>
-					<p className="text-sm text-gray-500 mt-1">全{totalCount}冊</p>
+					<p className="text-sm text-gray-500 mt-1">
+						{searchQuery ? `「${searchQuery}」の検索結果: ` : '全'}
+						{totalCount}冊
+					</p>
 				</div>
+
+				<div className="w-full max-w-xl px-4 mb-6">
+					<form onSubmit={handleSearch} className="flex">
+						<input
+							type="search"
+							value={searchInput}
+							onChange={(e) => setSearchInput(e.target.value)}
+							placeholder="タイトル・著者名"
+							className="flex-1 h-[34px] px-3 border border-r-0 border-gray-300 rounded-l focus:outline-none"
+						/>
+						<button
+							type="submit"
+							className="w-[40px] h-[34px] flex items-center justify-center bookmeter-green text-white rounded-r cursor-pointer"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth={2}
+								stroke="currentColor"
+								className="w-4 h-4"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+								/>
+							</svg>
+						</button>
+					</form>
+				</div>
+
 				<div className="w-full px-4">
 					<BookList books={books} users={users} />
 					{isFetchingNextPage && (
