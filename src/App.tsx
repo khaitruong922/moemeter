@@ -8,6 +8,7 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import LoginPage from './pages/LoginPage';
 import ReadsPage from './pages/ReadsPage';
 import { Layout } from './Layout';
+import { ScrollToTop } from './components/ScrollToTop';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -25,6 +26,7 @@ function App() {
 		<QueryClientProvider client={queryClient}>
 			<UserProvider>
 				<BrowserRouter>
+					<ScrollToTop />
 					<Layout>
 						<Routes>
 							<Route path="/leaderboard" element={<LeaderboardPage />} />
