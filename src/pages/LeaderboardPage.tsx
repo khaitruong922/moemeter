@@ -24,7 +24,7 @@ const LeaderboardPage = () => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
+			<div className="flex flex-col items-center min-h-[70vh] w-full py-10">
 				<div className="mb-4 text-center">
 					<h2 className="text-2xl font-bold text-gray-800 mb-2">読書ランキング</h2>
 					<p className="mt-1 text-center text-xs text-gray-400">
