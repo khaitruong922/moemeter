@@ -7,12 +7,22 @@ interface BookReadCardProps {
 	book: Book;
 	readCount: number;
 	commonUsers: User[];
+	index: number;
 }
 
-export const BookReadCard: React.FC<BookReadCardProps> = ({ book, readCount, commonUsers }) => {
+export const BookReadCard: React.FC<BookReadCardProps> = ({
+	book,
+	readCount,
+	commonUsers,
+	index,
+}) => {
 	return (
 		<div className="p-4 bg-white rounded-lg shadow">
 			<div className="flex items-start space-x-4">
+				<div className="flex-none w-12 sm:w-16 text-center">
+					<div className={`text-lg sm:text-2xl font-bold bookmeter-green-text`}>#{index}</div>
+					<div className="text-xs sm:text-sm text-gray-500">{readCount}人</div>
+				</div>
 				<div className="flex-shrink-0">
 					<BookCover bookId={book.id} title={book.title} thumbnailUrl={book.thumbnail_url} />
 				</div>
@@ -33,10 +43,9 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({ book, readCount, com
 					>
 						{book.author}
 					</a>
-					<p className="text-gray-600 text-left mt-2 mb-4">
-						仲間: <span className="font-bold bookmeter-green-text">{readCount}人</span>
-					</p>
-					<UserAvatarGroup users={commonUsers} />
+					<div className="mt-2 mb-4">
+						<UserAvatarGroup users={commonUsers} />
+					</div>
 				</div>
 			</div>
 		</div>

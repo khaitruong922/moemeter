@@ -140,14 +140,14 @@ const ReadsPage = () => {
 
 				{activeTab === 'users' ? (
 					<div className="space-y-4">
-						{userReadCounts.map((userReadCount) => (
-							<UserReadCard key={userReadCount.user.id} {...userReadCount} />
+						{userReadCounts.map((userReadCount, index) => (
+							<UserReadCard key={userReadCount.user.id} {...userReadCount} index={index + 1} />
 						))}
 					</div>
 				) : (
 					<div className="space-y-4">
-						{bookReadCounts.map((bookReadCount) => (
-							<BookReadCard key={bookReadCount.book.id} {...bookReadCount} />
+						{bookReadCounts.map((bookReadCount, index) => (
+							<BookReadCard key={bookReadCount.book.id} {...bookReadCount} index={index + 1} />
 						))}
 					</div>
 				)}
