@@ -183,7 +183,7 @@ const BooksPage = () => {
 					<select
 						value={searchField}
 						onChange={(e) => setSearchField(e.target.value)}
-						className="cursor-pointer h-[40px] sm:h-[48px] px-2 bg-[#f0f0f0] border border-r-0 border-gray-300 rounded-l focus:outline-none text-xs text-gray-800 w-[80px]"
+						className="cursor-pointer h-[40px] sm:h-[48px] px-2 bg-[#f0f0f0] border border-r-0 border-gray-300 rounded-l focus:outline-none text-xs text-gray-800 w-[90px]"
 					>
 						<option value="all">すべて</option>
 						<option value="title">タイトル</option>
