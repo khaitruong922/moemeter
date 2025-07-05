@@ -1,6 +1,6 @@
 import type { Book, User } from '../types/models';
 import { UserAvatar } from './UserAvatar';
-import { BookCover } from './BookCover';
+import { UserReadBookCover } from './UserReadBookCover';
 import { getUserBookmeterUrl } from '../utils/bookmeter';
 
 interface UserReadCardProps {
@@ -23,9 +23,9 @@ export const UserReadCard: React.FC<UserReadCardProps> = ({ user, readCount, com
 					</p>
 				</div>
 			</div>
-			<div className="flex flex-wrap gap-2 sm:gap-1 mt-4 sm:mt-2">
+			<div className="flex flex-wrap gap-2 mt-4">
 				{commonBooks.map((book) => (
-					<BookCover
+					<UserReadBookCover
 						key={book.id}
 						bookId={book.id}
 						title={book.title}
