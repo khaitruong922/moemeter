@@ -145,7 +145,7 @@ const ReadsPage = () => {
 						))}
 					</div>
 				) : (
-					<div className="w-full max-w-3xl mx-auto bg-white divide-y divide-gray-200">
+					<div className="w-full max-w-4xl mx-auto bg-white divide-y divide-gray-200">
 						{bookReadCounts.map((bookReadCount, index) => (
 							<BookReadCard key={bookReadCount.book.id} {...bookReadCount} index={index + 1} />
 						))}
