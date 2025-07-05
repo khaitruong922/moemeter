@@ -23,7 +23,7 @@ export const UserReadCard: React.FC<UserReadCardProps> = ({
 					<div className={`text-lg sm:text-2xl font-bold bookmeter-green-text`}>#{index}</div>
 					<div className="text-xs sm:text-sm text-gray-500">{readCount}冊</div>
 				</div>
-				<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="sm" />
+				<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="md" />
 				<div className="flex-grow flex flex-col items-start">
 					<a href={getUserBookmeterUrl(user.id)} target="_blank" rel="noopener noreferrer">
 						<h3 className="text-base sm:text-lg font-semibold bookmeter-green-text">{user.name}</h3>

@@ -8,11 +8,24 @@ import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
 import { useSearchParams } from 'react-router-dom';
 
+const getPlaceholder = (field: string) => {
+	switch (field) {
+		case 'title':
+			return 'タイトルで検索';
+		case 'author':
+			return '著者名で検索';
+		default:
+			return 'タイトル・著者名';
+	}
+};
+
 const BooksPage = () => {
 	useDocumentTitle('みんなの本棚 | 萌メーター');
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [searchInput, setSearchInput] = useState(searchParams.get('q') || '');
+	const [searchField, setSearchField] = useState(searchParams.get('field') || 'all');
 	const searchQuery = searchParams.get('q') || '';
+	const fieldQuery = searchParams.get('field') || 'all';
 
 	const {
 		data,
@@ -22,8 +35,8 @@ const BooksPage = () => {
 		hasNextPage,
 		isFetchingNextPage,
 	} = useInfiniteQuery({
-		queryKey: ['books', searchQuery],
-		queryFn: ({ pageParam = 1 }) => getBooks(pageParam, searchQuery),
+		queryKey: ['books', searchQuery, fieldQuery],
+		queryFn: ({ pageParam = 1 }) => getBooks(pageParam, searchQuery, fieldQuery),
 		getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
 		initialPageParam: 1,
 	});
@@ -46,10 +59,20 @@ const BooksPage = () => {
 	const handleSearch = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (searchInput.trim()) {
-			setSearchParams({ q: searchInput.trim() });
+			const params: { q: string; field?: string } = { q: searchInput.trim() };
+			if (searchField !== 'all') {
+				params.field = searchField;
+			}
+			setSearchParams(params);
 		} else {
 			setSearchParams({});
 		}
+	};
+
+	const clearSearch = () => {
+		setSearchInput('');
+		setSearchField('all');
+		setSearchParams({});
 	};
 
 	// Infinite scroll implementation
@@ -146,10 +169,7 @@ const BooksPage = () => {
 					{isBooksLoading ? '検索中...' : `${totalCount}冊`}
 					{searchQuery && !isBooksLoading && (
 						<button
-							onClick={() => {
-								setSearchInput('');
-								setSearchParams({});
-							}}
+							onClick={clearSearch}
 							className="ml-2 text-[#5ba865] hover:underline cursor-pointer"
 						>
 							検索をクリア
@@ -159,19 +179,30 @@ const BooksPage = () => {
 			</div>
 
 			<div className="w-full max-w-xl px-4 mb-6">
-				<form onSubmit={handleSearch} className="flex">
-					<input
-						type="search"
-						id="moemeter-q"
-						name="moemeter-q"
-						value={searchInput}
-						onChange={(e) => setSearchInput(e.target.value)}
-						placeholder="タイトル・著者名"
-						className="flex-1 h-[34px] px-3 bg-white border border-r-0 border-gray-300 rounded-l focus:outline-none"
-					/>
+				<form onSubmit={handleSearch} className="flex w-full">
+					<select
+						value={searchField}
+						onChange={(e) => setSearchField(e.target.value)}
+						className="cursor-pointer h-[40px] sm:h-[48px] px-2 bg-[#f0f0f0] border border-r-0 border-gray-300 rounded-l focus:outline-none text-xs text-gray-800 w-[80px]"
+					>
+						<option value="all">すべて</option>
+						<option value="title">タイトル</option>
+						<option value="author">著者</option>
+					</select>
+					<div className="flex-1 flex min-w-0">
+						<input
+							type="search"
+							id="moemeter-q"
+							name="moemeter-q"
+							value={searchInput}
+							onChange={(e) => setSearchInput(e.target.value)}
+							placeholder={getPlaceholder(searchField)}
+							className="w-full h-[40px] sm:h-[48px] px-2 sm:px-3 bg-white border border-gray-300 focus:outline-none text-sm"
+						/>
+					</div>
 					<button
 						type="submit"
-						className="w-[40px] h-[34px] flex items-center justify-center bookmeter-green text-white rounded-r cursor-pointer"
+						className="w-[48px] h-[40px] sm:h-[48px] flex items-center justify-center bookmeter-green text-white rounded-r cursor-pointer shrink-0"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

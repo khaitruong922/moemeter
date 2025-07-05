@@ -9,8 +9,8 @@ interface UserAvatarProps {
 
 const sizeClasses = {
 	sm: 'w-8 h-8',
-	md: 'w-12 h-12',
-	lg: 'w-16 h-16',
+	md: 'w-14 h-14',
+	lg: 'w-20 h-20',
 };
 
 export const UserAvatar: React.FC<UserAvatarProps> = ({ userId, name, avatarUrl, size = 'md' }) => {
@@ -20,7 +20,7 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({ userId, name, avatarUrl,
 				src={avatarUrl}
 				alt={name}
 				title={name}
-				className={`${sizeClasses[size]} rounded-full`}
+				className={`${sizeClasses[size]} rounded-full ring-1 ring-gray-200`}
 			/>
 		</a>
 	);

@@ -20,7 +20,7 @@ const UserRow = ({ user, rank }: Props) => {
 			</td>
 			<td className="px-4 py-2 whitespace-nowrap">
 				<div className="flex items-center align-start">
-					<div className="flex-shrink-0 w-8 h-8 sm:w-8 sm:h-8">
+					<div className="flex-shrink-0">
 						<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="sm" />
 					</div>
 					<div className="ml-2 sm:ml-4 min-w-0">
