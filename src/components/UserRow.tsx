@@ -6,13 +6,16 @@ import { UserAvatar } from './UserAvatar';
 type Props = {
 	user: User;
 	rank: number;
+	isCurrentUser?: boolean;
 };
 
-const UserRow = ({ user, rank }: Props) => {
+const UserRow = ({ user, rank, isCurrentUser }: Props) => {
 	const bookmeterUrl = getUserBookmeterUrl(user.id);
 
 	return (
-		<tr className="hover:bg-gray-50 align-middle">
+		<tr
+			className={`align-middle ${isCurrentUser ? 'bg-[#e3f5d6] hover:bg-[#d5efc2]' : 'hover:bg-gray-50'}`}
+		>
 			<td
 				className={`px-4 py-2 whitespace-nowrap text-base font-semibold text-center ${getRankTextColorStyle(rank)}`}
 			>

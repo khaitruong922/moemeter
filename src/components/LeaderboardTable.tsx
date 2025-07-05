@@ -4,9 +4,10 @@ import UserRow from './UserRow';
 type LeaderboardTableProps = {
 	users: User[];
 	loading?: boolean;
+	currentUserId?: number;
 };
 
-export const LeaderboardTable = ({ users, loading }: LeaderboardTableProps) => {
+export const LeaderboardTable = ({ users, loading, currentUserId }: LeaderboardTableProps) => {
 	return (
 		<div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 mx-2 sm:mx-4 w-full sm:w-3/4 max-w-[1200px]">
 			<div className="bookmeter-green text-white px-4 sm:px-8 py-4 text-lg sm:text-xl font-bold">
@@ -37,7 +38,14 @@ export const LeaderboardTable = ({ users, loading }: LeaderboardTableProps) => {
 								</td>
 							</tr>
 						) : (
-							users.map((user, index) => <UserRow user={user} rank={index + 1} key={user.id} />)
+							users.map((user, index) => (
+								<UserRow
+									user={user}
+									rank={index + 1}
+									key={user.id}
+									isCurrentUser={user.id === currentUserId}
+								/>
+							))
 						)}
 					</tbody>
 				</table>

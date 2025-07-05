@@ -5,9 +5,11 @@ import { getLeaderboard } from '../api/users';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
+import { useUser } from '../context/userContext';
 
 const LeaderboardPage = () => {
 	useDocumentTitle('読書ランキング | 萌メーター');
+	const { user: currentUser } = useUser();
 	const { data: usersData, isLoading: isLeaderboardLoading } = useQuery({
 		queryKey: ['leaderboard'],
 		queryFn: getLeaderboard,
@@ -37,7 +39,11 @@ const LeaderboardPage = () => {
 						{isLeaderboardLoading ? '読み込み中...' : `全${total_count}人`}
 					</p>
 				</div>
-				<LeaderboardTable users={users} loading={isLeaderboardLoading} />
+				<LeaderboardTable
+					users={users}
+					loading={isLeaderboardLoading}
+					currentUserId={currentUser?.id}
+				/>
 			</div>
 		</>
 	);
