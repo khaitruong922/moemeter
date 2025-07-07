@@ -92,8 +92,11 @@ const BooksPage = () => {
 	const clearSearch = () => {
 		setSearchInput('');
 		setSearchField('all');
-		setPeriodFilter('all');
-		setSearchParams({});
+		const params: { period?: string } = {};
+		if (periodFilter !== 'all') {
+			params.period = periodFilter;
+		}
+		setSearchParams(params);
 	};
 
 	// Infinite scroll implementation
