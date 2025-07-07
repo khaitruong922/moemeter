@@ -35,6 +35,13 @@ const BooksPage = () => {
 	const fieldQuery = searchParams.get('field') || 'all';
 	const periodQuery = searchParams.get('period') || 'all';
 
+	// Sync state with URL parameters
+	useEffect(() => {
+		setSearchInput(searchParams.get('q') || '');
+		setSearchField(searchParams.get('field') || 'all');
+		setPeriodFilter(searchParams.get('period') || 'all');
+	}, [searchParams]);
+
 	const {
 		data,
 		isLoading: isBooksLoading,
