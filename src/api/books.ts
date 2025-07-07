@@ -4,7 +4,8 @@ import type { BooksApiResponse } from '../types/models';
 export const getBooks = async (
 	page: number,
 	query = '',
-	field = 'all'
+	field = 'all',
+	period = 'all'
 ): Promise<BooksApiResponse> => {
 	const params = new URLSearchParams({
 		page: page.toString(),
@@ -15,6 +16,10 @@ export const getBooks = async (
 		if (field !== 'all') {
 			params.append('field', field);
 		}
+	}
+
+	if (period !== 'all') {
+		params.append('period', period);
 	}
 
 	const response = await fetch(`${API_URL}/books?${params}`);

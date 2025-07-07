@@ -20,12 +20,20 @@ const getPlaceholder = (field: string) => {
 };
 
 const BooksPage = () => {
+	const currentDate = new Date();
+	const currentMonth = currentDate.getUTCMonth() + 1; // 1-12
+	const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+	const currentYear = currentDate.getUTCFullYear();
+	const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+
 	useDocumentTitle('みんなの本棚 | 萌メーター');
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [searchInput, setSearchInput] = useState(searchParams.get('q') || '');
 	const [searchField, setSearchField] = useState(searchParams.get('field') || 'all');
+	const [periodFilter, setPeriodFilter] = useState(searchParams.get('period') || 'all');
 	const searchQuery = searchParams.get('q') || '';
 	const fieldQuery = searchParams.get('field') || 'all';
+	const periodQuery = searchParams.get('period') || 'all';
 
 	const {
 		data,
@@ -35,8 +43,8 @@ const BooksPage = () => {
 		hasNextPage,
 		isFetchingNextPage,
 	} = useInfiniteQuery({
-		queryKey: ['books', searchQuery, fieldQuery],
-		queryFn: ({ pageParam = 1 }) => getBooks(pageParam, searchQuery, fieldQuery),
+		queryKey: ['books', searchQuery, fieldQuery, periodQuery],
+		queryFn: ({ pageParam = 1 }) => getBooks(pageParam, searchQuery, fieldQuery, periodQuery),
 		getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
 		initialPageParam: 1,
 	});
@@ -58,20 +66,26 @@ const BooksPage = () => {
 	// Handle search input
 	const handleSearch = (e: React.FormEvent) => {
 		e.preventDefault();
+		const params: { q?: string; field?: string; period?: string } = {};
+
 		if (searchInput.trim()) {
-			const params: { q: string; field?: string } = { q: searchInput.trim() };
+			params.q = searchInput.trim();
 			if (searchField !== 'all') {
 				params.field = searchField;
 			}
-			setSearchParams(params);
-		} else {
-			setSearchParams({});
 		}
+
+		if (periodFilter !== 'all') {
+			params.period = periodFilter;
+		}
+
+		setSearchParams(params);
 	};
 
 	const clearSearch = () => {
 		setSearchInput('');
 		setSearchField('all');
+		setPeriodFilter('all');
 		setSearchParams({});
 	};
 
@@ -179,46 +193,117 @@ const BooksPage = () => {
 			</div>
 
 			<div className="w-full max-w-xl px-4 mb-6">
-				<form onSubmit={handleSearch} className="flex w-full">
-					<select
-						value={searchField}
-						onChange={(e) => setSearchField(e.target.value)}
-						className="cursor-pointer h-[40px] sm:h-[48px] px-2 bg-[#f0f0f0] border border-r-0 border-gray-300 rounded-l focus:outline-none text-xs text-gray-800 w-[90px]"
-					>
-						<option value="all">すべて</option>
-						<option value="title">タイトル</option>
-						<option value="author">著者</option>
-					</select>
-					<div className="flex-1 flex min-w-0">
-						<input
-							type="search"
-							id="moemeter-q"
-							name="moemeter-q"
-							value={searchInput}
-							onChange={(e) => setSearchInput(e.target.value)}
-							placeholder={getPlaceholder(searchField)}
-							className="w-full h-[40px] sm:h-[48px] px-2 sm:px-3 bg-white border border-gray-300 focus:outline-none text-sm"
-						/>
-					</div>
-					<button
-						type="submit"
-						className="w-[48px] h-[40px] sm:h-[48px] flex items-center justify-center bookmeter-green text-white rounded-r cursor-pointer shrink-0"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							strokeWidth={2}
-							stroke="currentColor"
-							className="w-4 h-4"
+				<form onSubmit={handleSearch} className="flex flex-col w-full gap-2">
+					<div className="flex w-full">
+						<select
+							value={searchField}
+							onChange={(e) => setSearchField(e.target.value)}
+							className="cursor-pointer h-[40px] sm:h-[48px] px-2 bg-[#f0f0f0] border border-r-0 border-gray-300 rounded-l focus:outline-none text-xs text-gray-800 w-[90px]"
 						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+							<option value="all">すべて</option>
+							<option value="title">タイトル</option>
+							<option value="author">著者</option>
+						</select>
+						<div className="flex-1 flex min-w-0">
+							<input
+								type="search"
+								id="moemeter-q"
+								name="moemeter-q"
+								value={searchInput}
+								onChange={(e) => setSearchInput(e.target.value)}
+								placeholder={getPlaceholder(searchField)}
+								className="w-full h-[40px] sm:h-[48px] px-2 sm:px-3 bg-white border border-gray-300 focus:outline-none text-sm"
 							/>
-						</svg>
-					</button>
+						</div>
+						<button
+							type="submit"
+							className="w-[48px] h-[40px] sm:h-[48px] flex items-center justify-center bookmeter-green text-white rounded-r cursor-pointer shrink-0"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth={2}
+								stroke="currentColor"
+								className="w-4 h-4"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+								/>
+							</svg>
+						</button>
+					</div>
+					<div className="flex w-full rounded-lg overflow-hidden border border-[#5ba865]/20">
+						<button
+							type="button"
+							onClick={() => {
+								setPeriodFilter('all');
+								const params: { q?: string; field?: string } = {};
+								if (searchInput.trim()) {
+									params.q = searchInput.trim();
+									if (searchField !== 'all') {
+										params.field = searchField;
+									}
+								}
+								setSearchParams(params);
+							}}
+							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
+								periodFilter === 'all'
+									? 'bookmeter-green text-white'
+									: 'bg-white text-[#5ba865] hover:bg-[#ebf5ec]'
+							}`}
+						>
+							全期間
+						</button>
+						<button
+							type="button"
+							onClick={() => {
+								setPeriodFilter('this_month');
+								const params: { q?: string; field?: string; period: string } = {
+									period: 'this_month',
+								};
+								if (searchInput.trim()) {
+									params.q = searchInput.trim();
+									if (searchField !== 'all') {
+										params.field = searchField;
+									}
+								}
+								setSearchParams(params);
+							}}
+							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer border-l border-r border-[#5ba865]/20 ${
+								periodFilter === 'this_month'
+									? 'bookmeter-green text-white'
+									: 'bg-white text-[#5ba865] hover:bg-[#ebf5ec]'
+							}`}
+						>
+							{currentYear}年{currentMonth}月
+						</button>
+						<button
+							type="button"
+							onClick={() => {
+								setPeriodFilter('last_month');
+								const params: { q?: string; field?: string; period: string } = {
+									period: 'last_month',
+								};
+								if (searchInput.trim()) {
+									params.q = searchInput.trim();
+									if (searchField !== 'all') {
+										params.field = searchField;
+									}
+								}
+								setSearchParams(params);
+							}}
+							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
+								periodFilter === 'last_month'
+									? 'bookmeter-green text-white'
+									: 'bg-white text-[#5ba865] hover:bg-[#ebf5ec]'
+							}`}
+						>
+							{lastMonthYear}年{lastMonth}月
+						</button>
+					</div>
 				</form>
 			</div>
 
