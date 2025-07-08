@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getCommonReads } from '../api/users';
-import type { Book, User } from '../types/models';
+import type { Book, User, CommonReadsResponse } from '../types/models';
 import { TabButton } from '../components/TabButton';
 import { UserReadCard } from '../components/UserReadCard';
 import { BookReadCard } from '../components/BookReadCard';
@@ -32,7 +32,7 @@ const ReadsPage = () => {
 	const { user } = useUser();
 	const userId = user?.id;
 
-	const { data, isLoading, error } = useQuery({
+	const { data, isLoading, error } = useQuery<CommonReadsResponse>({
 		enabled: !!userId,
 		queryKey: ['commonReads', userId],
 		queryFn: () => getCommonReads(userId!),
@@ -88,41 +88,35 @@ const ReadsPage = () => {
 
 	if (!data) return null;
 
-	const { reads, books, users } = data;
+	const { books, users } = data;
 
 	const userReadCounts: UserReadCount[] = Object.values(users)
 		.map((user) => {
-			const userReads = reads.filter((read) => read.user_id === user.id);
-			const commonBooks = userReads.map((read) => books[read.book_id]);
+			const commonBooks = user.book_ids.map((bookId) => books[bookId.toString()]);
 			return {
 				user,
-				readCount: userReads.length,
+				readCount: user.book_ids.length,
 				commonBooks,
 			};
 		})
 		.sort((a, b) => {
-			// First sort by read count in descending order
-			const countDiff = b.readCount - a.readCount;
-			if (countDiff !== 0) return countDiff;
-			// If read counts are equal, sort by user ID in ascending order for stability
+			const readCountDiff = b.readCount - a.readCount;
+			if (readCountDiff !== 0) return readCountDiff;
 			return a.user.id - b.user.id;
 		});
 
 	const bookReadCounts: BookReadCount[] = Object.values(books)
 		.map((book) => {
-			const bookReads = reads.filter((read) => read.book_id === book.id);
-			const commonUsers = bookReads.map((read) => users[read.user_id]);
+			const commonUsers = book.user_ids.map((userId) => users[userId.toString()]);
 			return {
 				book,
-				readCount: bookReads.length,
+				readCount: book.user_ids.length,
 				commonUsers,
 			};
 		})
 		.sort((a, b) => {
-			// First sort by read count in descending order
-			const countDiff = b.readCount - a.readCount;
-			if (countDiff !== 0) return countDiff;
-			// If read counts are equal, sort by book ID in ascending order for stability
+			const readCountDiff = b.readCount - a.readCount;
+			if (readCountDiff !== 0) return readCountDiff;
 			return a.book.id - b.book.id;
 		});
 

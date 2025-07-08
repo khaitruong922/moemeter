@@ -1,9 +1,11 @@
-import type { User, CommonReadsResponse, JoinResponse } from '../types/models';
 import { API_URL } from './index';
+import type { User, CommonReadsResponse, JoinResponse } from '../types/models';
 
 export type RankedUser = User & {
 	rank: number;
+	readCount: number;
 };
+
 export const getLeaderboard = async (): Promise<RankedUser[]> => {
 	const response = await fetch(`${API_URL}/users/leaderboard`);
 	return response.json();
@@ -11,6 +13,9 @@ export const getLeaderboard = async (): Promise<RankedUser[]> => {
 
 export const getCommonReads = async (userId: number): Promise<CommonReadsResponse> => {
 	const response = await fetch(`${API_URL}/users/${userId}/common_reads`);
+	if (!response.ok) {
+		throw new Error('Failed to fetch common reads');
+	}
 	return response.json();
 };
 

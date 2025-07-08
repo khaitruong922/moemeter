@@ -1,20 +1,19 @@
-export interface User {
-	id: number;
-	name: string;
-	avatar_url: string;
-	profile_url: string;
-	books_read: number;
-	pages_read: number;
-}
-
 export interface Book {
 	id: number;
 	title: string;
 	author: string;
 	author_url: string;
 	thumbnail_url: string;
-	read_count: number;
 	user_ids: number[];
+}
+
+export interface User {
+	id: number;
+	name: string;
+	avatar_url: string;
+	books_read: number;
+	pages_read: number;
+	book_ids: number[];
 }
 
 export interface Read {
@@ -23,7 +22,6 @@ export interface Read {
 }
 
 export interface CommonReadsResponse {
-	reads: Read[];
 	books: { [key: string]: Book };
 	users: { [key: string]: User };
 }
@@ -46,8 +44,6 @@ export interface PaginatedResponse<T> {
 	pageInfo: PageInfo;
 	books: T[];
 }
-
-export interface BooksResponse extends PaginatedResponse<Book> {}
 
 export interface BooksApiResponse extends Omit<PaginatedResponse<Book>, 'books'> {
 	books: Book[];
