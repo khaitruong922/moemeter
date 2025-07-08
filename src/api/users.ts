@@ -1,7 +1,10 @@
 import type { User, CommonReadsResponse, JoinResponse } from '../types/models';
 import { API_URL } from './index';
 
-export const getLeaderboard = async (): Promise<User[]> => {
+export type RankedUser = User & {
+	rank: number;
+};
+export const getLeaderboard = async (): Promise<RankedUser[]> => {
 	const response = await fetch(`${API_URL}/users/leaderboard`);
 	return response.json();
 };

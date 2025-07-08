@@ -1,8 +1,8 @@
-import type { User } from '../types/models';
+import type { RankedUser } from '../api/users';
 import UserRow from './UserRow';
 
 type LeaderboardTableProps = {
-	users: User[];
+	users: RankedUser[];
 	loading?: boolean;
 	currentUserId?: number;
 };
@@ -38,10 +38,10 @@ export const LeaderboardTable = ({ users, loading, currentUserId }: LeaderboardT
 								</td>
 							</tr>
 						) : (
-							users.map((user, index) => (
+							users.map((user) => (
 								<UserRow
 									user={user}
-									rank={index + 1}
+									rank={user.rank}
 									key={user.id}
 									isCurrentUser={user.id === currentUserId}
 								/>
