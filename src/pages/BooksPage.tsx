@@ -186,6 +186,12 @@ const BooksPage = () => {
 				<h2 className="text-2xl font-bold text-gray-800 mb-2">みんなの本棚</h2>
 				<p className="mt-1 text-center text-xs text-gray-400">
 					最終更新: {formatDatetime(metadata?.last_updated)}
+					{typeof metadata?.total_users === 'number' &&
+						typeof metadata?.failed_users === 'number' && (
+							<span>
+								同期済み: {metadata.total_users - metadata.failed_users}人/{metadata.total_users}人
+							</span>
+						)}
 				</p>
 				<p className="mt-2 text-base text-gray-600">{groupName}のメンバーが読んだ本の一覧です。</p>
 				<p className="text-sm text-gray-500 mt-1">

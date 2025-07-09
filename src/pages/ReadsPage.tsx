@@ -148,6 +148,13 @@ const ReadsPage = () => {
 
 				<p className="mt-4 text-center text-xs text-gray-400">
 					最終更新: {formatDatetime(metadata?.last_updated)}
+					{typeof metadata?.total_users === 'number' &&
+						typeof metadata?.failed_users === 'number' && (
+							<span>
+								{' '}
+								成功: {metadata.total_users - metadata.failed_users} / {metadata.total_users}
+							</span>
+						)}
 				</p>
 			</div>
 		</>
