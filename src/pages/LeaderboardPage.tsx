@@ -33,9 +33,8 @@ const LeaderboardPage = () => {
 						最終更新: {formatDatetime(metadata?.last_updated)}
 						{typeof metadata?.total_users === 'number' &&
 							typeof metadata?.failed_users === 'number' && (
-								<span>
-									同期済み: {metadata.total_users - metadata.failed_users}人/{metadata.total_users}
-									人
+								<span className="ml-2">
+									同期済み: {metadata.total_users - metadata.failed_users}/{metadata.total_users}人
 								</span>
 							)}
 					</p>
