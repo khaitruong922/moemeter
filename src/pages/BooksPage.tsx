@@ -86,7 +86,7 @@ const BooksPage = () => {
 			params.period = periodFilter;
 		}
 
-		setSearchParams(params);
+		setSearchParams(params, { replace: true });
 	};
 
 	const clearSearch = () => {
@@ -96,7 +96,7 @@ const BooksPage = () => {
 		if (periodFilter !== 'all') {
 			params.period = periodFilter;
 		}
-		setSearchParams(params);
+		setSearchParams(params, { replace: true });
 	};
 
 	// Infinite scroll implementation
@@ -263,7 +263,7 @@ const BooksPage = () => {
 										params.field = searchField;
 									}
 								}
-								setSearchParams(params);
+								setSearchParams(params, { replace: true });
 							}}
 							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
 								periodFilter === 'all'
@@ -286,7 +286,7 @@ const BooksPage = () => {
 										params.field = searchField;
 									}
 								}
-								setSearchParams(params);
+								setSearchParams(params, { replace: true });
 							}}
 							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer border-l border-r border-[#5ba865]/20 ${
 								periodFilter === 'this_month'
@@ -309,7 +309,7 @@ const BooksPage = () => {
 										params.field = searchField;
 									}
 								}
-								setSearchParams(params);
+								setSearchParams(params, { replace: true });
 							}}
 							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
 								periodFilter === 'last_month'

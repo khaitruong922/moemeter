@@ -1,19 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { getGroups } from '../api/groups';
 import { getMetadata } from '../api/metadata';
 import { getLeaderboard } from '../api/users';
 import { LeaderboardTable } from '../components/LeaderboardTable';
+import { useUser } from '../context/userContext';
 import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
-import { useUser } from '../context/userContext';
 
 const LeaderboardPage = () => {
+	const currentDate = new Date();
+	const currentYear = currentDate.getUTCFullYear();
+
 	useDocumentTitle('読書ランキング | 萌メーター');
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [period, setPeriod] = useState<string>(searchParams.get('period') || 'all');
+
+	// Sync state with URL parameters
+	useEffect(() => {
+		setPeriod(searchParams.get('period') || 'all');
+	}, [searchParams]);
+
 	const { user: currentUser } = useUser();
+
 	const { data: usersData, isLoading: isLeaderboardLoading } = useQuery({
-		queryKey: ['leaderboard'],
-		queryFn: getLeaderboard,
+		queryKey: ['leaderboard', period],
+		queryFn: () => getLeaderboard(period),
 	});
+
 	const { data: groupsData } = useQuery({
 		queryKey: ['groups'],
 		queryFn: getGroups,
@@ -45,6 +60,40 @@ const LeaderboardPage = () => {
 						{isLeaderboardLoading ? '読み込み中...' : `全${total_count}人`}
 					</p>
 				</div>
+
+				<div className="w-full max-w-xl px-4 mb-6">
+					<div className="flex w-full rounded-lg overflow-hidden border border-[#5ba865]/20">
+						<button
+							type="button"
+							onClick={() => {
+								setPeriod('all');
+								setSearchParams({}, { replace: true });
+							}}
+							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
+								period === 'all'
+									? 'bookmeter-green text-white'
+									: 'bg-white text-[#5ba865] hover:bg-[#ebf5ec]'
+							}`}
+						>
+							全期間
+						</button>
+						<button
+							type="button"
+							onClick={() => {
+								setPeriod('this_year');
+								setSearchParams({ period: 'this_year' }, { replace: true });
+							}}
+							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer border-l border-[#5ba865]/20 ${
+								period === 'this_year'
+									? 'bookmeter-green text-white'
+									: 'bg-white text-[#5ba865] hover:bg-[#ebf5ec]'
+							}`}
+						>
+							{currentYear}年
+						</button>
+					</div>
+				</div>
+
 				<LeaderboardTable
 					users={users}
 					loading={isLeaderboardLoading}
