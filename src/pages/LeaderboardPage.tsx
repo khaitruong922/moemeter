@@ -67,7 +67,7 @@ const LeaderboardPage = () => {
 							type="button"
 							onClick={() => {
 								setPeriod('all');
-								setSearchParams({}, { replace: true });
+								setSearchParams({});
 							}}
 							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
 								period === 'all'
@@ -81,7 +81,7 @@ const LeaderboardPage = () => {
 							type="button"
 							onClick={() => {
 								setPeriod('this_year');
-								setSearchParams({ period: 'this_year' }, { replace: true });
+								setSearchParams({ period: 'this_year' });
 							}}
 							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer border-l border-[#5ba865]/20 ${
 								period === 'this_year'
