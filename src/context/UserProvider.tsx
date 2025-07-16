@@ -4,16 +4,22 @@ import { LOCAL_STORAGE_KEY } from '../constants';
 import type { User } from '../types/models';
 import { UserContext } from './userContext';
 
+type LocalStorageUser = User & { expiry: number };
+
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-	const [user, setUserState] = useState<User | null>(null);
+	const [user, setUserState] = useState<LocalStorageUser | null>(null);
 	const [loading, setLoading] = useState(true);
+
+	const getExpiry = () => {
+		const duration = 1 * 12 * 60 * 60 * 1000; // 12 hours
+		return Date.now() + duration;
+	};
 
 	const setUser = (user: User | null) => {
 		if (user) {
-			const duration = 1 * 12 * 60 * 60 * 1000; // 12 hours
-			const expiry = Date.now() + duration;
+			const expiry = getExpiry();
 			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ user, expiry }));
-			setUserState(user);
+			setUserState({ ...user, expiry });
 		} else {
 			localStorage.removeItem(LOCAL_STORAGE_KEY);
 			setUserState(null);
