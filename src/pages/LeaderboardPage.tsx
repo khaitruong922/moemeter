@@ -5,7 +5,7 @@ import { getGroups } from '../api/groups';
 import { getMetadata } from '../api/metadata';
 import { getLeaderboard } from '../api/users';
 import { LeaderboardTable } from '../components/LeaderboardTable';
-import { useUser } from '../context/userContext';
+import { useUser } from '../context/useUser';
 import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
 

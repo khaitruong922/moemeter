@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useUser } from './context/userContext';
+import { useUser } from './context/useUser';
 import { ENABLE_JOIN_GROUP } from './constants';
 
 type Props = {

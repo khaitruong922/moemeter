@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '../api/users';
 import { extractUserIdFromBookmeterUrl } from '../utils/bookmeter';
-import { useUser } from '../context/userContext';
+import { useUser } from '../context/useUser';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
 
 const LoginPage = () => {
@@ -18,7 +18,7 @@ const LoginPage = () => {
 		mutationFn: getUser,
 		onSuccess: (user) => {
 			setError(null);
-			setUser(user);
+			setUser(user); // setUser now handles expiry and localStorage
 			navigate('/leaderboard');
 		},
 		onError: (error) => {

@@ -1,31 +1,58 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getUser } from '../api/users';
 import { LOCAL_STORAGE_KEY } from '../constants';
-import { UserContext, type UserContextType } from './userContext';
 import type { User } from '../types/models';
+import { UserContext } from './userContext';
 
-export function UserProvider({ children }: { children: React.ReactNode }) {
-	const [user, setUser] = useState<User | null>(() => {
-		const savedUser = localStorage.getItem(LOCAL_STORAGE_KEY);
-		return savedUser ? JSON.parse(savedUser) : null;
-	});
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+	const [user, setUserState] = useState<User | null>(null);
+	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
+	const setUser = (user: User | null) => {
 		if (user) {
-			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
+			const duration = 1 * 12 * 60 * 60 * 1000; // 12 hours
+			const expiry = Date.now() + duration;
+			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ user, expiry }));
+			setUserState(user);
 		} else {
 			localStorage.removeItem(LOCAL_STORAGE_KEY);
+			setUserState(null);
 		}
-	}, [user]);
+	};
+
+	useEffect(() => {
+		const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+		if (!saved) {
+			setLoading(false);
+			return;
+		}
+		try {
+			const { user: savedUser, expiry } = JSON.parse(saved);
+			if (!expiry || Date.now() < expiry) {
+				setUserState(savedUser);
+				setLoading(false);
+			} else {
+				getUser(savedUser.id)
+					.then((freshUser) => {
+						setUser(freshUser);
+						setLoading(false);
+					})
+					.catch(() => {
+						setUser(null);
+						setLoading(false);
+					});
+			}
+		} catch {
+			setUser(null);
+			setLoading(false);
+		}
+	}, []);
 
 	const logout = () => {
 		setUser(null);
 	};
 
-	const value: UserContextType = {
-		user,
-		setUser,
-		logout,
-	};
+	if (loading) return null;
 
-	return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
-}
+	return <UserContext.Provider value={{ user, setUser, logout }}>{children}</UserContext.Provider>;
+};

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getGroups, type Group } from '../api/groups';
 import { joinGroup } from '../api/users';
 import { ENABLE_JOIN_GROUP } from '../constants';
-import { useUser } from '../context/userContext';
+import { useUser } from '../context/useUser';
 import { extractUserIdFromBookmeterUrl } from '../utils/bookmeter';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
 

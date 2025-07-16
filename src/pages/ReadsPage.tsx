@@ -5,7 +5,7 @@ import type { Book, User, CommonReadsResponse } from '../types/models';
 import { TabButton } from '../components/TabButton';
 import { UserReadCard } from '../components/UserReadCard';
 import { BookReadCard } from '../components/BookReadCard';
-import { useUser } from '../context/userContext';
+import { useUser } from '../context/useUser';
 import { Link } from 'react-router-dom';
 import { ENABLE_JOIN_GROUP } from '../constants';
 import { formatDatetime } from '../utils/datetime';
