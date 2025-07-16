@@ -18,7 +18,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 	const setUser = (user: User | null) => {
 		if (user) {
 			const expiry = getExpiry();
-			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ user, expiry }));
+			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ ...user, expiry }));
 			setUserState({ ...user, expiry });
 		} else {
 			localStorage.removeItem(LOCAL_STORAGE_KEY);
