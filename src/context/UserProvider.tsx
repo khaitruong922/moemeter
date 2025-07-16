@@ -33,7 +33,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 			return;
 		}
 		try {
-			const { user: savedUser, expiry } = JSON.parse(saved);
+			const savedUser = JSON.parse(saved);
+			const expiry = savedUser.expiry;
 			if (!expiry || Date.now() < expiry) {
 				setUser(savedUser);
 				setLoading(false);
