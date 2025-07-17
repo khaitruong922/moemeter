@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getUser } from '../api/users';
 import { LOCAL_STORAGE_KEY } from '../constants';
 import type { User } from '../types/models';
-import { UserContext } from './userContext';
+import { UserContext } from './UserContext';
 
 type LocalStorageUser = User & { expiry: number };
 
