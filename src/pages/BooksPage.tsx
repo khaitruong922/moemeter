@@ -272,7 +272,7 @@ const BooksPage = () => {
 							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
 								periodFilter === 'all'
 									? 'bookmeter-green text-white'
-									: 'bg-white text-[#5ba865] hover:bg-[#ebf5ec]'
+									: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
 							}`}
 						>
 							全期間
@@ -295,7 +295,7 @@ const BooksPage = () => {
 							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer border-l border-r border-[#5ba865]/20 ${
 								periodFilter === 'this_month'
 									? 'bookmeter-green text-white'
-									: 'bg-white text-[#5ba865] hover:bg-[#ebf5ec]'
+									: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
 							}`}
 						>
 							{currentYear}年{currentMonth}月
@@ -318,7 +318,7 @@ const BooksPage = () => {
 							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
 								periodFilter === 'last_month'
 									? 'bookmeter-green text-white'
-									: 'bg-white text-[#5ba865] hover:bg-[#ebf5ec]'
+									: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
 							}`}
 						>
 							{lastMonthYear}年{lastMonth}月

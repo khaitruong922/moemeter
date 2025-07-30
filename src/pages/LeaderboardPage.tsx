@@ -72,7 +72,7 @@ const LeaderboardPage = () => {
 							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
 								period === 'all'
 									? 'bookmeter-green text-white'
-									: 'bg-white text-[#5ba865] hover:bg-[#ebf5ec]'
+									: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
 							}`}
 						>
 							全期間
@@ -86,7 +86,7 @@ const LeaderboardPage = () => {
 							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer border-l border-[#5ba865]/20 ${
 								period === 'this_year'
 									? 'bookmeter-green text-white'
-									: 'bg-white text-[#5ba865] hover:bg-[#ebf5ec]'
+									: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
 							}`}
 						>
 							{currentYear}年
