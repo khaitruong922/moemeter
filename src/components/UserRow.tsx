@@ -14,7 +14,7 @@ const UserRow = ({ user, rank, isCurrentUser }: Props) => {
 
 	return (
 		<tr
-			className={`align-middle ${isCurrentUser ? 'bg-[#e3f5d6] hover:bg-[#d5efc2]' : 'hover:bg-gray-50'}`}
+			className={`align-middle ${isCurrentUser ? 'bg-[#f0fae8] hover:bg-[#e6f7d9]' : 'hover:bg-gray-50'}`}
 		>
 			<td
 				className={`text-base px-2 sm:px-4 py-2 whitespace-nowrap font-semibold text-center ${getRankTextColorStyle(rank)}`}

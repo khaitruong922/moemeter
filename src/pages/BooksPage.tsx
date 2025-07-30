@@ -7,6 +7,7 @@ import { BookList } from '../components/BookList';
 import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
 import { useSearchParams } from 'react-router-dom';
+import { useUser } from '../context/useUser';
 
 const getPlaceholder = (field: string) => {
 	switch (field) {
@@ -61,6 +62,9 @@ const BooksPage = () => {
 		queryFn: getGroups,
 	});
 	const { data: metadata } = useQuery({ queryKey: ['metadata'], queryFn: getMetadata });
+
+	const { user } = useUser();
+	const currentUserId = user?.id;
 
 	const groupName = groupsData?.[0]?.name || 'グループ';
 
@@ -169,7 +173,7 @@ const BooksPage = () => {
 
 		return (
 			<div className="w-full px-4">
-				<BookList books={books} users={users} />
+				<BookList books={books} users={users} currentUserId={currentUserId} />
 				{isFetchingNextPage && (
 					<div className="flex justify-center my-4">
 						<div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>

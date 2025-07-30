@@ -7,13 +7,17 @@ interface Props {
 	book: Book;
 	index: number;
 	users: { [key: string]: User };
+	currentUserId?: number;
 }
 
-export const BookCard: React.FC<Props> = ({ book, index, users }) => {
+export const BookCard: React.FC<Props> = ({ book, index, users, currentUserId }) => {
 	const bookUsers = book.user_ids.map((id) => users[id]).filter(Boolean);
+	const isRead = currentUserId ? book.user_ids.includes(currentUserId) : false;
 
 	return (
-		<div className="flex items-start gap-2 sm:gap-4 p-2 sm:p-4 hover:bg-gray-50 transition-colors duration-200">
+		<div
+			className={`flex items-start gap-2 sm:gap-4 p-2 sm:p-4 transition-colors duration-200 ${isRead ? 'bg-[#f0fae8] hover:bg-[#e6f7d9]' : 'hover:bg-gray-50'}`}
+		>
 			<div className="flex-none w-12 sm:w-16 text-center">
 				<div className={`text-lg sm:text-2xl font-bold bookmeter-green-text`}>#{index}</div>
 				<div className="text-xs sm:text-sm text-gray-500">{book.user_ids.length}人</div>
