@@ -51,7 +51,7 @@ const ReadsPage = () => {
 					<div className="flex justify-center space-x-4">
 						<Link
 							to="/login"
-							className="px-6 py-2 rounded bg-white text-green-700 border-2 border-green-700 hover:bg-green-50 transition-colors duration-200 cursor-pointer"
+							className="px-6 py-2 rounded bookmeter-green-text bg-white border-2 border-[#77b944] cursor-pointer"
 						>
 							ログイン
 						</Link>
