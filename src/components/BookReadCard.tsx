@@ -1,5 +1,5 @@
 import type { Book, User } from '../types/models';
-import { getBookBookmeterUrl } from '../utils/bookmeter';
+import { getAuthorBookmeterUrl, getBookBookmeterUrl } from '../utils/bookmeter';
 import { BookCover } from './BookCover';
 import { UserAvatarGroup } from './UserAvatarGroup';
 
@@ -35,7 +35,7 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({
 					{book.title}
 				</a>
 				<a
-					href={book.author_url}
+					href={getAuthorBookmeterUrl(book.author_url)}
 					target="_blank"
 					rel="noopener noreferrer"
 					className="text-xs sm:text-sm bookmeter-green-text text-left"

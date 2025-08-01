@@ -1,4 +1,4 @@
-const BOOKMETER_BASE_URL = 'https://bookmeter.com';
+export const BOOKMETER_BASE_URL = 'https://bookmeter.com';
 
 export const getUserBookmeterUrl = (userId: number): string => {
 	return `${BOOKMETER_BASE_URL}/users/${userId}`;
@@ -6,6 +6,10 @@ export const getUserBookmeterUrl = (userId: number): string => {
 
 export const getBookBookmeterUrl = (bookId: number): string => {
 	return `${BOOKMETER_BASE_URL}/books/${bookId}`;
+};
+
+export const getAuthorBookmeterUrl = (path: string): string => {
+	return `${BOOKMETER_BASE_URL}${path}`;
 };
 
 export const extractUserIdFromBookmeterUrl = (input: string): number | null => {
