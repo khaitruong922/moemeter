@@ -11,7 +11,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review, isRead = false }
 	const isSpoiler = review.is_spoiler && !isRead;
 
 	return (
-		<div className="bg-gray-50 rounded-lg p-3 text-left">
+		<div className="bg-gray-50 border border-gray-200 rounded-md p-4 text-left">
 			<div className="flex items-center gap-2 mb-2">
 				{review.user_avatar_url && (
 					<img
