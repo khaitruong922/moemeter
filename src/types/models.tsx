@@ -1,3 +1,15 @@
+export interface Review {
+	id: number;
+	book_id: number;
+	user_id: number;
+	user_name: string | null;
+	user_avatar_url: string | null;
+	content: string | null;
+	is_spoiler: boolean | null;
+	nice_count: number | null;
+	created_at: string | null;
+}
+
 export interface Book {
 	id: number;
 	title: string;
@@ -5,6 +17,7 @@ export interface Book {
 	author_url: string;
 	thumbnail_url: string;
 	user_ids: number[];
+	reviews: Review[];
 }
 
 export interface User {
