@@ -62,7 +62,7 @@ export const BookCardBase: React.FC<BookCardBaseProps> = ({
 				<div className="flex-none">
 					<BookCover bookId={book.id} title={book.title} thumbnailUrl={book.thumbnail_url} />
 				</div>
-				<div className="flex-1 min-w-0 flex flex-col">
+				<div className="flex-1 min-w-0 flex flex-col relative">
 					{showCheck && isRead && (
 						<div className="absolute top-0 right-0 z-10">
 							<span className="bg-[#77b944] text-white text-sm px-2 py-1 rounded-full flex items-center justify-center w-6 h-6 select-none">
