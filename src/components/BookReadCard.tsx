@@ -9,7 +9,6 @@ interface BookReadCardProps {
 	readCount: number;
 	commonUsers: User[];
 	index: number;
-	currentUserId?: number;
 }
 
 export const BookReadCard: React.FC<BookReadCardProps> = ({
@@ -17,10 +16,8 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({
 	readCount,
 	commonUsers,
 	index,
-	currentUserId,
 }) => {
 	const hasReviews = book.reviews && book.reviews.length > 0;
-	const isRead = currentUserId ? book.user_ids.includes(currentUserId) : false;
 
 	return (
 		<div className="flex items-start gap-2 sm:gap-4 p-2 sm:p-4">
@@ -53,7 +50,7 @@ export const BookReadCard: React.FC<BookReadCardProps> = ({
 				<div className="mt-1 sm:mt-2">
 					<UserAvatarGroup users={commonUsers} size="sm" />
 				</div>
-				{hasReviews && <ReviewList reviews={book.reviews} isRead={isRead} />}
+				{hasReviews && <ReviewList reviews={book.reviews} isRead={true} />}
 			</div>
 		</div>
 	);
