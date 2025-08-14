@@ -1,5 +1,6 @@
 import type { Review } from '../types/models';
 import { useState } from 'react';
+import { UserAvatar } from './UserAvatar';
 
 interface ReviewCardProps {
 	review: Review;
@@ -13,14 +14,12 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review, isRead = false }
 	return (
 		<div className="bg-gray-50 border border-gray-200 rounded-md p-4 text-left">
 			<div className="flex items-center gap-2 mb-2">
-				{review.user_avatar_url && (
-					<img
-						src={review.user_avatar_url}
-						alt={review.user_name || 'User'}
-						title={review.user_name || 'User'}
-						className="w-8 h-8 rounded-full ring-1 ring-gray-200"
-					/>
-				)}
+				<UserAvatar
+					userId={review.user_id}
+					name={review.user_name ?? ''}
+					avatarUrl={review.user_avatar_url ?? ''}
+					size="sm"
+				/>
 				{review.user_name && (
 					<a
 						href={`https://bookmeter.com/users/${review.user_id}`}

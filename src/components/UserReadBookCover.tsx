@@ -24,6 +24,7 @@ export const UserReadBookCover: React.FC<UserReadBookCoverProps> = ({
 					alt={title}
 					title={title}
 					className="absolute inset-0 w-full h-full object-cover rounded shadow-sm"
+					loading="lazy"
 				/>
 			</div>
 		</a>

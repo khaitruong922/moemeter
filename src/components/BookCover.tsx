@@ -19,6 +19,7 @@ export const BookCover: React.FC<BookCoverProps> = ({ bookId, title, thumbnailUr
 				alt={title}
 				title={title}
 				className="w-21 h-30 sm:w-28 sm:h-40 object-cover rounded shadow-sm"
+				loading="lazy"
 			/>
 		</a>
 	);

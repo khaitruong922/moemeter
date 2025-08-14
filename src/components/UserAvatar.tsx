@@ -21,6 +21,7 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({ userId, name, avatarUrl,
 				alt={name}
 				title={name}
 				className={`${sizeClasses[size]} rounded-full ring-1 ring-gray-200`}
+				loading="lazy"
 			/>
 		</a>
 	);
