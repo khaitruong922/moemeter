@@ -21,7 +21,7 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 	};
 
 	const tabStyle = (path: string) => `
-		px-2 py-4 text-sm font-medium transition-colors duration-200 border-b-2 md:px-6 md:text-sm
+		px-2 py-4 text-xs lg:text-sm font-medium transition-colors duration-200 border-b-2 lg:px-6
 		${
 			isActiveTab(path)
 				? 'text-white border-white'
@@ -38,19 +38,16 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 							<img src="/bookmeter.svg" alt="萌メーター" className="w-5 h-5 md:w-6 md:h-6" />
 							<span className="hidden md:block text-lg font-bold ml-2">萌メーター</span>
 							<div className="ml-4 md:ml-6 flex items-center">
-								<Link
-									to="/leaderboard"
-									className={tabStyle('/leaderboard') + ' text-xs md:text-sm'}
-								>
+								<Link to="/leaderboard" className={tabStyle('/leaderboard')}>
 									読書ランキング
 								</Link>
-								<Link to="/books" className={tabStyle('/books') + ' text-xs md:text-sm'}>
+								<Link to="/books" className={tabStyle('/books')}>
 									みんなの本棚
 								</Link>
-								<Link to="/reads" className={tabStyle('/reads') + ' text-xs md:text-sm'}>
+								<Link to="/reads" className={tabStyle('/reads')}>
 									共読
 								</Link>
-								<Link to="/lonely-books" className={tabStyle('/lonely-books') + ' text-xs md:text-sm'}>
+								<Link to="/lonely-books" className={tabStyle('/lonely-books')}>
 									ひとりぼっち本
 								</Link>
 							</div>
