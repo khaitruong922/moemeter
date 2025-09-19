@@ -1,4 +1,4 @@
-export interface Review {
+export type Review = {
 	id: number;
 	book_id: number;
 	user_id: number;
@@ -10,7 +10,7 @@ export interface Review {
 	created_at: string | null;
 }
 
-export interface Book {
+export type Book = {
 	id: number;
 	title: string;
 	author: string;
@@ -37,6 +37,10 @@ export interface Read {
 export interface CommonReadsResponse {
 	books: { [key: string]: Book };
 	users: { [key: string]: User };
+}
+
+export interface LonelyBooksResponse {
+	books: Book[];
 }
 
 export interface JoinResponse {

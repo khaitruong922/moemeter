@@ -134,12 +134,18 @@ const ReadsPage = () => {
 
 				{activeTab === 'users' ? (
 					<div className="space-y-4">
+						{userReadCounts.length === 0 && (
+							<div className="text-center text-gray-500">共読仲間はまだいません</div>
+						)}
 						{userReadCounts.map((userReadCount, index) => (
 							<UserReadCard key={userReadCount.user.id} {...userReadCount} index={index + 1} />
 						))}
 					</div>
 				) : (
 					<div className="w-full max-w-4xl mx-auto divide-y divide-gray-200">
+						{bookReadCounts.length === 0 && (
+							<div className="text-center text-gray-500">共読本はまだありません</div>
+						)}
 						{bookReadCounts.map((bookReadCount, index) => (
 							<BookReadCard key={bookReadCount.book.id} {...bookReadCount} index={index + 1} />
 						))}

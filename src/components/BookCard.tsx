@@ -1,7 +1,6 @@
 import { BookCardBase } from './BookCardBase';
 import type { Book, User } from '../types/models';
 
-// BookCard wrapper
 interface Props {
 	book: Book;
 	index: number;

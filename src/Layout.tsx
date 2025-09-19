@@ -50,6 +50,9 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 								<Link to="/reads" className={tabStyle('/reads') + ' text-xs md:text-sm'}>
 									共読
 								</Link>
+								<Link to="/lonely-books" className={tabStyle('/lonely-books') + ' text-xs md:text-sm'}>
+									ひとりぼっち本
+								</Link>
 							</div>
 						</div>
 						<div className="flex items-center space-x-2 md:space-x-4">

@@ -14,6 +14,7 @@ interface BookCardBaseProps {
 	showCheck?: boolean;
 	reviewIsRead?: boolean;
 	children?: React.ReactNode;
+	userCountLabel?: string;
 }
 
 export const BookCardBase: React.FC<BookCardBaseProps> = ({
@@ -25,16 +26,19 @@ export const BookCardBase: React.FC<BookCardBaseProps> = ({
 	showCheck = false,
 	reviewIsRead = false,
 	children,
+	userCountLabel,
 }) => {
 	const [showReviews, setShowReviews] = useState(false);
 	const hasReviews = book.reviews && book.reviews.length > 0;
+	const _userCountLabel = userCountLabel ? userCountLabel : `${userCount}人`;
+
 	return (
 		<div className="bg-white overflow-hidden">
 			<div className="flex items-start gap-2 sm:gap-4 p-2 sm:p-4">
 				<div className="flex-none w-12 sm:w-16 text-center flex flex-col justify-between">
 					<div>
 						<div className={`text-lg sm:text-2xl font-bold bookmeter-green-text`}>#{index}</div>
-						<div className="text-xs sm:text-sm text-gray-500">{userCount}人</div>
+						<div className="text-xs sm:text-sm text-gray-500">{_userCountLabel}</div>
 					</div>
 					{hasReviews && (
 						<div className="flex justify-center mt-2 mb-1 grow items-end">

@@ -1,5 +1,5 @@
 import { API_URL } from './index';
-import type { User, CommonReadsResponse, JoinResponse } from '../types/models';
+import type { User, CommonReadsResponse, JoinResponse, LonelyBooksResponse } from '../types/models';
 
 export type RankedUser = User & {
 	rank: number;
@@ -19,10 +19,18 @@ export const getLeaderboard = async (period: string = 'all'): Promise<RankedUser
 export const getCommonReads = async (userId: number): Promise<CommonReadsResponse> => {
 	const response = await fetch(`${API_URL}/users/${userId}/common_reads`);
 	if (!response.ok) {
-		throw new Error('Failed to fetch common reads');
+		throw new Error('共読データの取得に失敗しました');
 	}
 	return response.json();
 };
+
+export const getLonelyBooks = async (userId: number): Promise<LonelyBooksResponse> => {
+	const response = await fetch(`${API_URL}/users/${userId}/lonely_books`);
+	if (!response.ok) {
+		throw new Error('ひとりぼっち本データの取得に失敗しました');
+	}
+	return response.json();
+}
 
 export interface JoinGroupRequest {
 	user_id: number;
