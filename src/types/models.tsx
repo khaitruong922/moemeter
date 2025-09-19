@@ -8,7 +8,7 @@ export type Review = {
 	is_spoiler: boolean | null;
 	nice_count: number | null;
 	created_at: string | null;
-}
+};
 
 export type Book = {
 	id: number;
@@ -18,7 +18,7 @@ export type Book = {
 	thumbnail_url: string;
 	user_ids: number[];
 	reviews: Review[];
-}
+};
 
 export interface User {
 	id: number;

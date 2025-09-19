@@ -30,7 +30,7 @@ export const getLonelyBooks = async (userId: number): Promise<LonelyBooksRespons
 		throw new Error('ひとりぼっち本データの取得に失敗しました');
 	}
 	return response.json();
-}
+};
 
 export interface JoinGroupRequest {
 	user_id: number;

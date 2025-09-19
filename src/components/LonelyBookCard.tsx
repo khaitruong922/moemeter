@@ -20,4 +20,3 @@ export const LonelyBookCard: React.FC<Props> = ({ book, index }) => {
 		/>
 	);
 };
-
