@@ -90,7 +90,9 @@ const LonelyBooksPage = () => {
 							)}
 					</p>
 					{books.length === 0 ? (
-						<p className="text-center text-gray-500 mt-4">ひとりぼっち本はまだありません</p>
+						<p className="text-center text-gray-500 mt-4">
+							あなたしか読んでいない本はありません。ひとりぼっちじゃなくて良かったですね！
+						</p>
 					) : (
 						<>
 							<p className="mt-2 text-base text-gray-600">
