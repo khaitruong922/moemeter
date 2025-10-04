@@ -143,7 +143,7 @@ const LeaderboardPage = () => {
 										: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
 								}`}
 							>
-								本数順
+								読んだ本順
 							</button>
 							<button
 								type="button"
