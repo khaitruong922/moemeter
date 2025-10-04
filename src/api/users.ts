@@ -6,10 +6,16 @@ export type RankedUser = User & {
 	readCount: number;
 };
 
-export const getLeaderboard = async (period: string = 'all'): Promise<RankedUser[]> => {
+export const getLeaderboard = async (
+	period: string = 'all',
+	order: string = 'books'
+): Promise<RankedUser[]> => {
 	const params = new URLSearchParams();
 	if (period !== 'all') {
 		params.append('period', period);
+	}
+	if (order !== 'books') {
+		params.append('order', order);
 	}
 
 	const response = await fetch(`${API_URL}/users/leaderboard?${params}`);
