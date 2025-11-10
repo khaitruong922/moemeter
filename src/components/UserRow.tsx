@@ -11,6 +11,7 @@ type Props = {
 
 const UserRow = ({ user, rank, isCurrentUser }: Props) => {
 	const bookmeterUrl = getUserBookmeterUrl(user.id);
+	const booksRead = user.books_read ?? 0;
 
 	return (
 		<tr
@@ -19,7 +20,11 @@ const UserRow = ({ user, rank, isCurrentUser }: Props) => {
 			<td
 				className={`text-base px-2 sm:px-4 py-2 whitespace-nowrap font-semibold text-center ${getRankTextColorStyle(rank)}`}
 			>
-				{rank}位
+				{booksRead === 0 ? (
+					<img src="/read.png" alt="read" className="inline-block w-8 h-8" />
+				) : (
+					`${rank}位`
+				)}
 			</td>
 			<td className="px-2 sm:px-4 py-2 whitespace-nowrap">
 				<div className="flex items-center align-start">
@@ -41,7 +46,7 @@ const UserRow = ({ user, rank, isCurrentUser }: Props) => {
 				</div>
 			</td>
 			<td className="text-base font-bold px-2 sm:px-4 py-2 whitespace-nowrap text-center bookmeter-green-text">
-				{user.books_read ?? 0}冊
+				{booksRead}冊
 			</td>
 			<td className="text-base font-medium px-2 sm:px-4 py-2 whitespace-nowrap text-gray-700 text-center">
 				{user.pages_read?.toLocaleString() ?? 0}
