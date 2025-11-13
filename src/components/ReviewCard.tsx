@@ -10,6 +10,7 @@ interface ReviewCardProps {
 export const ReviewCard: React.FC<ReviewCardProps> = ({ review, isRead = false }) => {
 	const [isRevealed, setIsRevealed] = useState(false);
 	const isSpoiler = review.is_spoiler && !isRead;
+	const niceCount = review.nice_count ?? 0;
 
 	return (
 		<div className="bg-gray-50 border border-gray-200 rounded-md p-4 text-left">
@@ -59,9 +60,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review, isRead = false }
 				</div>
 			)}
 			<div className="flex items-center gap-2 mt-2">
-				{review.nice_count && review.nice_count > 0 && (
-					<span className="text-xs bookmeter-green-text">★{review.nice_count}</span>
-				)}
+				<span className="text-xs bookmeter-green-text">★{niceCount}</span>
 				{review.created_at && (
 					<span className="text-xs text-gray-500">
 						{new Date(review.created_at).toLocaleDateString('ja-JP')}
