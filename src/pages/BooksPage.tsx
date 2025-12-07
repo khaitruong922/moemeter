@@ -251,7 +251,7 @@ const BooksPage = () => {
 				</p>
 				<p className="mt-2 text-gray-600">{groupName}のメンバーが読んだ本の一覧です。</p>
 				<p className="text-sm text-gray-500 mt-1">
-					{searchQuery ? `「${searchQuery}」の検索結果: ` : '全'}
+					{searchQuery ? `「${searchQuery}」の検索結果: ` : ''}
 					{isBooksLoading ? '検索中...' : `${totalCount}冊 | ${totalReadsCount}読破`}
 					{searchQuery && !isBooksLoading && (
 						<button
