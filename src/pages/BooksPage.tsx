@@ -20,6 +20,57 @@ const getPlaceholder = (field: string) => {
 	}
 };
 
+type PeriodButtonProps = {
+	period: string;
+	currentPeriod: string;
+	label: string;
+	searchInput: string;
+	searchField: string;
+	setPeriodFilter: (period: string) => void;
+	setSearchParams: (params: any) => void;
+	borderClass?: string;
+};
+
+const PeriodButton = ({
+	period,
+	currentPeriod,
+	label,
+	searchInput,
+	searchField,
+	setPeriodFilter,
+	setSearchParams,
+	borderClass = '',
+}: PeriodButtonProps) => {
+	const handleClick = () => {
+		setPeriodFilter(period);
+		const params: { q?: string; field?: string; period?: string } = {};
+		if (searchInput.trim()) {
+			params.q = searchInput.trim();
+			if (searchField !== 'all') {
+				params.field = searchField;
+			}
+		}
+		if (period !== 'all') {
+			params.period = period;
+		}
+		setSearchParams(params);
+	};
+
+	return (
+		<button
+			type="button"
+			onClick={handleClick}
+			className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${borderClass} ${
+				currentPeriod === period
+					? 'bookmeter-green text-white'
+					: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
+			}`}
+		>
+			{label}
+		</button>
+	);
+};
+
 const BooksPage = () => {
 	const currentDate = new Date();
 	const currentMonth = currentDate.getUTCMonth() + 1; // 1-12
@@ -73,6 +124,7 @@ const BooksPage = () => {
 	// Aggregate users from all pages
 	const users = data?.pages.reduce((acc, page) => ({ ...acc, ...page.users }), {}) || {};
 	const totalCount = data?.pages[0]?.total_count || 0;
+	const totalReadsCount = data?.pages[0]?.total_reads_count || 0;
 
 	// Handle search input
 	const handleSearch = (e: React.FormEvent) => {
@@ -197,10 +249,10 @@ const BooksPage = () => {
 							</span>
 						)}
 				</p>
-				<p className="mt-2 text-base text-gray-600">{groupName}のメンバーが読んだ本の一覧です。</p>
+				<p className="mt-2 text-gray-600">{groupName}のメンバーが読んだ本の一覧です。</p>
 				<p className="text-sm text-gray-500 mt-1">
 					{searchQuery ? `「${searchQuery}」の検索結果: ` : '全'}
-					{isBooksLoading ? '検索中...' : `${totalCount}冊`}
+					{isBooksLoading ? '検索中...' : `${totalCount}冊 | ${totalReadsCount}読破`}
 					{searchQuery && !isBooksLoading && (
 						<button
 							onClick={clearSearch}
@@ -256,73 +308,45 @@ const BooksPage = () => {
 						</button>
 					</div>
 					<div className="flex w-full rounded-lg overflow-hidden border border-[#5ba865]/20">
-						<button
-							type="button"
-							onClick={() => {
-								setPeriodFilter('all');
-								const params: { q?: string; field?: string } = {};
-								if (searchInput.trim()) {
-									params.q = searchInput.trim();
-									if (searchField !== 'all') {
-										params.field = searchField;
-									}
-								}
-								setSearchParams(params);
-							}}
-							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
-								periodFilter === 'all'
-									? 'bookmeter-green text-white'
-									: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
-							}`}
-						>
-							全期間
-						</button>
-						<button
-							type="button"
-							onClick={() => {
-								setPeriodFilter('this_month');
-								const params: { q?: string; field?: string; period: string } = {
-									period: 'this_month',
-								};
-								if (searchInput.trim()) {
-									params.q = searchInput.trim();
-									if (searchField !== 'all') {
-										params.field = searchField;
-									}
-								}
-								setSearchParams(params);
-							}}
-							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer border-l border-r border-[#5ba865]/20 ${
-								periodFilter === 'this_month'
-									? 'bookmeter-green text-white'
-									: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
-							}`}
-						>
-							{currentYear}年{currentMonth}月
-						</button>
-						<button
-							type="button"
-							onClick={() => {
-								setPeriodFilter('last_month');
-								const params: { q?: string; field?: string; period: string } = {
-									period: 'last_month',
-								};
-								if (searchInput.trim()) {
-									params.q = searchInput.trim();
-									if (searchField !== 'all') {
-										params.field = searchField;
-									}
-								}
-								setSearchParams(params);
-							}}
-							className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${
-								periodFilter === 'last_month'
-									? 'bookmeter-green text-white'
-									: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
-							}`}
-						>
-							{lastMonthYear}年{lastMonth}月
-						</button>
+						<PeriodButton
+							period="all"
+							currentPeriod={periodFilter}
+							label="全期間"
+							searchInput={searchInput}
+							searchField={searchField}
+							setPeriodFilter={setPeriodFilter}
+							setSearchParams={setSearchParams}
+						/>
+						<PeriodButton
+							period="this_year"
+							currentPeriod={periodFilter}
+							label={`${currentYear}年`}
+							searchInput={searchInput}
+							searchField={searchField}
+							setPeriodFilter={setPeriodFilter}
+							setSearchParams={setSearchParams}
+							borderClass="border-l border-[#5ba865]/20"
+						/>
+						<PeriodButton
+							period="this_month"
+							currentPeriod={periodFilter}
+							label={`${currentYear}年${currentMonth}月`}
+							searchInput={searchInput}
+							searchField={searchField}
+							setPeriodFilter={setPeriodFilter}
+							setSearchParams={setSearchParams}
+							borderClass="border-l border-[#5ba865]/20"
+						/>
+						<PeriodButton
+							period="last_month"
+							currentPeriod={periodFilter}
+							label={`${lastMonthYear}年${lastMonth}月`}
+							searchInput={searchInput}
+							searchField={searchField}
+							setPeriodFilter={setPeriodFilter}
+							setSearchParams={setSearchParams}
+							borderClass="border-l border-[#5ba865]/20"
+						/>
 					</div>
 				</form>
 			</div>

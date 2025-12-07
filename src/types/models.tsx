@@ -65,4 +65,5 @@ export interface PaginatedResponse<T> {
 export interface BooksApiResponse extends Omit<PaginatedResponse<Book>, 'books'> {
 	books: Book[];
 	users: { [key: string]: User };
+	total_reads_count: number;
 }
