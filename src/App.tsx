@@ -10,6 +10,7 @@ import ReadsPage from './pages/ReadsPage';
 import { Layout } from './Layout';
 import { ScrollToTop } from './components/ScrollToTop';
 import LonelyBooksPage from './pages/LonelyBooksPage';
+import BookMergesPage from './pages/BookMergesPage';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -34,6 +35,7 @@ function App() {
 							<Route path="/books" element={<BooksPage />} />
 							<Route path="/reads" element={<ReadsPage />} />
 							<Route path="/lonely-books" element={<LonelyBooksPage />} />
+							<Route path="/book_merges" element={<BookMergesPage />} />
 							{ENABLE_JOIN_GROUP && <Route path="/join" element={<JoinPage />} />}
 							<Route path="/login" element={<LoginPage />} />
 							<Route path="/" element={<Navigate to="/leaderboard" replace />} />
