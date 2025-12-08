@@ -91,7 +91,7 @@ const BookMergesPage = () => {
 						<tr>
 							<th className="px-2 md:px-4 py-2 md:py-3 text-center text-xs md:text-base">異版</th>
 							<th className="px-1 md:px-4 py-2 md:py-3 text-center text-xs md:text-base w-8 md:w-16"></th>
-							<th className="px-2 md:px-4 py-2 md:py-3 text-center text-xs md:text-base">基本版</th>
+							<th className="px-2 md:px-4 py-2 md:py-3 text-center text-xs md:text-base">原版</th>
 						</tr>
 					</thead>
 					<tbody className="bg-white divide-y divide-gray-200">
