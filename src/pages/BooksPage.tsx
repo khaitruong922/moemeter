@@ -63,7 +63,7 @@ const PeriodButton = ({
 			className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${borderClass} ${
 				currentPeriod === period
 					? 'bookmeter-green text-white'
-					: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
+					: 'bg-white bookmeter-green-text hover:bg-[#f0fae8]'
 			}`}
 		>
 			{label}
@@ -256,7 +256,7 @@ const BooksPage = () => {
 					{searchQuery && !isBooksLoading && (
 						<button
 							onClick={clearSearch}
-							className="ml-2 text-[#5ba865] hover:underline cursor-pointer"
+							className="ml-2 bookmeter-green-text hover:underline cursor-pointer"
 						>
 							検索をクリア
 						</button>
@@ -307,7 +307,7 @@ const BooksPage = () => {
 							</svg>
 						</button>
 					</div>
-					<div className="flex w-full rounded-lg overflow-hidden border border-[#5ba865]/20">
+					<div className="flex w-full rounded-lg overflow-hidden border border-[#77b944]/20">
 						<PeriodButton
 							period="all"
 							currentPeriod={periodFilter}
@@ -325,7 +325,7 @@ const BooksPage = () => {
 							searchField={searchField}
 							setPeriodFilter={setPeriodFilter}
 							setSearchParams={setSearchParams}
-							borderClass="border-l border-[#5ba865]/20"
+							borderClass="border-l border-[#77b944]/20"
 						/>
 						<PeriodButton
 							period="this_month"
@@ -335,7 +335,7 @@ const BooksPage = () => {
 							searchField={searchField}
 							setPeriodFilter={setPeriodFilter}
 							setSearchParams={setSearchParams}
-							borderClass="border-l border-[#5ba865]/20"
+							borderClass="border-l border-[#77b944]/20"
 						/>
 						<PeriodButton
 							period="last_month"
@@ -345,7 +345,7 @@ const BooksPage = () => {
 							searchField={searchField}
 							setPeriodFilter={setPeriodFilter}
 							setSearchParams={setSearchParams}
-							borderClass="border-l border-[#5ba865]/20"
+							borderClass="border-l border-[#77b944]/20"
 						/>
 					</div>
 				</form>

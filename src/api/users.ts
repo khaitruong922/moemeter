@@ -1,5 +1,19 @@
 import { API_URL } from './index';
-import type { User, CommonReadsResponse, JoinResponse, LonelyBooksResponse } from '../types/models';
+import type {
+	User,
+	CommonReadsResponse,
+	JoinResponse,
+	LonelyBooksResponse,
+	ProfileSummary,
+} from '../types/models';
+
+export const getProfileSummary = async (userId: number, year: number): Promise<ProfileSummary> => {
+	const response = await fetch(`${API_URL}/users/${userId}/summary/${year}`);
+	if (!response.ok) {
+		throw new Error('プロフィールまとめデータの取得に失敗しました');
+	}
+	return response.json();
+};
 
 export type RankedUser = User & {
 	rank: number;

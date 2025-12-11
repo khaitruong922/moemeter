@@ -56,14 +56,16 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 							{user ? (
 								<div className="flex items-center space-x-2 md:space-x-4">
 									<div className="flex items-center space-x-2">
-										<img
-											src={user.avatar_url}
-											alt={user.name}
-											className="w-6 h-6 md:w-8 md:h-8 rounded-full"
-										/>
-										<span className="hidden md:inline text-xs md:text-sm font-medium">
-											{user.name}
-										</span>
+										<Link to="/profile" className="flex items-center space-x-2 group">
+											<img
+												src={user.avatar_url}
+												alt={user.name}
+												className="w-6 h-6 md:w-8 md:h-8 rounded-full"
+											/>
+											<span className="hidden md:inline text-xs md:text-sm font-medium">
+												{user.name}
+											</span>
+										</Link>
 									</div>
 									<button
 										onClick={logout}

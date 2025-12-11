@@ -67,3 +67,38 @@ export interface BooksApiResponse extends Omit<PaginatedResponse<Book>, 'books'>
 	users: { [key: string]: User };
 	total_reads_count: number;
 }
+
+export interface ProfileSummary {
+	total_reads: number;
+	total_pages: number;
+	peak_month: PeakMonth | null;
+	best_friend: BestFriend | null;
+}
+
+export interface PeakMonth {
+	month: number;
+	total_pages: number;
+	reads: ReadSummary[];
+}
+
+export interface ReadSummary {
+	read_id: number;
+	id: number;
+	title: string;
+	author: string;
+	author_url: string;
+	thumbnail_url: string;
+	page: number;
+	title_cleaned: string;
+}
+
+export interface BestFriend {
+	user: {
+		id: number;
+		name: string;
+		avatar_url: string;
+	};
+
+	total_pages: number;
+	reads: ReadSummary[];
+}

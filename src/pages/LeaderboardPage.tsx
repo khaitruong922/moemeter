@@ -97,7 +97,7 @@ const LeaderboardPage = () => {
 
 				<div className="mx-2 sm:mx-4 w-full md:w-3/4 max-w-[1200px] mb-6">
 					<div className="flex items-start justify-between">
-						<div className="flex rounded-lg overflow-hidden border border-[#5ba865]/20">
+						<div className="flex rounded-lg overflow-hidden border border-[#77b944]/20">
 							<button
 								type="button"
 								onClick={() => {
@@ -108,7 +108,7 @@ const LeaderboardPage = () => {
 								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer ${
 									period === 'all'
 										? 'bookmeter-green text-white'
-										: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
+										: 'bg-white text-[#77b944] hover:bg-[#f0fae8]'
 								}`}
 							>
 								全期間
@@ -120,16 +120,16 @@ const LeaderboardPage = () => {
 									localStorage.setItem('leaderboard_period', 'this_year');
 									setSearchParams({ period: 'this_year', order });
 								}}
-								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer border-l border-[#5ba865]/20 ${
+								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer border-l border-[#77b944]/20 ${
 									period === 'this_year'
 										? 'bookmeter-green text-white'
-										: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
+										: 'bg-white text-[#77b944] hover:bg-[#f0fae8]'
 								}`}
 							>
 								{currentYear}年
 							</button>
 						</div>
-						<div className="flex rounded-lg overflow-hidden border border-[#5ba865]/20">
+						<div className="flex rounded-lg overflow-hidden border border-[#77b944]/20">
 							<button
 								type="button"
 								onClick={() => {
@@ -140,7 +140,7 @@ const LeaderboardPage = () => {
 								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer ${
 									order === 'books'
 										? 'bookmeter-green text-white'
-										: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
+										: 'bg-white text-[#77b944] hover:bg-[#f0fae8]'
 								}`}
 							>
 								冊数順
@@ -152,10 +152,10 @@ const LeaderboardPage = () => {
 									localStorage.setItem('leaderboard_order', 'pages');
 									setSearchParams({ period, order: 'pages' });
 								}}
-								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer border-l border-[#5ba865]/20 ${
+								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer border-l border-[#77b944]/20 ${
 									order === 'pages'
 										? 'bookmeter-green text-white'
-										: 'bg-white text-[#5ba865] hover:bg-[#f0fae8]'
+										: 'bg-white text-[#77b944] hover:bg-[#f0fae8]'
 								}`}
 							>
 								ページ数順
