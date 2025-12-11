@@ -69,21 +69,21 @@ const ProfilePage = () => {
 	return (
 		<div className="flex flex-col items-center w-full pt-10">
 			<h2 className="text-2xl font-bold text-gray-800 mb-4">2025年まとめ</h2>
-			<div className="mb-4 text-center flex flex-col items-center gap-2">
+			<div className="mb-4 text-center flex flex-col items-center gap-1">
 				<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="xl" />
 				<div className="text-xl font-semibold text-gray-700 mt-2">{user.name}</div>
-				<span className="text-lg">
+				<span className="text-md">
 					<span className="text-gray-700">読んだ本: </span>
 					<span className="font-bold bookmeter-green-text">{total_reads}冊</span>
 				</span>
-				<span className="text-lg">
+				<span className="text-md">
 					<span className="text-gray-700">読んだページ: </span>
 					<span className="font-bold bookmeter-green-text">{total_pages}</span>
 				</span>
 			</div>
 			<div className="w-full max-w-7xl px-4 mb-8">
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-					<div className="p-4 bg-white rounded-lg shadow">
+				<div className="flex flex-col gap-4 md:flex-row">
+					<div className="p-4 bg-white rounded-lg shadow flex-1 md:self-start">
 						<h3 className="text-xl font-semibold text-gray-700 mb-2">ベスト月</h3>
 						<div className="flex items-center gap-4 mb-4 justify-between h-16">
 							<div className="flex-none w-16 text-center">
@@ -107,7 +107,7 @@ const ProfilePage = () => {
 						</div>
 					</div>
 
-					<div className="p-4 bg-white rounded-lg shadow">
+					<div className="p-4 bg-white rounded-lg shadow flex-1 md:self-start">
 						<h3 className="text-xl font-semibold text-gray-700 mb-2">ベストフレンド</h3>
 						<div className="flex items-center gap-4 mb-4 justify-between h-16">
 							<div className="flex flex-row items-center gap-4">
