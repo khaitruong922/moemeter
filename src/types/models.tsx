@@ -72,6 +72,7 @@ export interface ProfileSummary {
 	total_reads: number;
 	total_pages: number;
 	rank: number;
+	pages_rank: number;
 	peak_month: PeakMonth | null;
 	best_friend: BestFriend | null;
 }

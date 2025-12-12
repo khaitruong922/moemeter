@@ -54,7 +54,7 @@ const ProfilePage = () => {
 		);
 	}
 
-	const { total_reads, total_pages, rank, peak_month, best_friend } = data;
+	const { total_reads, total_pages, rank, pages_rank, peak_month, best_friend } = data;
 
 	if (!peak_month || !best_friend) {
 		return (
@@ -73,18 +73,25 @@ const ProfilePage = () => {
 			<div className="mb-4 text-center flex flex-col items-center gap-1">
 				<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="xl" />
 				<div className="text-xl font-semibold text-gray-700 mt-2">{user.name}</div>
-				<div
-					className={`font-bold text-3xl ${getRankTextColorStyle(rank, 'bookmeter-green-text')}`}
-				>
-					{rank}位
-				</div>
 				<span className="text-md">
 					<span className="text-gray-700">読んだ本: </span>
 					<span className="font-bold bookmeter-green-text">{total_reads}冊</span>
+					&nbsp;
+					<span
+						className={`font-bold text-xl ${getRankTextColorStyle(rank, 'bookmeter-green-text')}`}
+					>
+						({rank}位)
+					</span>
 				</span>
 				<span className="text-md">
 					<span className="text-gray-700">読んだページ: </span>
 					<span className="font-bold bookmeter-green-text">{total_pages}</span>
+					&nbsp;
+					<span
+						className={`font-bold text-xl ${getRankTextColorStyle(pages_rank, 'bookmeter-green-text')}`}
+					>
+						({pages_rank}位)
+					</span>
 				</span>
 			</div>
 			<div className="w-full max-w-7xl px-4 mb-8">
