@@ -1,17 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getProfileSummary } from '../api/users';
 import { UserAvatar } from '../components/UserAvatar';
 import { UserReadBookCover } from '../components/UserReadBookCover';
-import { useUser } from '../context/useUser';
 import type { ReadSummary } from '../types/models';
 import { getUserBookmeterUrl } from '../utils/bookmeter';
 import { getRankTextColorStyle } from '../utils/rank';
+
 const ProfilePage = () => {
-	const { user: loginUser } = useUser();
-	const [searchParams] = useSearchParams();
-	const queryUserId = searchParams.get('user_id');
-	const userId = queryUserId ? parseInt(queryUserId) : loginUser?.id;
+	const { id } = useParams<{ id: string }>();
+	const userId = id ? parseInt(id) : undefined;
 
 	const { data, isLoading, error } = useQuery({
 		queryKey: ['profile-summary', userId],
@@ -19,25 +17,7 @@ const ProfilePage = () => {
 		enabled: !!userId,
 	});
 
-	if (!userId) {
-		return (
-			<div className="container mx-auto px-4 py-8">
-				<div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 text-center">
-					<h2 className="text-xl font-bold mb-4 text-gray-800">
-						プロファイルを見るにはログインが必要です
-					</h2>
-					<div className="flex justify-center space-x-4">
-						<Link
-							to="/login"
-							className="px-6 py-2 rounded bookmeter-green-text bg-white border-2 border-[#77b944] cursor-pointer"
-						>
-							ログイン
-						</Link>
-					</div>
-				</div>
-			</div>
-		);
-	}
+	if (!userId) return null;
 
 	if (isLoading) {
 		return (

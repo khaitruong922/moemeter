@@ -56,7 +56,7 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 							{user ? (
 								<div className="flex items-center space-x-2 md:space-x-4">
 									<div className="flex items-center space-x-2">
-										<Link to="/profile" className="flex items-center space-x-2 group">
+										<Link to={`/profile/${user.id}`} className="flex items-center space-x-2 group">
 											<img
 												src={user.avatar_url}
 												alt={user.name}

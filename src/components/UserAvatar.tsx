@@ -42,7 +42,7 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
 }) => {
 	if (toProfile) {
 		return (
-			<Link to={`/profile?user_id=${userId}`}>
+			<Link to={`/profile/${userId}`}>
 				<AvatarCircle avatarUrl={avatarUrl} name={name} sizeClass={sizeClasses[size]} />
 			</Link>
 		);

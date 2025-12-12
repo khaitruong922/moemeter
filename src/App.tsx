@@ -37,7 +37,7 @@ function App() {
 							<Route path="/reads" element={<ReadsPage />} />
 							<Route path="/lonely-books" element={<LonelyBooksPage />} />
 							<Route path="/book-merges" element={<BookMergesPage />} />
-							<Route path="/profile" element={<ProfilePage />} />
+							<Route path="/profile/:id" element={<ProfilePage />} />
 							{ENABLE_JOIN_GROUP && <Route path="/join" element={<JoinPage />} />}
 							<Route path="/login" element={<LoginPage />} />
 							<Route path="/" element={<Navigate to="/leaderboard" replace />} />

@@ -10,7 +10,7 @@ type Props = {
 };
 
 const UserRow = ({ user, rank, isCurrentUser }: Props) => {
-	const profileUrl = '/profile?user_id=' + user.id;
+	const profileUrl = `/profile/${user.id}`;
 	const booksRead = user.books_read ?? 0;
 
 	return (
