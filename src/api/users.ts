@@ -17,6 +17,7 @@ export const getProfileSummary = async (userId: number, year: number): Promise<P
 
 export type RankedUser = User & {
 	rank: number;
+	readCount: number;
 };
 
 export const getLeaderboard = async (

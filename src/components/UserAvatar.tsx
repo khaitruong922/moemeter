@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { getUserBookmeterUrl } from '../utils/bookmeter';
 
 interface UserAvatarProps {
@@ -6,7 +5,6 @@ interface UserAvatarProps {
 	name: string;
 	avatarUrl: string;
 	size?: 'sm' | 'md' | 'lg' | 'xl';
-	toProfile?: boolean;
 }
 
 const sizeClasses = {
@@ -16,41 +14,16 @@ const sizeClasses = {
 	xl: 'w-32 h-32',
 };
 
-type AvatarImageProps = {
-	avatarUrl: string;
-	name: string;
-	sizeClass: string;
-};
-const AvatarCircle: React.FC<AvatarImageProps> = ({ avatarUrl, name, sizeClass }) => {
-	return (
-		<img
-			src={avatarUrl}
-			alt={name}
-			title={name}
-			className={`${sizeClass} rounded-full ring-1 ring-gray-200`}
-			loading="lazy"
-		/>
-	);
-};
-
-export const UserAvatar: React.FC<UserAvatarProps> = ({
-	userId,
-	name,
-	avatarUrl,
-	size = 'md',
-	toProfile = false,
-}) => {
-	if (toProfile) {
-		return (
-			<Link to={`/profile?user_id=${userId}`}>
-				<AvatarCircle avatarUrl={avatarUrl} name={name} sizeClass={sizeClasses[size]} />
-			</Link>
-		);
-	}
-
+export const UserAvatar: React.FC<UserAvatarProps> = ({ userId, name, avatarUrl, size = 'md' }) => {
 	return (
 		<a href={getUserBookmeterUrl(userId)} target="_blank" rel="noopener noreferrer">
-			<AvatarCircle avatarUrl={avatarUrl} name={name} sizeClass={sizeClasses[size]} />
+			<img
+				src={avatarUrl}
+				alt={name}
+				title={name}
+				className={`${sizeClasses[size]} rounded-full ring-1 ring-gray-200`}
+				loading="lazy"
+			/>
 		</a>
 	);
 };

@@ -69,7 +69,9 @@ export interface BooksApiResponse extends Omit<PaginatedResponse<Book>, 'books'>
 }
 
 export interface ProfileSummary {
-	user: User & { rank: number; pages_rank: number };
+	total_reads: number;
+	total_pages: number;
+	rank: number;
 	pages_rank: number;
 	peak_month: PeakMonth | null;
 	best_friend: BestFriend | null;

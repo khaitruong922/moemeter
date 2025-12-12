@@ -1,18 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-import { Link, useSearchParams } from 'react-router-dom';
 import { getProfileSummary } from '../api/users';
-import { UserAvatar } from '../components/UserAvatar';
-import { UserReadBookCover } from '../components/UserReadBookCover';
+import { useQuery } from '@tanstack/react-query';
 import { useUser } from '../context/useUser';
+import { UserAvatar } from '../components/UserAvatar';
 import type { ReadSummary } from '../types/models';
 import { getUserBookmeterUrl } from '../utils/bookmeter';
+import { UserReadBookCover } from '../components/UserReadBookCover';
+import { Link } from 'react-router-dom';
 import { getRankTextColorStyle } from '../utils/rank';
 const ProfilePage = () => {
-	const { user: loginUser } = useUser();
-	const [searchParams] = useSearchParams();
-	const queryUserId = searchParams.get('user_id');
-	const userId = queryUserId ? parseInt(queryUserId) : loginUser?.id;
-
+	const { user } = useUser();
+	const userId = user?.id;
 	const { data, isLoading, error } = useQuery({
 		queryKey: ['profile-summary', userId],
 		queryFn: () => getProfileSummary(userId!, 2025),
@@ -57,7 +54,7 @@ const ProfilePage = () => {
 		);
 	}
 
-	const { user, peak_month, best_friend } = data;
+	const { total_reads, total_pages, rank, pages_rank, peak_month, best_friend } = data;
 
 	if (!peak_month || !best_friend) {
 		return (
@@ -75,31 +72,25 @@ const ProfilePage = () => {
 			<h2 className="text-2xl font-bold text-gray-800 mb-4">2025年まとめ</h2>
 			<div className="mb-4 text-center flex flex-col items-center gap-1">
 				<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="xl" />
-				<a
-					href={getUserBookmeterUrl(user.id)}
-					target="blank"
-					className="text-xl font-semibold text-gray-700 mt-2"
-				>
-					{user.name}
-				</a>
+				<div className="text-xl font-semibold text-gray-700 mt-2">{user.name}</div>
 				<span className="text-md">
 					<span className="text-gray-700">読んだ本: </span>
-					<span className="font-bold bookmeter-green-text">{user.books_read}冊</span>
+					<span className="font-bold bookmeter-green-text">{total_reads}冊</span>
 					&nbsp;
 					<span
-						className={`font-bold text-xl ${getRankTextColorStyle(user.rank, 'bookmeter-green-text')}`}
+						className={`font-bold text-xl ${getRankTextColorStyle(rank, 'bookmeter-green-text')}`}
 					>
-						({user.rank}位)
+						({rank}位)
 					</span>
 				</span>
 				<span className="text-md">
 					<span className="text-gray-700">読んだページ: </span>
-					<span className="font-bold bookmeter-green-text">{user.pages_read}</span>
+					<span className="font-bold bookmeter-green-text">{total_pages}</span>
 					&nbsp;
 					<span
-						className={`font-bold text-xl ${getRankTextColorStyle(user.pages_rank, 'bookmeter-green-text')}`}
+						className={`font-bold text-xl ${getRankTextColorStyle(pages_rank, 'bookmeter-green-text')}`}
 					>
-						({user.pages_rank}位)
+						({pages_rank}位)
 					</span>
 				</span>
 			</div>
