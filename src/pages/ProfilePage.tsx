@@ -43,7 +43,17 @@ const ProfilePage = () => {
 		return (
 			<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
 				<h2 className="text-2xl font-bold text-gray-800 mb-4">2025年まとめ</h2>
-				<p className="text-gray-600">本を読まぬ者、まとめられぬ</p>
+				<div className="mb-4 text-center flex flex-col items-center gap-1">
+					<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="xl" />
+					<a
+						href={getUserBookmeterUrl(user.id)}
+						target="blank"
+						className="text-xl font-semibold text-gray-700 mt-2"
+					>
+						{user.name}
+					</a>
+				</div>
+				<p className="mt-2 text-gray-600 text-2xl">本を読まぬ者、まとめられぬ。</p>
 			</div>
 		);
 	}
