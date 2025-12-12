@@ -6,6 +6,7 @@ import type { ReadSummary } from '../types/models';
 import { getUserBookmeterUrl } from '../utils/bookmeter';
 import { UserReadBookCover } from '../components/UserReadBookCover';
 import { Link } from 'react-router-dom';
+import { getRankTextColorStyle } from '../utils/rank';
 const ProfilePage = () => {
 	const { user } = useUser();
 	const userId = user?.id;
@@ -53,7 +54,7 @@ const ProfilePage = () => {
 		);
 	}
 
-	const { total_reads, total_pages, peak_month, best_friend } = data;
+	const { total_reads, total_pages, rank, peak_month, best_friend } = data;
 
 	if (!peak_month || !best_friend) {
 		return (
@@ -72,6 +73,11 @@ const ProfilePage = () => {
 			<div className="mb-4 text-center flex flex-col items-center gap-1">
 				<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="xl" />
 				<div className="text-xl font-semibold text-gray-700 mt-2">{user.name}</div>
+				<div
+					className={`font-bold text-3xl ${getRankTextColorStyle(rank, 'bookmeter-green-text')}`}
+				>
+					{rank}位
+				</div>
 				<span className="text-md">
 					<span className="text-gray-700">読んだ本: </span>
 					<span className="font-bold bookmeter-green-text">{total_reads}冊</span>
