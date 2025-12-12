@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getProfileSummary } from '../api/users';
 import { UserAvatar } from '../components/UserAvatar';
 import { UserReadBookCover } from '../components/UserReadBookCover';
