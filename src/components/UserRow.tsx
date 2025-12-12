@@ -1,5 +1,5 @@
+import { Link } from 'react-router-dom';
 import type { User } from '../types/models';
-import { getUserBookmeterUrl } from '../utils/bookmeter';
 import { getRankTextColorStyle } from '../utils/rank';
 import { UserAvatar } from './UserAvatar';
 
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const UserRow = ({ user, rank, isCurrentUser }: Props) => {
-	const bookmeterUrl = getUserBookmeterUrl(user.id);
+	const profileUrl = '/profile?user_id=' + user.id;
 	const booksRead = user.books_read ?? 0;
 
 	return (
@@ -29,18 +29,19 @@ const UserRow = ({ user, rank, isCurrentUser }: Props) => {
 			<td className="px-2 sm:px-4 py-2 whitespace-nowrap">
 				<div className="flex items-center align-start">
 					<div className="flex-shrink-0">
-						<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="sm" />
+						<UserAvatar
+							userId={user.id}
+							name={user.name}
+							avatarUrl={user.avatar_url}
+							size="sm"
+							toProfile
+						/>
 					</div>
 					<div className="ml-2 sm:ml-4 min-w-0">
 						<div className="text-base font-bold text-gray-900 bookmeter-green-text truncate">
-							<a
-								href={bookmeterUrl}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="hover:underline"
-							>
+							<Link to={profileUrl} rel="noopener noreferrer" className="hover:underline">
 								{user.name ?? '匿名'}
-							</a>
+							</Link>
 						</div>
 					</div>
 				</div>
