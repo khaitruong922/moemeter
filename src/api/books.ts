@@ -30,11 +30,8 @@ export const getBooks = async (
 	return response.json();
 };
 
-type BookItem = Book & {
-	merged_base_id: number | null;
-};
 export interface BooksLibraryApiResponse {
-	books: BookItem[];
+	books: Book[];
 	total_count: number;
 	max_page: number;
 }

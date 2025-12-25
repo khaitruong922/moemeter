@@ -154,7 +154,6 @@ const BooksLibraryPage: React.FC = () => {
 							<th className="border border-gray-300 px-4 py-2 text-center">タイトル</th>
 							<th className="border border-gray-300 px-4 py-2 text-center">著者</th>
 							<th className="border border-gray-300 px-4 py-2 text-center">ID</th>
-							<th className="border border-gray-300 px-4 py-2 text-center">元ID</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -172,7 +171,6 @@ const BooksLibraryPage: React.FC = () => {
 								<td className="border border-gray-300 px-4 py-2">{book.title}</td>
 								<td className="border border-gray-300 px-4 py-2">{book.author}</td>
 								<td className="border border-gray-300 px-4 py-2">{book.id}</td>
-								<td className="border border-gray-300 px-4 py-2">{book.merged_base_id ?? '—'}</td>
 							</tr>
 						))}
 					</tbody>
