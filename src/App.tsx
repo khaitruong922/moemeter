@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ENABLE_JOIN_GROUP } from './constants';
 import { UserProvider } from './context/UserProvider';
 import BooksPage from './pages/BooksPage';
+import BooksLibraryPage from './pages/BooksLibraryPage';
 import JoinPage from './pages/JoinPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import LoginPage from './pages/LoginPage';
@@ -34,6 +35,7 @@ function App() {
 						<Routes>
 							<Route path="/leaderboard" element={<LeaderboardPage />} />
 							<Route path="/books" element={<BooksPage />} />
+							<Route path="/books/library" element={<BooksLibraryPage />} />
 							<Route path="/reads" element={<ReadsPage />} />
 							<Route path="/lonely-books" element={<LonelyBooksPage />} />
 							<Route path="/book-merges" element={<BookMergesPage />} />

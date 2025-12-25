@@ -1,5 +1,5 @@
 import { API_URL } from './index';
-import type { BooksApiResponse } from '../types/models';
+import type { Book, BooksApiResponse } from '../types/models';
 
 export const getBooks = async (
 	page: number,
@@ -23,6 +23,32 @@ export const getBooks = async (
 	}
 
 	const response = await fetch(`${API_URL}/books?${params}`);
+	if (!response.ok) {
+		throw new Error('本の一覧を取得できませんでした');
+	}
+
+	return response.json();
+};
+
+type BookItem = Book & {
+	merged_base_id: number | null;
+};
+export interface BooksLibraryApiResponse {
+	books: BookItem[];
+	total_count: number;
+	max_page: number;
+}
+
+export const getBooksLibrary = async (
+	page: number,
+	perPage = 50
+): Promise<BooksLibraryApiResponse> => {
+	const params = new URLSearchParams({
+		page: page.toString(),
+		per_page: perPage.toString(),
+	});
+
+	const response = await fetch(`${API_URL}/books/library?${params}`);
 	if (!response.ok) {
 		throw new Error('本の一覧を取得できませんでした');
 	}
