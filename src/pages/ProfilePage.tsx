@@ -1,158 +1,129 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { getProfileSummary } from '../api/users';
+import { getUser, type RankedUser } from '../api/users';
+import { getMetadata } from '../api/metadata';
 import { UserAvatar } from '../components/UserAvatar';
-import { UserReadBookCover } from '../components/UserReadBookCover';
-import type { ReadSummary } from '../types/models';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { ProfileReadsTab, ProfileCommonReadersTab } from '../components/profile';
 import { getUserBookmeterUrl } from '../utils/bookmeter';
 import { getRankTextColorStyle } from '../utils/rank';
+import { useDocumentTitle } from '../utils/useDocumentTitle';
+
+type TabType = 'reads' | 'common-readers';
 
 const ProfilePage = () => {
+	useDocumentTitle('プロフィール | 萌メーター');
 	const { id } = useParams<{ id: string }>();
 	const userId = id ? parseInt(id) : undefined;
+	const [activeTab, setActiveTab] = useState<TabType>('reads');
 
-	const { data, isLoading, error } = useQuery({
-		queryKey: ['profile-summary', userId],
-		queryFn: () => getProfileSummary(userId!, 2025),
+	const {
+		data: user,
+		isLoading: userLoading,
+		error: userError,
+	} = useQuery<RankedUser>({
+		queryKey: ['user', userId],
+		queryFn: () => getUser(userId!),
 		enabled: !!userId,
 	});
 
+	const { data: metadata } = useQuery({ queryKey: ['metadata'], queryFn: getMetadata });
+
 	if (!userId) return null;
 
-	if (isLoading) {
+	if (userLoading) {
 		return (
-			<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
-				<h2 className="text-2xl font-bold text-gray-800 mb-4">2025年まとめ</h2>
-				<p className="text-gray-600">読み込み中...</p>
-			</div>
-		);
-	}
-
-	if (error || !data) {
-		return (
-			<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
-				<h2 className="text-2xl font-bold text-gray-800 mb-4">2025年まとめ</h2>
-				<p className="text-red-600">データ取得に失敗しました</p>
-			</div>
-		);
-	}
-
-	const { user, peak_month, best_friend } = data;
-
-	if (!peak_month || !best_friend) {
-		return (
-			<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
-				<h2 className="text-2xl font-bold text-gray-800 mb-4">2025年まとめ</h2>
-				<div className="mb-4 text-center flex flex-col items-center gap-1">
-					<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="xl" />
-					<a
-						href={getUserBookmeterUrl(user.id)}
-						target="blank"
-						className="text-xl font-semibold text-gray-700 mt-2"
-					>
-						{user.name}
-					</a>
+			<div className="container mx-auto px-4 py-8">
+				<div className="min-h-[50vh]">
+					<LoadingSpinner message="読み込み中..." />
 				</div>
-				<p className="mt-2 text-gray-600 text-2xl">本を読まぬ者、まとめられぬ。</p>
 			</div>
 		);
 	}
 
-	const bookCoverClassName = `block w-[calc(25%-0.5rem)] md:w-[calc(20%-0.5rem)]  xl:w-[calc(16.666%-0.5rem)]`;
+	if (userError || !user) {
+		return (
+			<div className="container mx-auto px-4 py-8">
+				<div className="flex flex-col items-center min-h-[50vh]">
+					<p className="text-red-600">ユーザーが見つかりません</p>
+				</div>
+			</div>
+		);
+	}
+
+	const tabs: { key: TabType; label: string }[] = [
+		{ key: 'reads', label: '読書記録' },
+		{ key: 'common-readers', label: '共読仲間' },
+	];
 
 	return (
-		<div className="flex flex-col items-center w-full pt-10">
-			<h2 className="text-2xl font-bold text-gray-800 mb-4">2025年まとめ</h2>
-			<div className="mb-4 text-center flex flex-col items-center gap-1">
-				<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="xl" />
-				<a
-					href={getUserBookmeterUrl(user.id)}
-					target="blank"
-					className="text-xl font-semibold text-gray-700 mt-2"
-				>
-					{user.name}
-				</a>
-				<span className="text-md">
-					<span className="text-gray-700">読んだ本: </span>
-					<span className="font-bold bookmeter-green-text">{user.books_read}冊</span>
-					&nbsp;
-					<span
-						className={`font-bold text-xl ${getRankTextColorStyle(user.rank, 'bookmeter-green-text')}`}
-					>
-						({user.rank}位)
-					</span>
-				</span>
-				<span className="text-md">
-					<span className="text-gray-700">読んだページ: </span>
-					<span className="font-bold bookmeter-green-text">{user.pages_read}</span>
-					&nbsp;
-					<span
-						className={`font-bold text-xl ${getRankTextColorStyle(user.pages_rank, 'bookmeter-green-text')}`}
-					>
-						({user.pages_rank}位)
-					</span>
-				</span>
-			</div>
-			<div className="w-full max-w-7xl px-4 mb-8">
-				<div className="flex flex-col gap-4 md:flex-row">
-					<div className="p-4 bg-white rounded-lg shadow flex-1 md:self-start">
-						<h3 className="text-xl font-semibold text-gray-700 mb-2">ベスト月</h3>
-						<div className="flex items-center gap-4 mb-4 justify-between h-16">
-							<div className="flex-none w-16 text-center">
-								<div className="text-2xl font-bold bookmeter-green-text">{peak_month.month}</div>
-								<div className="text-sm text-gray-500">月</div>
+		<div className="container mx-auto px-4 py-8">
+			<div className="flex flex-col lg:flex-row gap-6">
+				{/* Fixed Profile Section */}
+				<div className="lg:w-64 lg:flex-shrink-0">
+					<div className="lg:sticky lg:top-[5.5rem] bg-white rounded-lg shadow p-6">
+						<div className="flex flex-col items-center gap-2">
+							<UserAvatar userId={user.id} name={user.name} avatarUrl={user.avatar_url} size="xl" />
+							<a
+								href={getUserBookmeterUrl(user.id)}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="text-xl font-semibold text-gray-700 hover:underline text-center"
+							>
+								{user.name}
+							</a>
+							<div className="text-center space-y-1 mt-2">
+								<div className="text-sm">
+									<span className="text-gray-500">読んだ本: </span>
+									<span className="font-bold bookmeter-green-text">{user.books_read}冊</span>
+									<span
+										className={`ml-1 font-bold ${getRankTextColorStyle(user.rank, 'bookmeter-green-text')}`}
+									>
+										({user.rank}位)
+									</span>
+								</div>
+								<div className="text-sm">
+									<span className="text-gray-500">読んだページ: </span>
+									<span className="font-bold bookmeter-green-text">
+										{user.pages_read.toLocaleString()}
+									</span>
+									<span
+										className={`ml-1 font-bold ${getRankTextColorStyle(user.pages_rank, 'bookmeter-green-text')}`}
+									>
+										({user.pages_rank}位)
+									</span>
+								</div>
 							</div>
-							<div className="text-xl text-gray-600">
-								<span className="font-bold bookmeter-green-text">{peak_month.reads.length}冊</span>
-							</div>
-						</div>
-						<div className="flex flex-wrap gap-2 mt-4">
-							{peak_month.reads.map((read: ReadSummary) => (
-								<UserReadBookCover
-									key={read.read_id}
-									bookId={read.id}
-									title={read.title}
-									thumbnailUrl={read.thumbnail_url}
-									customClassName={bookCoverClassName}
-								/>
-							))}
 						</div>
 					</div>
+				</div>
 
-					<div className="p-4 bg-white rounded-lg shadow flex-1 md:self-start">
-						<h3 className="text-xl font-semibold text-gray-700 mb-2">ベストフレンド</h3>
-						<div className="flex items-center gap-4 mb-4 justify-between h-16">
-							<div className="flex flex-row items-center gap-4">
-								<UserAvatar
-									userId={best_friend.user.id}
-									name={best_friend.user.name}
-									avatarUrl={best_friend.user.avatar_url}
-									size="md"
-								/>
-								<a
-									href={getUserBookmeterUrl(best_friend.user.id)}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="text-xl font-semibold bookmeter-green-text hover:underline"
-								>
-									{best_friend.user.name}
-								</a>
-							</div>
-							<div className="text-xl text-gray-600">
-								<span className="font-bold bookmeter-green-text">{best_friend.reads.length}冊</span>
-							</div>
-						</div>
-						<div className="flex flex-wrap gap-2 mt-4">
-							{best_friend.reads.map((read: ReadSummary) => (
-								<UserReadBookCover
-									key={read.read_id}
-									bookId={read.id}
-									title={read.title}
-									thumbnailUrl={read.thumbnail_url}
-									customClassName={bookCoverClassName}
-								/>
-							))}
-						</div>
+				{/* Main Content Area */}
+				<div className="flex-1 min-w-0">
+					{/* Tabs */}
+					<div className="flex space-x-2 mb-6 flex-wrap gap-2">
+						{tabs.map((tab) => (
+							<button
+								key={tab.key}
+								onClick={() => setActiveTab(tab.key)}
+								className={`px-4 py-2 rounded-lg cursor-pointer ${
+									activeTab === tab.key
+										? 'bookmeter-green text-white'
+										: 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+								}`}
+							>
+								{tab.label}
+							</button>
+						))}
+					</div>
+
+					{/* Tab Content - Keep both mounted to prevent reload */}
+					<div className={activeTab === 'reads' ? '' : 'hidden'}>
+						<ProfileReadsTab userId={userId} metadata={metadata} />
+					</div>
+					<div className={activeTab === 'common-readers' ? '' : 'hidden'}>
+						<ProfileCommonReadersTab userId={userId} metadata={metadata} />
 					</div>
 				</div>
 			</div>

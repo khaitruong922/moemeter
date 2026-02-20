@@ -5,7 +5,9 @@ export const getBooks = async (
 	page: number,
 	query = '',
 	field = 'all',
-	period = 'all'
+	period = 'all',
+	userId?: number,
+	lonely?: boolean
 ): Promise<BooksApiResponse> => {
 	const params = new URLSearchParams({
 		page: page.toString(),
@@ -20,6 +22,14 @@ export const getBooks = async (
 
 	if (period !== 'all') {
 		params.append('period', period);
+	}
+
+	if (userId) {
+		params.append('user_id', userId.toString());
+	}
+
+	if (lonely) {
+		params.append('lonely', 'true');
 	}
 
 	const response = await fetch(`${API_URL}/books?${params}`);

@@ -1,13 +1,17 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getBooks } from '../api/books';
 import { getGroups } from '../api/groups';
 import { getMetadata } from '../api/metadata';
 import { BookList } from '../components/BookList';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { FilterButton, FilterGroup } from '../components/FilterButton';
+import { SectionHeader } from '../components/SectionHeader';
 import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
 import { useSearchParams } from 'react-router-dom';
 import { useUser } from '../context/useUser';
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 
 const getPlaceholder = (field: string) => {
 	switch (field) {
@@ -18,57 +22,6 @@ const getPlaceholder = (field: string) => {
 		default:
 			return 'タイトル・著者名';
 	}
-};
-
-type PeriodButtonProps = {
-	period: string;
-	currentPeriod: string;
-	label: string;
-	searchInput: string;
-	searchField: string;
-	setPeriodFilter: (period: string) => void;
-	setSearchParams: (params: any) => void;
-	borderClass?: string;
-};
-
-const PeriodButton = ({
-	period,
-	currentPeriod,
-	label,
-	searchInput,
-	searchField,
-	setPeriodFilter,
-	setSearchParams,
-	borderClass = '',
-}: PeriodButtonProps) => {
-	const handleClick = () => {
-		setPeriodFilter(period);
-		const params: { q?: string; field?: string; period?: string } = {};
-		if (searchInput.trim()) {
-			params.q = searchInput.trim();
-			if (searchField !== 'all') {
-				params.field = searchField;
-			}
-		}
-		if (period !== 'all') {
-			params.period = period;
-		}
-		setSearchParams(params);
-	};
-
-	return (
-		<button
-			type="button"
-			onClick={handleClick}
-			className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${borderClass} ${
-				currentPeriod === period
-					? 'bookmeter-green text-white'
-					: 'bg-white bookmeter-green-text hover:bg-[#f0fae8]'
-			}`}
-		>
-			{label}
-		</button>
-	);
 };
 
 const BooksPage = () => {
@@ -117,6 +70,12 @@ const BooksPage = () => {
 	const { user } = useUser();
 	const currentUserId = user?.id;
 
+	const { observerTarget } = useInfiniteScroll({
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	});
+
 	const groupName = groupsData?.[0]?.name || 'グループ';
 
 	// Combine all books from all pages and get users
@@ -145,6 +104,21 @@ const BooksPage = () => {
 		setSearchParams(params);
 	};
 
+	const handlePeriodChange = (period: string) => {
+		setPeriodFilter(period);
+		const params: { q?: string; field?: string; period?: string } = {};
+		if (searchInput.trim()) {
+			params.q = searchInput.trim();
+			if (searchField !== 'all') {
+				params.field = searchField;
+			}
+		}
+		if (period !== 'all') {
+			params.period = period;
+		}
+		setSearchParams(params);
+	};
+
 	const clearSearch = () => {
 		setSearchInput('');
 		setSearchField('all');
@@ -155,42 +129,11 @@ const BooksPage = () => {
 		setSearchParams(params);
 	};
 
-	// Infinite scroll implementation
-	const observerTarget = useRef<HTMLDivElement>(null);
-
-	const handleObserver = useCallback(
-		(entries: IntersectionObserverEntry[]) => {
-			const [target] = entries;
-			if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
-				fetchNextPage();
-			}
-		},
-		[fetchNextPage, hasNextPage, isFetchingNextPage]
-	);
-
-	useEffect(() => {
-		const element = observerTarget.current;
-		if (!element) return;
-
-		const observer = new IntersectionObserver(handleObserver, {
-			threshold: 0.1,
-		});
-
-		observer.observe(element);
-
-		return () => {
-			if (element) {
-				observer.unobserve(element);
-			}
-		};
-	}, [handleObserver]);
-
 	const renderContent = () => {
 		if (isBooksLoading) {
 			return (
-				<div className="flex flex-col justify-center items-center min-h-[50vh]">
-					<div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900 mb-4"></div>
-					<div className="text-gray-400 text-sm">みんなの本棚を読み込み中...</div>
+				<div className="min-h-[50vh] pt-8">
+					<LoadingSpinner message="みんなの本棚を読み込み中..." />
 				</div>
 			);
 		}
@@ -227,8 +170,8 @@ const BooksPage = () => {
 			<div className="w-full px-4">
 				<BookList books={books} users={users} currentUserId={currentUserId} />
 				{isFetchingNextPage && (
-					<div className="flex justify-center my-4">
-						<div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>
+					<div className="my-4">
+						<LoadingSpinner size="sm" />
 					</div>
 				)}
 				<div ref={observerTarget} className="h-4" />
@@ -238,31 +181,32 @@ const BooksPage = () => {
 
 	return (
 		<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
-			<div className="mb-4 text-center">
-				<h2 className="text-2xl font-bold text-gray-800 mb-2">みんなの本棚</h2>
-				<p className="mt-1 text-center text-xs text-gray-400">
-					最終更新: {formatDatetime(metadata?.last_updated)}
-					{typeof metadata?.total_users === 'number' &&
-						typeof metadata?.failed_users === 'number' && (
-							<span className="ml-2">
-								同期済み: {metadata.total_users - metadata.failed_users}/{metadata.total_users}人
-							</span>
-						)}
-				</p>
-				<p className="mt-2 text-gray-600">{groupName}のメンバーが読んだ本の一覧です。</p>
-				<p className="text-sm text-gray-500 mt-1">
-					{searchQuery ? `「${searchQuery}」の検索結果: ` : ''}
-					{isBooksLoading ? '検索中...' : `${totalCount}冊 | ${totalReadsCount}読破`}
-					{searchQuery && !isBooksLoading && (
+			<SectionHeader
+				title="みんなの本棚"
+				metadata={`最終更新: ${formatDatetime(metadata?.last_updated)}${
+					typeof metadata?.total_users === 'number' && typeof metadata?.failed_users === 'number'
+						? ` 同期済み: ${metadata.total_users - metadata.failed_users}/${metadata.total_users}人`
+						: ''
+				}`}
+				description={`${groupName}のメンバーが読んだ本の一覧です。`}
+				count={
+					isBooksLoading
+						? undefined
+						: `${searchQuery ? `「${searchQuery}」の検索結果: ` : ''}${totalCount}冊 | ${totalReadsCount}読破`
+				}
+				isLoading={isBooksLoading}
+				loadingMessage={searchQuery ? '検索中...' : '読み込み中...'}
+				footer={
+					searchQuery && !isBooksLoading ? (
 						<button
 							onClick={clearSearch}
-							className="ml-2 bookmeter-green-text hover:underline cursor-pointer"
+							className="ml-2 bookmeter-green-text hover:underline cursor-pointer text-sm"
 						>
 							検索をクリア
 						</button>
-					)}
-				</p>
-			</div>
+					) : undefined
+				}
+			/>
 
 			<div className="w-full max-w-xl px-4 mb-6">
 				<form onSubmit={handleSearch} className="flex flex-col w-full gap-2">
@@ -307,47 +251,35 @@ const BooksPage = () => {
 							</svg>
 						</button>
 					</div>
-					<div className="flex w-full rounded-lg overflow-hidden border border-[#77b944]/20">
-						<PeriodButton
-							period="all"
-							currentPeriod={periodFilter}
+					<FilterGroup>
+						<FilterButton
+							value="all"
+							currentValue={periodFilter}
 							label="全期間"
-							searchInput={searchInput}
-							searchField={searchField}
-							setPeriodFilter={setPeriodFilter}
-							setSearchParams={setSearchParams}
+							onClick={handlePeriodChange}
 						/>
-						<PeriodButton
-							period="this_year"
-							currentPeriod={periodFilter}
+						<FilterButton
+							value="this_year"
+							currentValue={periodFilter}
 							label={`${currentYear}年`}
-							searchInput={searchInput}
-							searchField={searchField}
-							setPeriodFilter={setPeriodFilter}
-							setSearchParams={setSearchParams}
+							onClick={handlePeriodChange}
 							borderClass="border-l border-[#77b944]/20"
 						/>
-						<PeriodButton
-							period="this_month"
-							currentPeriod={periodFilter}
+						<FilterButton
+							value="this_month"
+							currentValue={periodFilter}
 							label={`${currentYear}年${currentMonth}月`}
-							searchInput={searchInput}
-							searchField={searchField}
-							setPeriodFilter={setPeriodFilter}
-							setSearchParams={setSearchParams}
+							onClick={handlePeriodChange}
 							borderClass="border-l border-[#77b944]/20"
 						/>
-						<PeriodButton
-							period="last_month"
-							currentPeriod={periodFilter}
+						<FilterButton
+							value="last_month"
+							currentValue={periodFilter}
 							label={`${lastMonthYear}年${lastMonth}月`}
-							searchInput={searchInput}
-							searchField={searchField}
-							setPeriodFilter={setPeriodFilter}
-							setSearchParams={setSearchParams}
+							onClick={handlePeriodChange}
 							borderClass="border-l border-[#77b944]/20"
 						/>
-					</div>
+					</FilterGroup>
 				</form>
 			</div>
 

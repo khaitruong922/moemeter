@@ -5,11 +5,12 @@ interface Props {
 	books: Book[];
 	users: { [key: string]: User };
 	currentUserId?: number;
+	fullWidth?: boolean;
 }
 
-export const BookList: React.FC<Props> = ({ books, users, currentUserId }) => {
+export const BookList: React.FC<Props> = ({ books, users, currentUserId, fullWidth = false }) => {
 	return (
-		<div className="w-full max-w-4xl mx-auto divide-y divide-gray-200">
+		<div className={`w-full divide-y divide-gray-200 ${fullWidth ? '' : 'max-w-4xl mx-auto'}`}>
 			{books.map((book, i) => (
 				<BookCard
 					key={book.id}

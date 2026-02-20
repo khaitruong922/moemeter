@@ -5,6 +5,7 @@ import { getGroups } from '../api/groups';
 import { getMetadata } from '../api/metadata';
 import { getLeaderboard } from '../api/users';
 import { LeaderboardTable } from '../components/LeaderboardTable';
+import { SectionHeader } from '../components/SectionHeader';
 import { useUser } from '../context/useUser';
 import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
@@ -76,24 +77,18 @@ const LeaderboardPage = () => {
 	return (
 		<>
 			<div className="flex flex-col items-center min-h-[70vh] w-full py-10">
-				<div className="mb-4 text-center">
-					<h2 className="text-2xl font-bold text-gray-800 mb-2">読書ランキング</h2>
-					<p className="mt-1 text-center text-xs text-gray-400">
-						最終更新: {formatDatetime(metadata?.last_updated)}
-						{typeof metadata?.total_users === 'number' &&
-							typeof metadata?.failed_users === 'number' && (
-								<span className="ml-2">
-									同期済み: {metadata.total_users - metadata.failed_users}/{metadata.total_users}人
-								</span>
-							)}
-					</p>
-					<p className="mt-2 text-base text-gray-600">
-						{groupName}のメンバーの読書量ランキングです。
-					</p>
-					<p className="text-sm text-gray-500 mt-1">
-						{isLeaderboardLoading ? '読み込み中...' : `全${total_count}人`}
-					</p>
-				</div>
+				<SectionHeader
+					title="読書ランキング"
+					metadata={`最終更新: ${formatDatetime(metadata?.last_updated)}${
+						typeof metadata?.total_users === 'number' && typeof metadata?.failed_users === 'number'
+							? ` 同期済み: ${metadata.total_users - metadata.failed_users}/${metadata.total_users}人`
+							: ''
+					}`}
+					description={`${groupName}のメンバーの読書量ランキングです。`}
+					count={isLeaderboardLoading ? undefined : `全${total_count}人`}
+					isLoading={isLeaderboardLoading}
+					loadingMessage="読み込み中..."
+				/>
 
 				<div className="mx-2 sm:mx-4 w-full md:w-3/4 max-w-[1200px] mb-6">
 					<div className="flex items-start justify-between">

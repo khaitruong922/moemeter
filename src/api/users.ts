@@ -17,6 +17,7 @@ export const getProfileSummary = async (userId: number, year: number): Promise<P
 
 export type RankedUser = User & {
 	rank: number;
+	pages_rank: number;
 };
 
 export const getLeaderboard = async (
@@ -75,7 +76,7 @@ export const joinGroup = async (data: JoinGroupRequest): Promise<JoinResponse> =
 	return response.json();
 };
 
-export const getUser = async (userId: number): Promise<User> => {
+export const getUser = async (userId: number): Promise<RankedUser> => {
 	const response = await fetch(`${API_URL}/users/${userId}`);
 	if (!response.ok) {
 		throw new Error('User not found');

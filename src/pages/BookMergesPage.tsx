@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getBookMerges, type BookMerge } from '../api/bookMerges';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import type { Book } from '../types/models';
 
 const BookCell = ({ book }: { book: Book }) => (
@@ -57,9 +58,8 @@ const BookMergesPage = () => {
 
 	if (isLoading) {
 		return (
-			<div className="flex flex-col justify-center items-center min-h-[70vh]">
-				<div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900 mb-4"></div>
-				<div className="text-gray-400 text-sm">本の統合データを読み込み中...</div>
+			<div className="min-h-[70vh]">
+				<LoadingSpinner message="本の統合データを読み込み中..." />
 			</div>
 		);
 	}

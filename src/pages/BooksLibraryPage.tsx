@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { getBooksLibrary, type BooksLibraryApiResponse } from '../api/books';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 const BooksLibraryPage: React.FC = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -117,9 +118,8 @@ const BooksLibraryPage: React.FC = () => {
 
 	if (isLoading) {
 		return (
-			<div className="flex flex-col justify-center items-center min-h-[50vh]">
-				<div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900 mb-4"></div>
-				<div className="text-gray-400 text-sm">本棚を読み込み中...</div>
+			<div className="min-h-[50vh]">
+				<LoadingSpinner message="本棚を読み込み中..." />
 			</div>
 		);
 	}

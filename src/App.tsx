@@ -7,10 +7,8 @@ import BooksLibraryPage from './pages/BooksLibraryPage';
 import JoinPage from './pages/JoinPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import LoginPage from './pages/LoginPage';
-import ReadsPage from './pages/ReadsPage';
 import { Layout } from './Layout';
 import { ScrollToTop } from './components/ScrollToTop';
-import LonelyBooksPage from './pages/LonelyBooksPage';
 import BookMergesPage from './pages/BookMergesPage';
 import ProfilePage from './pages/ProfilePage';
 
@@ -36,8 +34,6 @@ function App() {
 							<Route path="/leaderboard" element={<LeaderboardPage />} />
 							<Route path="/books" element={<BooksPage />} />
 							<Route path="/books/library" element={<BooksLibraryPage />} />
-							<Route path="/reads" element={<ReadsPage />} />
-							<Route path="/lonely-books" element={<LonelyBooksPage />} />
 							<Route path="/book-merges" element={<BookMergesPage />} />
 							<Route path="/profile/:id" element={<ProfilePage />} />
 							{ENABLE_JOIN_GROUP && <Route path="/join" element={<JoinPage />} />}
