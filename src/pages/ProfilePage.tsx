@@ -67,12 +67,12 @@ const ProfilePage = () => {
 				{/* Main Content Area */}
 				<div className="flex-1 min-w-0">
 					{/* Tabs */}
-					<div className="flex space-x-2 mb-6 flex-wrap gap-2">
+					<div className="flex space-x-1 sm:space-x-2 mb-6 flex-wrap gap-1 sm:gap-2">
 						{tabs.map((tab) => (
 							<Link
 								key={tab.key}
 								to={tab.path}
-								className={`px-4 py-2 rounded-lg ${
+								className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base ${
 									activeTab === tab.key
 										? 'bookmeter-green text-white'
 										: 'bg-gray-200 text-gray-700 hover:bg-gray-300'
