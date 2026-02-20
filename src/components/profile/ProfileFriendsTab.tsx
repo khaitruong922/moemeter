@@ -42,9 +42,9 @@ export const ProfileFriendsTab: React.FC<ProfileFriendsTabProps> = ({ userId }) 
 	return (
 		<>
 			<SectionHeader
-				title="共読仲間"
+				title="読書仲間"
 				count={userReadCounts.length > 0 ? `全${userReadCounts.length}人` : undefined}
-				emptyMessage={userReadCounts.length === 0 ? '共読仲間はまだいません。' : undefined}
+				emptyMessage={userReadCounts.length === 0 ? '読書仲間はまだいません。' : undefined}
 				isLoading={isLoading}
 				loadingMessage="共読データを読み込み中..."
 			/>

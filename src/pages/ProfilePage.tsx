@@ -55,7 +55,7 @@ const ProfilePage = () => {
 	const tabs: { key: TabType; label: string; path: string }[] = [
 		{ key: 'reads', label: '読んだ本', path: `/profile/${userId}` },
 		{ key: 'lonely-books', label: 'ひとりぼっち本', path: `/profile/${userId}/lonely-books` },
-		{ key: 'friends', label: '共読仲間', path: `/profile/${userId}/friends` },
+		{ key: 'friends', label: '読書仲間', path: `/profile/${userId}/friends` },
 	];
 
 	return (
