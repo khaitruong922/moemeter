@@ -268,7 +268,7 @@ const BooksPage = () => {
 						<FilterButton
 							value="lonely"
 							currentValue={filter}
-							label="ひとりぼっち本"
+							label="ひとりぼっち"
 							onClick={handleFilterChange}
 							borderClass="border-l border-[#77b944]/20"
 						/>
