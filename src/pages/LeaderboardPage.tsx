@@ -155,6 +155,7 @@ const LeaderboardPage = () => {
 					users={users}
 					loading={isLeaderboardLoading}
 					currentUserId={currentUser?.id}
+					order={order}
 				/>
 			</div>
 		</>

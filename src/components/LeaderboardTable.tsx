@@ -5,9 +5,10 @@ type LeaderboardTableProps = {
 	users: RankedUser[];
 	loading?: boolean;
 	currentUserId?: number;
+	order?: string;
 };
 
-export const LeaderboardTable = ({ users, loading, currentUserId }: LeaderboardTableProps) => {
+export const LeaderboardTable = ({ users, loading, currentUserId, order = 'books' }: LeaderboardTableProps) => {
 	return (
 		<div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 mx-2 sm:mx-4 w-full md:w-3/4 max-w-[1200px]">
 			<div className="overflow-x-auto">
@@ -36,7 +37,7 @@ export const LeaderboardTable = ({ users, loading, currentUserId }: LeaderboardT
 							users.map((user) => (
 								<UserRow
 									user={user}
-									rank={user.rank}
+									rank={order === 'pages' ? user.pages_rank : user.rank}
 									key={user.id}
 									isCurrentUser={user.id === currentUserId}
 								/>
