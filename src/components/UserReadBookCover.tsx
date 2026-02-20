@@ -20,7 +20,7 @@ export const UserReadBookCover: React.FC<UserReadBookCoverProps> = ({
 			rel="noopener noreferrer"
 			className={
 				customClassName ||
-				`block w-[calc(25%-0.5rem)] sm:w-[calc(20%-0.5rem)] md:w-[calc(16.666%-0.5rem)] lg:w-[calc(14.285%-0.5rem)] xl:w-[calc(12.5%-0.5rem)]`
+				`block w-[calc(25%-0.5rem)] sm:w-[calc(16.666%-0.5rem)] md:w-[calc(12.5%-0.5rem)] lg:w-[calc(10%-0.5rem)] xl:w-[calc(8.333%-0.5rem)]`
 			}
 		>
 			<div className="relative pb-[142.857%]">

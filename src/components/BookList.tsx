@@ -6,9 +6,16 @@ interface Props {
 	users: { [key: string]: User };
 	currentUserId?: number;
 	fullWidth?: boolean;
+	isLonely?: boolean;
 }
 
-export const BookList: React.FC<Props> = ({ books, users, currentUserId, fullWidth = false }) => {
+export const BookList: React.FC<Props> = ({
+	books,
+	users,
+	currentUserId,
+	fullWidth = false,
+	isLonely = false,
+}) => {
 	return (
 		<div className={`w-full divide-y divide-gray-200 ${fullWidth ? '' : 'max-w-4xl mx-auto'}`}>
 			{books.map((book, i) => (
@@ -18,6 +25,7 @@ export const BookList: React.FC<Props> = ({ books, users, currentUserId, fullWid
 					index={i + 1}
 					users={users}
 					currentUserId={currentUserId}
+					isLonely={isLonely}
 				/>
 			))}
 		</div>

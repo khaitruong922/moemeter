@@ -3,7 +3,6 @@ import { getCommonReads } from '../../api/users';
 import { UserReadCard } from '../UserReadCard';
 import { SectionHeader } from '../SectionHeader';
 import { LoadingSpinner } from '../LoadingSpinner';
-import { formatDatetime } from '../../utils/datetime';
 import type { Book, User, CommonReadsResponse } from '../../types/models';
 
 interface UserReadCount {
@@ -12,19 +11,11 @@ interface UserReadCount {
 	commonBooks: Book[];
 }
 
-interface ProfileCommonReadersTabProps {
+interface ProfileFriendsTabProps {
 	userId: number;
-	metadata?: {
-		last_updated: string;
-		failed_users: number;
-		total_users: number;
-	};
 }
 
-export const ProfileCommonReadersTab: React.FC<ProfileCommonReadersTabProps> = ({
-	userId,
-	metadata,
-}) => {
+export const ProfileFriendsTab: React.FC<ProfileFriendsTabProps> = ({ userId }) => {
 	const { data: commonReadsData, isLoading } = useQuery<CommonReadsResponse>({
 		enabled: !!userId,
 		queryKey: ['commonReads', userId],
@@ -52,17 +43,6 @@ export const ProfileCommonReadersTab: React.FC<ProfileCommonReadersTabProps> = (
 		<>
 			<SectionHeader
 				title="共読仲間"
-				metadata={
-					metadata
-						? `最終更新: ${formatDatetime(metadata.last_updated)}${
-								typeof metadata.total_users === 'number' &&
-								typeof metadata.failed_users === 'number'
-									? ` 同期済み: ${metadata.total_users - metadata.failed_users}/${metadata.total_users}人`
-									: ''
-							}`
-						: undefined
-				}
-				description="一緒に本を読んだメンバーです。"
 				count={userReadCounts.length > 0 ? `全${userReadCounts.length}人` : undefined}
 				emptyMessage={userReadCounts.length === 0 ? '共読仲間はまだいません。' : undefined}
 				isLoading={isLoading}

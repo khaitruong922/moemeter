@@ -18,6 +18,7 @@ export type Book = {
 	thumbnail_url: string;
 	user_ids: number[];
 	reviews: Review[];
+	date?: string | null;
 };
 
 export interface User {

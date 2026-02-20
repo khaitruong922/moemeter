@@ -16,6 +16,7 @@ export const UserAvatarGroup: React.FC<Props> = ({ users, size = 'md' }) => {
 					name={user.name}
 					avatarUrl={user.avatar_url}
 					size={size}
+					toProfile
 				/>
 			))}
 		</div>

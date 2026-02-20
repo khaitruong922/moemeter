@@ -2,12 +2,10 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
 import { getBooks } from '../api/books';
 import { getGroups } from '../api/groups';
-import { getMetadata } from '../api/metadata';
 import { BookList } from '../components/BookList';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { FilterButton, FilterGroup } from '../components/FilterButton';
 import { SectionHeader } from '../components/SectionHeader';
-import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
 import { useSearchParams } from 'react-router-dom';
 import { useUser } from '../context/useUser';
@@ -27,24 +25,24 @@ const getPlaceholder = (field: string) => {
 const BooksPage = () => {
 	const currentDate = new Date();
 	const currentMonth = currentDate.getUTCMonth() + 1; // 1-12
-	const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
 	const currentYear = currentDate.getUTCFullYear();
-	const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
 
 	useDocumentTitle('みんなの本棚 | 萌メーター');
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [searchInput, setSearchInput] = useState(searchParams.get('q') || '');
 	const [searchField, setSearchField] = useState(searchParams.get('field') || 'all');
-	const [periodFilter, setPeriodFilter] = useState(searchParams.get('period') || 'all');
+	const [filter, setFilter] = useState(searchParams.get('filter') || 'all');
 	const searchQuery = searchParams.get('q') || '';
 	const fieldQuery = searchParams.get('field') || 'all';
-	const periodQuery = searchParams.get('period') || 'all';
+	const filterQuery = searchParams.get('filter') || 'all';
+	const isLonely = filterQuery === 'lonely';
+	const periodQuery = isLonely ? 'all' : filterQuery;
 
 	// Sync state with URL parameters
 	useEffect(() => {
 		setSearchInput(searchParams.get('q') || '');
 		setSearchField(searchParams.get('field') || 'all');
-		setPeriodFilter(searchParams.get('period') || 'all');
+		setFilter(searchParams.get('filter') || 'all');
 	}, [searchParams]);
 
 	const {
@@ -55,8 +53,9 @@ const BooksPage = () => {
 		hasNextPage,
 		isFetchingNextPage,
 	} = useInfiniteQuery({
-		queryKey: ['books', searchQuery, fieldQuery, periodQuery],
-		queryFn: ({ pageParam = 1 }) => getBooks(pageParam, searchQuery, fieldQuery, periodQuery),
+		queryKey: ['books', searchQuery, fieldQuery, periodQuery, isLonely],
+		queryFn: ({ pageParam = 1 }) =>
+			getBooks(pageParam, searchQuery, fieldQuery, periodQuery, undefined, isLonely),
 		getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
 		initialPageParam: 1,
 	});
@@ -65,7 +64,6 @@ const BooksPage = () => {
 		queryKey: ['groups'],
 		queryFn: getGroups,
 	});
-	const { data: metadata } = useQuery({ queryKey: ['metadata'], queryFn: getMetadata });
 
 	const { user } = useUser();
 	const currentUserId = user?.id;
@@ -88,7 +86,7 @@ const BooksPage = () => {
 	// Handle search input
 	const handleSearch = (e: React.FormEvent) => {
 		e.preventDefault();
-		const params: { q?: string; field?: string; period?: string } = {};
+		const params: { q?: string; field?: string; filter?: string } = {};
 
 		if (searchInput.trim()) {
 			params.q = searchInput.trim();
@@ -97,24 +95,24 @@ const BooksPage = () => {
 			}
 		}
 
-		if (periodFilter !== 'all') {
-			params.period = periodFilter;
+		if (filter !== 'all') {
+			params.filter = filter;
 		}
 
 		setSearchParams(params);
 	};
 
-	const handlePeriodChange = (period: string) => {
-		setPeriodFilter(period);
-		const params: { q?: string; field?: string; period?: string } = {};
+	const handleFilterChange = (newFilter: string) => {
+		setFilter(newFilter);
+		const params: { q?: string; field?: string; filter?: string } = {};
 		if (searchInput.trim()) {
 			params.q = searchInput.trim();
 			if (searchField !== 'all') {
 				params.field = searchField;
 			}
 		}
-		if (period !== 'all') {
-			params.period = period;
+		if (newFilter !== 'all') {
+			params.filter = newFilter;
 		}
 		setSearchParams(params);
 	};
@@ -122,9 +120,9 @@ const BooksPage = () => {
 	const clearSearch = () => {
 		setSearchInput('');
 		setSearchField('all');
-		const params: { period?: string } = {};
-		if (periodFilter !== 'all') {
-			params.period = periodFilter;
+		const params: { filter?: string } = {};
+		if (filter !== 'all') {
+			params.filter = filter;
 		}
 		setSearchParams(params);
 	};
@@ -168,7 +166,7 @@ const BooksPage = () => {
 
 		return (
 			<div className="w-full px-4">
-				<BookList books={books} users={users} currentUserId={currentUserId} />
+				<BookList books={books} users={users} currentUserId={currentUserId} isLonely={isLonely} />
 				{isFetchingNextPage && (
 					<div className="my-4">
 						<LoadingSpinner size="sm" />
@@ -183,11 +181,6 @@ const BooksPage = () => {
 		<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
 			<SectionHeader
 				title="みんなの本棚"
-				metadata={`最終更新: ${formatDatetime(metadata?.last_updated)}${
-					typeof metadata?.total_users === 'number' && typeof metadata?.failed_users === 'number'
-						? ` 同期済み: ${metadata.total_users - metadata.failed_users}/${metadata.total_users}人`
-						: ''
-				}`}
 				description={`${groupName}のメンバーが読んだ本の一覧です。`}
 				count={
 					isBooksLoading
@@ -254,29 +247,29 @@ const BooksPage = () => {
 					<FilterGroup>
 						<FilterButton
 							value="all"
-							currentValue={periodFilter}
+							currentValue={filter}
 							label="全期間"
-							onClick={handlePeriodChange}
+							onClick={handleFilterChange}
 						/>
 						<FilterButton
 							value="this_year"
-							currentValue={periodFilter}
+							currentValue={filter}
 							label={`${currentYear}年`}
-							onClick={handlePeriodChange}
+							onClick={handleFilterChange}
 							borderClass="border-l border-[#77b944]/20"
 						/>
 						<FilterButton
 							value="this_month"
-							currentValue={periodFilter}
+							currentValue={filter}
 							label={`${currentYear}年${currentMonth}月`}
-							onClick={handlePeriodChange}
+							onClick={handleFilterChange}
 							borderClass="border-l border-[#77b944]/20"
 						/>
 						<FilterButton
-							value="last_month"
-							currentValue={periodFilter}
-							label={`${lastMonthYear}年${lastMonth}月`}
-							onClick={handlePeriodChange}
+							value="lonely"
+							currentValue={filter}
+							label="ひとりぼっち本"
+							onClick={handleFilterChange}
 							borderClass="border-l border-[#77b944]/20"
 						/>
 					</FilterGroup>

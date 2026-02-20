@@ -1,2 +1,3 @@
 export { ProfileReadsTab } from './ProfileReadsTab';
-export { ProfileCommonReadersTab } from './ProfileCommonReadersTab';
+export { ProfileFriendsTab } from './ProfileFriendsTab';
+export { ProfileCard } from './ProfileCard';

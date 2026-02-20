@@ -2,12 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getGroups } from '../api/groups';
-import { getMetadata } from '../api/metadata';
 import { getLeaderboard } from '../api/users';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { SectionHeader } from '../components/SectionHeader';
 import { useUser } from '../context/useUser';
-import { formatDatetime } from '../utils/datetime';
 import { useDocumentTitle } from '../utils/useDocumentTitle';
 
 const LeaderboardPage = () => {
@@ -68,7 +66,6 @@ const LeaderboardPage = () => {
 		queryKey: ['groups'],
 		queryFn: getGroups,
 	});
-	const { data: metadata } = useQuery({ queryKey: ['metadata'], queryFn: getMetadata });
 
 	const users = usersData || [];
 	const groupName = groupsData?.[0]?.name || 'グループ';
@@ -79,11 +76,6 @@ const LeaderboardPage = () => {
 			<div className="flex flex-col items-center min-h-[70vh] w-full py-10">
 				<SectionHeader
 					title="読書ランキング"
-					metadata={`最終更新: ${formatDatetime(metadata?.last_updated)}${
-						typeof metadata?.total_users === 'number' && typeof metadata?.failed_users === 'number'
-							? ` 同期済み: ${metadata.total_users - metadata.failed_users}/${metadata.total_users}人`
-							: ''
-					}`}
 					description={`${groupName}のメンバーの読書量ランキングです。`}
 					count={isLeaderboardLoading ? undefined : `全${total_count}人`}
 					isLoading={isLeaderboardLoading}

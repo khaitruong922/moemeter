@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import type { Review } from '../types/models';
 import { useState } from 'react';
 import { UserAvatar } from './UserAvatar';
@@ -20,16 +21,15 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review, isRead = false }
 					name={review.user_name ?? ''}
 					avatarUrl={review.user_avatar_url ?? ''}
 					size="sm"
+					toProfile
 				/>
 				{review.user_name && (
-					<a
-						href={`https://bookmeter.com/users/${review.user_id}`}
-						target="_blank"
-						rel="noopener noreferrer"
+					<Link
+						to={`/profile/${review.user_id}`}
 						className="font-bold text-base bookmeter-green-text hover:underline"
 					>
 						{review.user_name}
-					</a>
+					</Link>
 				)}
 				{review.is_spoiler && (
 					<span className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded-full">ネタバレ</span>

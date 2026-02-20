@@ -39,6 +39,11 @@ export const BookCardBase: React.FC<BookCardBaseProps> = ({
 					<div>
 						<div className={`text-lg sm:text-2xl font-bold bookmeter-green-text`}>#{index}</div>
 						<div className="text-xs sm:text-sm text-gray-500">{_userCountLabel}</div>
+						{book.date && (
+							<div className="text-xs text-gray-400 mt-1">
+								{new Date(book.date).toLocaleDateString('ja-JP')}
+							</div>
+						)}
 					</div>
 					{hasReviews && (
 						<div className="flex justify-center mt-2 mb-1 grow items-end">
