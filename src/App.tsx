@@ -1,16 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { ENABLE_JOIN_GROUP } from './constants';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { UserProvider } from './context/UserProvider';
-import BooksPage from './pages/BooksPage';
-import BooksLibraryPage from './pages/BooksLibraryPage';
-import JoinPage from './pages/JoinPage';
-import LeaderboardPage from './pages/LeaderboardPage';
-import LoginPage from './pages/LoginPage';
-import { Layout } from './Layout';
-import { ScrollToTop } from './components/ScrollToTop';
-import BookMergesPage from './pages/BookMergesPage';
-import ProfilePage from './pages/ProfilePage';
+import { routes } from './routes';
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -23,27 +14,13 @@ const queryClient = new QueryClient({
 	},
 });
 
+const router = createBrowserRouter(routes);
+
 function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<UserProvider>
-				<BrowserRouter>
-					<ScrollToTop />
-					<Layout>
-						<Routes>
-							<Route path="/leaderboard" element={<LeaderboardPage />} />
-							<Route path="/books" element={<BooksPage />} />
-							<Route path="/books/library" element={<BooksLibraryPage />} />
-							<Route path="/book-merges" element={<BookMergesPage />} />
-							<Route path="/profile/:id" element={<ProfilePage />} />
-							<Route path="/profile/:id/lonely-books" element={<ProfilePage />} />
-							<Route path="/profile/:id/friends" element={<ProfilePage />} />
-							{ENABLE_JOIN_GROUP && <Route path="/join" element={<JoinPage />} />}
-							<Route path="/login" element={<LoginPage />} />
-							<Route path="/" element={<Navigate to="/leaderboard" replace />} />
-						</Routes>
-					</Layout>
-				</BrowserRouter>
+				<RouterProvider router={router} />
 			</UserProvider>
 		</QueryClientProvider>
 	);

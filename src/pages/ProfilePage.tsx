@@ -13,8 +13,18 @@ const getTabFromPath = (pathname: string): TabType => {
 	return 'reads';
 };
 
+const getTabLabel = (tab: TabType): string => {
+	switch (tab) {
+		case 'reads':
+			return '読んだ本';
+		case 'lonely-books':
+			return 'ひとりぼっち本';
+		case 'friends':
+			return '読書仲間';
+	}
+};
+
 const ProfilePage = () => {
-	useDocumentTitle('プロフィール | 萌メーター');
 	const { id } = useParams<{ id: string }>();
 	const location = useLocation();
 	const userId = id ? parseInt(id) : undefined;
@@ -29,6 +39,11 @@ const ProfilePage = () => {
 		queryFn: () => getUser(userId!),
 		enabled: !!userId,
 	});
+
+	// Set document title dynamically based on user and tab
+	const documentTitle =
+		user && user.name ? `${user.name} | ${getTabLabel(activeTab)} | 萌メーター` : undefined;
+	useDocumentTitle(documentTitle);
 
 	if (!userId) return null;
 
