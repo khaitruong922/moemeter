@@ -56,14 +56,12 @@ export const Layout: React.FC<Props> = ({ children }: Props) => {
 												alt={user.name}
 												className="w-6 h-6 md:w-8 md:h-8 rounded-full"
 											/>
-											<span className="hidden md:inline text-xs md:text-sm font-medium">
-												{user.name}
-											</span>
+											<span className="text-xs md:text-sm font-medium">{user.name}</span>
 										</Link>
 									</div>
 									<button
 										onClick={logout}
-										className="text-white hover:text-white/80 transition-colors duration-200 cursor-pointer text-xs md:text-sm flex items-center"
+										className="ml-1 text-white hover:text-white/80 transition-colors duration-200 cursor-pointer text-xs md:text-sm flex items-center"
 									>
 										<span className="hidden max-[500px]:inline">
 											<svg

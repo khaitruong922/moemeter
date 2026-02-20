@@ -17,7 +17,7 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
 		<button
 			type="button"
 			onClick={() => onClick(value)}
-			className={`flex-1 text-sm py-2 px-4 font-medium transition-colors cursor-pointer ${borderClass} ${
+			className={`flex-1 text-xs sm:text-sm py-2 px-2 sm:px-4 font-medium transition-colors cursor-pointer ${borderClass} ${
 				currentValue === value
 					? 'bookmeter-green text-white'
 					: 'bg-white bookmeter-green-text hover:bg-[#f0fae8]'
