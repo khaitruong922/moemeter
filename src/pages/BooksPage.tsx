@@ -1,7 +1,6 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
 import { getBooks } from '../api/books';
-import { getGroups } from '../api/groups';
 import { BookList } from '../components/BookList';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { FilterButton, FilterGroup } from '../components/FilterButton';
@@ -60,11 +59,6 @@ const BooksPage = () => {
 		initialPageParam: 1,
 	});
 
-	const { data: groupsData } = useQuery({
-		queryKey: ['groups'],
-		queryFn: getGroups,
-	});
-
 	const { user } = useUser();
 	const currentUserId = user?.id;
 
@@ -73,8 +67,6 @@ const BooksPage = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	});
-
-	const groupName = groupsData?.[0]?.name || 'グループ';
 
 	// Combine all books from all pages and get users
 	const books = data?.pages.flatMap((page) => page.books) || [];
@@ -181,7 +173,6 @@ const BooksPage = () => {
 		<div className="flex flex-col items-center min-h-[70vh] w-full pt-10">
 			<SectionHeader
 				title="みんなの本棚"
-				description={`${groupName}のメンバーが読んだ本の一覧です。`}
 				count={
 					isBooksLoading
 						? undefined

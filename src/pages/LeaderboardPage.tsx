@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getGroups } from '../api/groups';
 import { getLeaderboard } from '../api/users';
 import { LeaderboardTable } from '../components/LeaderboardTable';
 import { SectionHeader } from '../components/SectionHeader';
@@ -62,13 +61,7 @@ const LeaderboardPage = () => {
 		queryFn: () => getLeaderboard(period, order),
 	});
 
-	const { data: groupsData } = useQuery({
-		queryKey: ['groups'],
-		queryFn: getGroups,
-	});
-
 	const users = usersData || [];
-	const groupName = groupsData?.[0]?.name || 'グループ';
 	const total_count = usersData?.length || 0;
 
 	return (
@@ -76,7 +69,6 @@ const LeaderboardPage = () => {
 			<div className="flex flex-col items-center min-h-[70vh] w-full py-10">
 				<SectionHeader
 					title="読書ランキング"
-					description={`${groupName}のメンバーの読書量ランキングです。`}
 					count={isLeaderboardLoading ? undefined : `全${total_count}人`}
 					isLoading={isLeaderboardLoading}
 					loadingMessage="読み込み中..."

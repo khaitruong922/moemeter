@@ -34,23 +34,17 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 			}`
 		: undefined;
 
+	const statusText = isLoading && loadingMessage ? loadingMessage : count;
+
 	return (
-		<div className="mb-4 text-center">
-			<h2 className="text-2xl font-bold text-gray-800 mb-2">{title}</h2>
-			{metadataText && <p className="mt-1 text-center text-xs text-gray-400">{metadataText}</p>}
-			{showEmpty && <p className="text-center text-gray-500 mt-4">{emptyMessage}</p>}
+		<div className="pb-4 text-center flex flex-col gap-2">
+			<h2 className="text-2xl font-bold text-gray-800">{title}</h2>
+			{metadataText && <p className="text-center text-xs text-gray-400">{metadataText}</p>}
+			{showEmpty && <p className="text-center text-gray-500">{emptyMessage}</p>}
 			{!showEmpty && (
 				<>
-					{description && <p className="mt-2 text-base text-gray-600">{description}</p>}
-					{isLoading && loadingMessage ? (
-						<p className={`text-sm text-gray-500 ${description ? 'mt-1' : 'mt-2'}`}>
-							{loadingMessage}
-						</p>
-					) : (
-						count && (
-							<p className={`text-sm text-gray-500 ${description ? 'mt-1' : 'mt-2'}`}>{count}</p>
-						)
-					)}
+					{description && <p className="text-base text-gray-600">{description}</p>}
+					{statusText && <p className="text-sm text-gray-500">{statusText}</p>}
 				</>
 			)}
 			{footer}

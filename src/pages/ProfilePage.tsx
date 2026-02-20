@@ -82,7 +82,7 @@ const ProfilePage = () => {
 				{/* Main Content Area */}
 				<div className="flex-1 min-w-0">
 					{/* Tabs */}
-					<div className="flex space-x-1 sm:space-x-2 mb-6 flex-wrap gap-1 sm:gap-2">
+					<div className="flex space-x-1 sm:space-x-2 mb-4 flex-wrap gap-1">
 						{tabs.map((tab) => (
 							<Link
 								key={tab.key}
