@@ -13,6 +13,9 @@ export const NavBar: React.FC = () => {
 		) {
 			return true;
 		}
+		if (path === '/other' && location.pathname.startsWith('/lonely-leaderboard')) {
+			return true;
+		}
 		return location.pathname === path;
 	};
 
@@ -38,6 +41,9 @@ export const NavBar: React.FC = () => {
 							</Link>
 							<Link to="/books" className={tabStyle('/books')}>
 								みんなの本棚
+							</Link>
+							<Link to="/lonely-leaderboard" className={tabStyle('/other')}>
+								その他
 							</Link>
 						</div>
 					</div>

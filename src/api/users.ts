@@ -36,6 +36,26 @@ export const getLeaderboard = async (
 	return response.json();
 };
 
+export type LonelyUser = User & {
+	lonely_book_count: number | string;
+	lonely_points: number | string;
+	null_read_date_count: number | string;
+	book_count_rank: number | string;
+	points_rank: number | string;
+};
+
+export type LonelyOrder = 'points' | 'book_count';
+
+export const getLonelyLeaderboard = async (
+	order: LonelyOrder = 'points'
+): Promise<LonelyUser[]> => {
+	const params = new URLSearchParams();
+	params.append('order', order);
+
+	const response = await fetch(`${API_URL}/users/lonely-leaderboard?${params}`);
+	return response.json();
+};
+
 export const getCommonReads = async (userId: number): Promise<CommonReadsResponse> => {
 	const response = await fetch(`${API_URL}/users/${userId}/common_reads`);
 	if (!response.ok) {

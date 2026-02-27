@@ -6,6 +6,7 @@ import BooksLibraryPage from './pages/BooksLibraryPage';
 import BookMergesPage from './pages/BookMergesPage';
 import JoinPage from './pages/JoinPage';
 import LeaderboardPage from './pages/LeaderboardPage';
+import LonelyLeaderboardPage from './pages/LonelyLeaderboardPage';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
 
@@ -21,6 +22,10 @@ export const routes: RouteObject[] = [
 			{
 				path: 'leaderboard',
 				element: <LeaderboardPage />,
+			},
+			{
+				path: 'lonely-leaderboard',
+				element: <LonelyLeaderboardPage />,
 			},
 			{
 				path: 'books',
