@@ -21,7 +21,7 @@ export const ProfileReadsTab: React.FC<ProfileReadsTabProps> = ({
 	const currentUserId = currentUser?.id;
 
 	const isLonely = defaultFilter === 'lonely';
-	const isLatest = defaultFilter === 'all';
+	const dateOrder = defaultFilter === 'all' ? 'DESC' : undefined;
 
 	const {
 		data: booksData,
@@ -30,9 +30,9 @@ export const ProfileReadsTab: React.FC<ProfileReadsTabProps> = ({
 		hasNextPage,
 		isFetchingNextPage,
 	} = useInfiniteQuery({
-		queryKey: ['books', '', 'all', 'all', userId, isLonely, isLatest],
+		queryKey: ['books', '', 'all', 'all', userId, isLonely, dateOrder],
 		queryFn: ({ pageParam = 1 }) =>
-			getBooks(pageParam, '', 'all', 'all', userId, isLonely, isLatest),
+			getBooks(pageParam, '', 'all', 'all', userId, isLonely, dateOrder),
 		getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
 		initialPageParam: 1,
 		enabled: !!userId,

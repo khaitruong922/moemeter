@@ -31,17 +31,25 @@ const BooksPage = () => {
 	const [searchInput, setSearchInput] = useState(searchParams.get('q') || '');
 	const [searchField, setSearchField] = useState(searchParams.get('field') || 'all');
 	const [filter, setFilter] = useState(searchParams.get('filter') || 'all');
+	const [dateOrder, setDateOrder] = useState<'ASC' | 'DESC'>(
+		(searchParams.get('dateOrder') as 'ASC' | 'DESC') || 'DESC'
+	);
 	const searchQuery = searchParams.get('q') || '';
 	const fieldQuery = searchParams.get('field') || 'all';
 	const filterQuery = searchParams.get('filter') || 'all';
 	const isLonely = filterQuery === 'lonely';
 	const periodQuery = isLonely ? 'all' : filterQuery;
+	const dateOrderQuery = isLonely ? dateOrder : undefined;
 
 	// Sync state with URL parameters
 	useEffect(() => {
 		setSearchInput(searchParams.get('q') || '');
 		setSearchField(searchParams.get('field') || 'all');
 		setFilter(searchParams.get('filter') || 'all');
+		const urlDateOrder = searchParams.get('dateOrder') as 'ASC' | 'DESC';
+		if (urlDateOrder) {
+			setDateOrder(urlDateOrder);
+		}
 	}, [searchParams]);
 
 	const {
@@ -52,9 +60,17 @@ const BooksPage = () => {
 		hasNextPage,
 		isFetchingNextPage,
 	} = useInfiniteQuery({
-		queryKey: ['books', searchQuery, fieldQuery, periodQuery, isLonely],
+		queryKey: ['books', searchQuery, fieldQuery, periodQuery, isLonely, dateOrderQuery],
 		queryFn: ({ pageParam = 1 }) =>
-			getBooks(pageParam, searchQuery, fieldQuery, periodQuery, undefined, isLonely),
+			getBooks(
+				pageParam,
+				searchQuery,
+				fieldQuery,
+				periodQuery,
+				undefined,
+				isLonely,
+				dateOrderQuery
+			),
 		getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
 		initialPageParam: 1,
 	});
@@ -78,7 +94,7 @@ const BooksPage = () => {
 	// Handle search input
 	const handleSearch = (e: React.FormEvent) => {
 		e.preventDefault();
-		const params: { q?: string; field?: string; filter?: string } = {};
+		const params: { q?: string; field?: string; filter?: string; dateOrder?: string } = {};
 
 		if (searchInput.trim()) {
 			params.q = searchInput.trim();
@@ -91,12 +107,16 @@ const BooksPage = () => {
 			params.filter = filter;
 		}
 
+		if (isLonely) {
+			params.dateOrder = dateOrder;
+		}
+
 		setSearchParams(params);
 	};
 
 	const handleFilterChange = (newFilter: string) => {
 		setFilter(newFilter);
-		const params: { q?: string; field?: string; filter?: string } = {};
+		const params: { q?: string; field?: string; filter?: string; dateOrder?: string } = {};
 		if (searchInput.trim()) {
 			params.q = searchInput.trim();
 			if (searchField !== 'all') {
@@ -106,15 +126,40 @@ const BooksPage = () => {
 		if (newFilter !== 'all') {
 			params.filter = newFilter;
 		}
+		// Only include dateOrder if the new filter is lonely
+		if (newFilter === 'lonely') {
+			params.dateOrder = dateOrder;
+		}
 		setSearchParams(params);
 	};
 
 	const clearSearch = () => {
 		setSearchInput('');
 		setSearchField('all');
-		const params: { filter?: string } = {};
+		const params: { filter?: string; dateOrder?: string } = {};
 		if (filter !== 'all') {
 			params.filter = filter;
+		}
+		if (isLonely) {
+			params.dateOrder = dateOrder;
+		}
+		setSearchParams(params);
+	};
+
+	const handleDateOrderChange = (newDateOrder: string) => {
+		setDateOrder(newDateOrder as 'ASC' | 'DESC');
+		const params: { q?: string; field?: string; filter?: string; dateOrder?: string } = {};
+		if (searchInput.trim()) {
+			params.q = searchInput.trim();
+			if (searchField !== 'all') {
+				params.field = searchField;
+			}
+		}
+		if (filter !== 'all') {
+			params.filter = filter;
+		}
+		if (newDateOrder) {
+			params.dateOrder = newDateOrder;
 		}
 		setSearchParams(params);
 	};
@@ -267,6 +312,25 @@ const BooksPage = () => {
 				</form>
 			</div>
 
+			{isLonely && (
+				<div className="max-w-xl px-4 mb-6">
+					<FilterGroup>
+						<FilterButton
+							value="DESC"
+							currentValue={dateOrder}
+							label="最新順"
+							onClick={handleDateOrderChange}
+						/>
+						<FilterButton
+							value="ASC"
+							currentValue={dateOrder}
+							label="古い順"
+							onClick={handleDateOrderChange}
+							borderClass="border-l border-[#77b944]/20"
+						/>
+					</FilterGroup>
+				</div>
+			)}
 			{renderContent()}
 		</div>
 	);

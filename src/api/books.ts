@@ -8,7 +8,7 @@ export const getBooks = async (
 	period = 'all',
 	userId?: number,
 	lonely?: boolean,
-	latest?: boolean
+	dateOrder?: 'ASC' | 'DESC'
 ): Promise<BooksApiResponse> => {
 	const params = new URLSearchParams({
 		page: page.toString(),
@@ -33,8 +33,8 @@ export const getBooks = async (
 		params.append('lonely', 'true');
 	}
 
-	if (latest) {
-		params.append('latest', 'true');
+	if (dateOrder) {
+		params.append('date_order', dateOrder);
 	}
 
 	const response = await fetch(`${API_URL}/books?${params}`);
