@@ -15,7 +15,7 @@ const LonelyUserRow = ({ user, order, isCurrentUser }: Props) => {
 		typeof user.lonely_book_count === 'string'
 			? parseInt(user.lonely_book_count)
 			: user.lonely_book_count;
-	const lonelyPoints =
+	const lonelyDays =
 		typeof user.lonely_points === 'string' ? parseInt(user.lonely_points) : user.lonely_points;
 	const nullReadDateCount =
 		typeof user.null_read_date_count === 'string'
@@ -68,7 +68,7 @@ const LonelyUserRow = ({ user, order, isCurrentUser }: Props) => {
 				{lonelyBookCount}冊
 			</td>
 			<td className="text-base font-medium px-2 sm:px-4 py-2 whitespace-nowrap text-gray-700 text-center">
-				<div>{lonelyPoints.toLocaleString()}</div>
+				<div>{lonelyDays.toLocaleString()}</div>
 				{nullReadDateCount > 0 && (
 					<div className="text-xs text-gray-500 mt-1">+{nullReadDateCount}冊(日付不明)</div>
 				)}

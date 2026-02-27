@@ -44,11 +44,9 @@ export type LonelyUser = User & {
 	points_rank: number | string;
 };
 
-export type LonelyOrder = 'points' | 'book_count';
+export type LonelyOrder = 'days' | 'book_count';
 
-export const getLonelyLeaderboard = async (
-	order: LonelyOrder = 'points'
-): Promise<LonelyUser[]> => {
+export const getLonelyLeaderboard = async (order: LonelyOrder = 'days'): Promise<LonelyUser[]> => {
 	const params = new URLSearchParams();
 	params.append('order', order);
 

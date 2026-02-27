@@ -14,10 +14,10 @@ const LonelyLeaderboardPage = () => {
 	// Load from localStorage first, then URL params, then defaults
 	const getInitialOrder = (): LonelyOrder => {
 		const urlOrder = searchParams.get('order');
-		if (urlOrder === 'points' || urlOrder === 'book_count') return urlOrder;
+		if (urlOrder === 'days' || urlOrder === 'book_count') return urlOrder;
 		const stored = localStorage.getItem('lonely_leaderboard_order');
-		if (stored === 'points' || stored === 'book_count') return stored;
-		return 'points';
+		if (stored === 'days' || stored === 'book_count') return stored;
+		return 'days';
 	};
 
 	const [order, setOrder] = useState<LonelyOrder>(getInitialOrder());
@@ -25,12 +25,12 @@ const LonelyLeaderboardPage = () => {
 	// Sync state with URL parameters and localStorage
 	useEffect(() => {
 		const urlOrder = searchParams.get('order');
-		if (urlOrder === 'points' || urlOrder === 'book_count') {
+		if (urlOrder === 'days' || urlOrder === 'book_count') {
 			setOrder(urlOrder);
 			localStorage.setItem('lonely_leaderboard_order', urlOrder);
 		} else {
 			const storedOrder = localStorage.getItem('lonely_leaderboard_order');
-			if (storedOrder === 'points' || storedOrder === 'book_count') {
+			if (storedOrder === 'days' || storedOrder === 'book_count') {
 				setOrder(storedOrder);
 			}
 		}
@@ -54,10 +54,10 @@ const LonelyLeaderboardPage = () => {
 		return sum + count;
 	}, 0);
 
-	const totalPoints = users.reduce((sum, user) => {
-		const points =
+	const totalDays = users.reduce((sum, user) => {
+		const days =
 			typeof user.lonely_points === 'string' ? parseInt(user.lonely_points) : user.lonely_points;
-		return sum + points;
+		return sum + days;
 	}, 0);
 
 	return (
@@ -79,7 +79,7 @@ const LonelyLeaderboardPage = () => {
 					count={
 						isLoading
 							? undefined
-							: `${total_count}人 | ${totalBooks.toLocaleString()}冊 | ${totalPoints.toLocaleString()}日`
+							: `${total_count}人 | ${totalBooks.toLocaleString()}冊 | ${totalDays.toLocaleString()}日`
 					}
 					isLoading={isLoading}
 					loadingMessage="読み込み中..."
@@ -106,12 +106,12 @@ const LonelyLeaderboardPage = () => {
 							<button
 								type="button"
 								onClick={() => {
-									setOrder('points');
-									localStorage.setItem('lonely_leaderboard_order', 'points');
-									setSearchParams({ order: 'points' });
+									setOrder('days');
+									localStorage.setItem('lonely_leaderboard_order', 'days');
+									setSearchParams({ order: 'days' });
 								}}
 								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer border-l border-[#77b944]/20 ${
-									order === 'points'
+									order === 'days'
 										? 'bookmeter-green text-white'
 										: 'bg-white text-[#77b944] hover:bg-[#f0fae8]'
 								}`}
