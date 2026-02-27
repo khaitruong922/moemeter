@@ -56,7 +56,7 @@ export const ProfileReadsTab: React.FC<ProfileReadsTabProps> = ({
 				emptyMessage={
 					books.length === 0
 						? defaultFilter === 'lonely'
-							? 'このユーザーしか読んでいない本はありません。'
+							? 'このメンバーしか読んでいない本はありません。'
 							: '読んだ本はまだありません。'
 						: undefined
 				}
