@@ -16,7 +16,7 @@ const LonelyUserRow = ({ user, order, isCurrentUser }: Props) => {
 			? parseInt(user.lonely_book_count)
 			: user.lonely_book_count;
 	const lonelyDays =
-		typeof user.lonely_points === 'string' ? parseInt(user.lonely_points) : user.lonely_points;
+		typeof user.lonely_days === 'string' ? parseInt(user.lonely_days) : user.lonely_days;
 	const nullReadDateCount =
 		typeof user.null_read_date_count === 'string'
 			? parseInt(user.null_read_date_count)
@@ -27,9 +27,9 @@ const LonelyUserRow = ({ user, order, isCurrentUser }: Props) => {
 			? typeof user.book_count_rank === 'string'
 				? parseInt(user.book_count_rank)
 				: user.book_count_rank
-			: typeof user.points_rank === 'string'
-				? parseInt(user.points_rank)
-				: user.points_rank;
+			: typeof user.days_rank === 'string'
+				? parseInt(user.days_rank)
+				: user.days_rank;
 
 	return (
 		<tr

@@ -38,10 +38,10 @@ export const getLeaderboard = async (
 
 export type LonelyUser = User & {
 	lonely_book_count: number | string;
-	lonely_points: number | string;
+	lonely_days: number | string;
 	null_read_date_count: number | string;
 	book_count_rank: number | string;
-	points_rank: number | string;
+	days_rank: number | string;
 };
 
 export type LonelyOrder = 'days' | 'book_count';

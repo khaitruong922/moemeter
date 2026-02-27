@@ -56,7 +56,7 @@ const LonelyLeaderboardPage = () => {
 
 	const totalDays = users.reduce((sum, user) => {
 		const days =
-			typeof user.lonely_points === 'string' ? parseInt(user.lonely_points) : user.lonely_points;
+			typeof user.lonely_days === 'string' ? parseInt(user.lonely_days) : user.lonely_days;
 		return sum + days;
 	}, 0);
 
