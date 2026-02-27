@@ -26,14 +26,13 @@ export const LonelyLeaderboardTable = ({
 							<th className="px-2 sm:px-4 py-2 relative">
 								<span>ぼっち本</span>
 								<Tooltip>
-									<p>そのメンバーだけが読んでいる本</p>
+									<p>そのメンバーだけが読んだ本</p>
 								</Tooltip>
 							</th>
 							<th className="px-2 sm:px-4 py-2 relative">
-								<span>ぼっちポイント</span>
+								<span>ぼっちポ日</span>
 								<Tooltip>
-									<p className="mb-2">全てのぼっち本のポイントの合計です。</p>
-									<p className="text-gray-600">1冊のポイント = 今日 - 読んだ日 + 1</p>
+									<p className="mb-2">すべてのぼっち本の読了日からの経過日数の合計</p>
 									<p className="text-gray-500 text-[10px] mt-1">
 										※読んだ日が不明な本は計算に含まれません
 									</p>
