@@ -18,11 +18,11 @@ const BookCell = ({ book }: { book: Book }) => (
 				href={`https://bookmeter.com/books/${book.id}`}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="text-xs md:text-sm font-medium text-gray-900 hover:text-[#77b944] line-clamp-2 inline"
+				className="text-xs md:text-sm font-medium text-gray-900 hover:text-[#77b944]  inline"
 			>
 				{book.title}
 			</a>
-			<p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{book.author}</p>
+			<p className="text-xs text-gray-500 mt-0.5">{book.author}</p>
 			<p className="text-xs text-gray-400 hidden md:block">ID: {book.id}</p>
 		</div>
 	</div>
