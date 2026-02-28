@@ -37,7 +37,6 @@ export const ProfileReadsTab: React.FC<ProfileReadsTabProps> = ({ userId, pageTy
 				userId,
 				lonely: isLonely,
 				dateOrder,
-				include_rereads: true,
 			}),
 		getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
 		initialPageParam: 1,

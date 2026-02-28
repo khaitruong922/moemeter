@@ -9,12 +9,11 @@ type BooksQueryParams = {
 	period?: string | null;
 	userId?: number | null;
 	lonely?: boolean | null;
-	include_rereads?: boolean | null;
 	dateOrder?: SortOrder;
 };
 
 export const getBooks = async (params: BooksQueryParams): Promise<BooksApiResponse> => {
-	const { page, query, field, period, userId, lonely, include_rereads, dateOrder } = params;
+	const { page, query, field, period, userId, lonely, dateOrder } = params;
 	const searchParams = new URLSearchParams({
 		page: page.toString(),
 	});
@@ -36,10 +35,6 @@ export const getBooks = async (params: BooksQueryParams): Promise<BooksApiRespon
 
 	if (lonely) {
 		searchParams.append('lonely', 'true');
-	}
-
-	if (include_rereads) {
-		searchParams.append('include_rereads', include_rereads.toString());
 	}
 
 	if (dateOrder) {
