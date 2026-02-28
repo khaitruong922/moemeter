@@ -116,7 +116,7 @@ const LonelyLeaderboardPage = () => {
 										: 'bg-white text-[#77b944] hover:bg-[#f0fae8]'
 								}`}
 							>
-								ポイント順
+								日数順
 							</button>
 						</div>
 					</div>
