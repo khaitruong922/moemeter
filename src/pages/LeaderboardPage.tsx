@@ -66,7 +66,7 @@ const LeaderboardPage = () => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center min-h-[70vh] w-full py-10">
+			<div className="flex flex-col items-center min-h-[70vh] w-full py-10 px-2">
 				<SectionHeader
 					title="読書ランキング"
 					count={isLeaderboardLoading ? undefined : `全${total_count}人`}

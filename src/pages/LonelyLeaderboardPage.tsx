@@ -62,7 +62,7 @@ const LonelyLeaderboardPage = () => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center min-h-[70vh] w-full py-10">
+			<div className="flex flex-col items-center min-h-[70vh] w-full py-10 px-2">
 				<div className="mx-2 sm:mx-4 w-full md:w-3/4 max-w-[1200px] mb-6">
 					<div className="flex space-x-1 sm:space-x-2 flex-wrap gap-1">
 						<Link

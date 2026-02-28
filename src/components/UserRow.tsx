@@ -18,7 +18,7 @@ const UserRow = ({ user, rank, isCurrentUser }: Props) => {
 			className={`align-middle ${isCurrentUser ? 'bg-[#f0fae8] hover:bg-[#e6f7d9]' : 'hover:bg-gray-50'}`}
 		>
 			<td
-				className={`text-base px-2 sm:px-4 py-2 whitespace-nowrap font-semibold text-center ${getRankTextColorStyle(rank)}`}
+				className={`text-sm sm:text-base px-1 sm:px-4 py-2 whitespace-nowrap font-semibold text-center ${getRankTextColorStyle(rank)}`}
 			>
 				{booksRead === 0 ? (
 					<img src="/read.png" alt="read" className="inline-block w-8 h-8" />
@@ -26,7 +26,7 @@ const UserRow = ({ user, rank, isCurrentUser }: Props) => {
 					`${rank}位`
 				)}
 			</td>
-			<td className="px-2 sm:px-4 py-2 whitespace-nowrap">
+			<td className="px-1 sm:px-4 py-2 whitespace-nowrap">
 				<div className="flex items-center align-start">
 					<div className="flex-shrink-0">
 						<UserAvatar
@@ -38,7 +38,7 @@ const UserRow = ({ user, rank, isCurrentUser }: Props) => {
 						/>
 					</div>
 					<div className="ml-2 sm:ml-4 min-w-0">
-						<div className="text-base font-bold text-gray-900 bookmeter-green-text truncate">
+						<div className="text-sm sm:text-base font-bold text-gray-900 bookmeter-green-text truncate max-w-[180px] sm:max-w-none">
 							<Link to={profileUrl} rel="noopener noreferrer" className="hover:underline">
 								{user.name ?? '匿名'}
 							</Link>
@@ -46,10 +46,10 @@ const UserRow = ({ user, rank, isCurrentUser }: Props) => {
 					</div>
 				</div>
 			</td>
-			<td className="text-base font-bold px-2 sm:px-4 py-2 whitespace-nowrap text-center bookmeter-green-text">
+			<td className="text-sm sm:text-base font-bold px-1 sm:px-4 py-2 whitespace-nowrap text-center bookmeter-green-text">
 				{booksRead}冊
 			</td>
-			<td className="text-base font-medium px-2 sm:px-4 py-2 whitespace-nowrap text-gray-700 text-center">
+			<td className="text-sm sm:text-base font-medium px-1 sm:px-4 py-2 whitespace-nowrap text-gray-700 text-center">
 				{user.pages_read?.toLocaleString() ?? 0}
 			</td>
 		</tr>
