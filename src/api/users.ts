@@ -21,11 +21,11 @@ export type RankedUser = User & {
 };
 
 export const getLeaderboard = async (
-	period: string = 'all',
+	period?: string | null,
 	order: string = 'books'
 ): Promise<RankedUser[]> => {
 	const params = new URLSearchParams();
-	if (period !== 'all') {
+	if (period) {
 		params.append('period', period);
 	}
 	if (order !== 'books') {

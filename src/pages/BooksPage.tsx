@@ -1,16 +1,57 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { getBooks } from '../api/books';
 import { BookList } from '../components/BookList';
-import { LoadingSpinner } from '../components/LoadingSpinner';
 import { FilterButton, FilterGroup } from '../components/FilterButton';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import { SectionHeader } from '../components/SectionHeader';
-import { useDocumentTitle } from '../utils/useDocumentTitle';
-import { useSearchParams } from 'react-router-dom';
 import { useUser } from '../context/useUser';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
+import { useDocumentTitle } from '../utils/useDocumentTitle';
+import type { SortOrder } from '../types/queryParams';
 
-const getPlaceholder = (field: string) => {
+type SearchParams = {
+	q?: string;
+	field?: string;
+	filter?: string;
+	date_order?: string;
+};
+
+const buildSearchParams = ({
+	searchInput,
+	searchField,
+	filter,
+	dateOrder,
+	isLonely,
+}: {
+	searchInput: string | null;
+	searchField: string | null;
+	filter: string | null;
+	dateOrder: SortOrder | undefined;
+	isLonely: boolean;
+}): SearchParams => {
+	const params: SearchParams = {};
+
+	if (searchInput?.trim()) {
+		params.q = searchInput.trim();
+		if (searchField) {
+			params.field = searchField;
+		}
+	}
+
+	if (filter) {
+		params.filter = filter;
+	}
+
+	if (isLonely && dateOrder) {
+		params.date_order = dateOrder;
+	}
+
+	return params;
+};
+
+const getPlaceholder = (field: string | null) => {
 	switch (field) {
 		case 'title':
 			return 'タイトルで検索';
@@ -28,25 +69,25 @@ const BooksPage = () => {
 
 	useDocumentTitle('みんなの本棚 | 萌メーター');
 	const [searchParams, setSearchParams] = useSearchParams();
-	const [searchInput, setSearchInput] = useState(searchParams.get('q') || '');
-	const [searchField, setSearchField] = useState(searchParams.get('field') || 'all');
-	const [filter, setFilter] = useState(searchParams.get('filter') || 'all');
-	const [dateOrder, setDateOrder] = useState<'ASC' | 'DESC'>(
-		(searchParams.get('dateOrder') as 'ASC' | 'DESC') || 'DESC'
+	const [searchInput, setSearchInput] = useState<string | null>(searchParams.get('q'));
+	const [searchField, setSearchField] = useState<string | null>(searchParams.get('field'));
+	const [filter, setFilter] = useState<string | null>(searchParams.get('filter'));
+	const [dateOrder, setDateOrder] = useState<SortOrder>(
+		(searchParams.get('date_order') as 'ASC' | 'DESC') || 'DESC'
 	);
-	const searchQuery = searchParams.get('q') || '';
-	const fieldQuery = searchParams.get('field') || 'all';
-	const filterQuery = searchParams.get('filter') || 'all';
+	const searchQuery = searchParams.get('q');
+	const fieldQuery = searchParams.get('field');
+	const filterQuery = searchParams.get('filter');
 	const isLonely = filterQuery === 'lonely';
-	const periodQuery = isLonely ? 'all' : filterQuery;
+	const periodQuery = isLonely ? null : filterQuery;
 	const dateOrderQuery = isLonely ? dateOrder : undefined;
 
 	// Sync state with URL parameters
 	useEffect(() => {
-		setSearchInput(searchParams.get('q') || '');
-		setSearchField(searchParams.get('field') || 'all');
-		setFilter(searchParams.get('filter') || 'all');
-		const urlDateOrder = searchParams.get('dateOrder') as 'ASC' | 'DESC';
+		setSearchInput(searchParams.get('q'));
+		setSearchField(searchParams.get('field'));
+		setFilter(searchParams.get('filter'));
+		const urlDateOrder = searchParams.get('date_order') as 'ASC' | 'DESC';
 		if (urlDateOrder) {
 			setDateOrder(urlDateOrder);
 		}
@@ -62,15 +103,14 @@ const BooksPage = () => {
 	} = useInfiniteQuery({
 		queryKey: ['books', searchQuery, fieldQuery, periodQuery, isLonely, dateOrderQuery],
 		queryFn: ({ pageParam = 1 }) =>
-			getBooks(
-				pageParam,
-				searchQuery,
-				fieldQuery,
-				periodQuery,
-				undefined,
-				isLonely,
-				dateOrderQuery
-			),
+			getBooks({
+				page: pageParam,
+				query: searchQuery,
+				field: fieldQuery,
+				period: periodQuery,
+				lonely: isLonely,
+				dateOrder: dateOrderQuery,
+			}),
 		getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
 		initialPageParam: 1,
 	});
@@ -94,73 +134,50 @@ const BooksPage = () => {
 	// Handle search input
 	const handleSearch = (e: React.FormEvent) => {
 		e.preventDefault();
-		const params: { q?: string; field?: string; filter?: string; dateOrder?: string } = {};
-
-		if (searchInput.trim()) {
-			params.q = searchInput.trim();
-			if (searchField !== 'all') {
-				params.field = searchField;
-			}
-		}
-
-		if (filter !== 'all') {
-			params.filter = filter;
-		}
-
-		if (isLonely) {
-			params.dateOrder = dateOrder;
-		}
-
+		const params = buildSearchParams({
+			searchInput,
+			searchField,
+			filter,
+			dateOrder,
+			isLonely,
+		});
 		setSearchParams(params);
 	};
 
-	const handleFilterChange = (newFilter: string) => {
+	const handleFilterChange = (newFilter: string | null) => {
 		setFilter(newFilter);
-		const params: { q?: string; field?: string; filter?: string; dateOrder?: string } = {};
-		if (searchInput.trim()) {
-			params.q = searchInput.trim();
-			if (searchField !== 'all') {
-				params.field = searchField;
-			}
-		}
-		if (newFilter !== 'all') {
-			params.filter = newFilter;
-		}
-		// Only include dateOrder if the new filter is lonely
-		if (newFilter === 'lonely') {
-			params.dateOrder = dateOrder;
-		}
+		const params = buildSearchParams({
+			searchInput,
+			searchField,
+			filter: newFilter,
+			dateOrder: newFilter === 'lonely' ? dateOrder : undefined,
+			isLonely: newFilter === 'lonely',
+		});
 		setSearchParams(params);
 	};
 
 	const clearSearch = () => {
-		setSearchInput('');
-		setSearchField('all');
-		const params: { filter?: string; dateOrder?: string } = {};
-		if (filter !== 'all') {
-			params.filter = filter;
-		}
-		if (isLonely) {
-			params.dateOrder = dateOrder;
-		}
+		setSearchInput(null);
+		setSearchField(null);
+		const params = buildSearchParams({
+			searchInput: null,
+			searchField: null,
+			filter,
+			dateOrder,
+			isLonely,
+		});
 		setSearchParams(params);
 	};
 
-	const handleDateOrderChange = (newDateOrder: string) => {
-		setDateOrder(newDateOrder as 'ASC' | 'DESC');
-		const params: { q?: string; field?: string; filter?: string; dateOrder?: string } = {};
-		if (searchInput.trim()) {
-			params.q = searchInput.trim();
-			if (searchField !== 'all') {
-				params.field = searchField;
-			}
-		}
-		if (filter !== 'all') {
-			params.filter = filter;
-		}
-		if (newDateOrder) {
-			params.dateOrder = newDateOrder;
-		}
+	const handleDateOrderChange = (newDateOrder: string | null) => {
+		setDateOrder(newDateOrder as SortOrder);
+		const params = buildSearchParams({
+			searchInput,
+			searchField,
+			filter,
+			dateOrder: newDateOrder as SortOrder,
+			isLonely,
+		});
 		setSearchParams(params);
 	};
 
@@ -241,11 +258,11 @@ const BooksPage = () => {
 				<form onSubmit={handleSearch} className="flex flex-col w-full gap-2">
 					<div className="flex w-full">
 						<select
-							value={searchField}
-							onChange={(e) => setSearchField(e.target.value)}
+							value={searchField || ''}
+							onChange={(e) => setSearchField(e.target.value || null)}
 							className="cursor-pointer h-[40px] sm:h-[48px] px-2 bg-[#f0f0f0] border border-r-0 border-gray-300 rounded-l focus:outline-none text-xs text-gray-800 w-[90px]"
 						>
-							<option value="all">すべて</option>
+							<option value="">すべて</option>
 							<option value="title">タイトル</option>
 							<option value="author">著者</option>
 						</select>
@@ -254,8 +271,8 @@ const BooksPage = () => {
 								type="search"
 								id="moemeter-q"
 								name="moemeter-q"
-								value={searchInput}
-								onChange={(e) => setSearchInput(e.target.value)}
+								value={searchInput || ''}
+								onChange={(e) => setSearchInput(e.target.value || null)}
 								placeholder={getPlaceholder(searchField)}
 								className="w-full h-[40px] sm:h-[48px] px-2 sm:px-3 bg-white border border-gray-300 focus:outline-none text-sm"
 							/>
@@ -282,7 +299,7 @@ const BooksPage = () => {
 					</div>
 					<FilterGroup>
 						<FilterButton
-							value="all"
+							value={null}
 							currentValue={filter}
 							label="全期間"
 							onClick={handleFilterChange}
@@ -313,7 +330,7 @@ const BooksPage = () => {
 			</div>
 
 			{isLonely && (
-				<div className="max-w-xl px-4 mb-6">
+				<div className="max-w-xl mb-6">
 					<FilterGroup>
 						<FilterButton
 							value="DESC"

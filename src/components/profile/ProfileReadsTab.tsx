@@ -1,27 +1,27 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { getBooks } from '../../api/books';
-import { BookList } from '../BookList';
-import { LoadingSpinner } from '../LoadingSpinner';
-import { SectionHeader } from '../SectionHeader';
 import { useUser } from '../../context/useUser';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
+import type { SortOrder } from '../../types/queryParams';
+import { BookList } from '../BookList';
+import { FilterButton, FilterGroup } from '../FilterButton';
+import { LoadingSpinner } from '../LoadingSpinner';
+import { SectionHeader } from '../SectionHeader';
 
-type FilterType = 'all' | 'lonely';
+type PageType = 'reads' | 'lonely_books';
 
 interface ProfileReadsTabProps {
 	userId: number;
-	defaultFilter?: FilterType;
+	pageType: PageType;
 }
 
-export const ProfileReadsTab: React.FC<ProfileReadsTabProps> = ({
-	userId,
-	defaultFilter = 'all',
-}) => {
+export const ProfileReadsTab: React.FC<ProfileReadsTabProps> = ({ userId, pageType }) => {
 	const { user: currentUser } = useUser();
 	const currentUserId = currentUser?.id;
+	const [dateOrder, setDateOrder] = useState<SortOrder>('DESC');
 
-	const isLonely = defaultFilter === 'lonely';
-	const dateOrder = defaultFilter === 'all' ? 'DESC' : undefined;
+	const isLonely = pageType === 'lonely_books';
 
 	const {
 		data: booksData,
@@ -30,13 +30,23 @@ export const ProfileReadsTab: React.FC<ProfileReadsTabProps> = ({
 		hasNextPage,
 		isFetchingNextPage,
 	} = useInfiniteQuery({
-		queryKey: ['books', '', 'all', 'all', userId, isLonely, dateOrder],
+		queryKey: ['books', '', 'reads', 'reads', userId, isLonely, dateOrder],
 		queryFn: ({ pageParam = 1 }) =>
-			getBooks(pageParam, '', 'all', 'all', userId, isLonely, dateOrder),
+			getBooks({
+				page: pageParam,
+				userId,
+				lonely: isLonely,
+				dateOrder,
+				include_rereads: true,
+			}),
 		getNextPageParam: (lastPage) => lastPage.pageInfo.nextPage,
 		initialPageParam: 1,
 		enabled: !!userId,
 	});
+
+	const handleDateOrderChange = (newDateOrder: SortOrder) => {
+		setDateOrder(newDateOrder as SortOrder);
+	};
 
 	const { observerTarget } = useInfiniteScroll({
 		hasNextPage,
@@ -51,11 +61,11 @@ export const ProfileReadsTab: React.FC<ProfileReadsTabProps> = ({
 	return (
 		<>
 			<SectionHeader
-				title={defaultFilter === 'lonely' ? 'ひとりぼっち本' : '読んだ本'}
+				title={isLonely ? 'ひとりぼっち本' : '読んだ本'}
 				count={books.length > 0 ? `全${totalCount}冊` : undefined}
 				emptyMessage={
 					books.length === 0
-						? defaultFilter === 'lonely'
+						? isLonely
 							? 'このメンバーしか読んでいない本はありません。'
 							: '読んだ本はまだありません。'
 						: undefined
@@ -63,6 +73,24 @@ export const ProfileReadsTab: React.FC<ProfileReadsTabProps> = ({
 				isLoading={isLoading}
 				loadingMessage="読書データを読み込み中..."
 			/>
+
+			<div className="mb-6">
+				<FilterGroup>
+					<FilterButton
+						value="DESC"
+						currentValue={dateOrder}
+						label="最新順"
+						onClick={(value) => handleDateOrderChange(value as SortOrder)}
+					/>
+					<FilterButton
+						value="ASC"
+						currentValue={dateOrder}
+						label="古い順"
+						onClick={(value) => handleDateOrderChange(value as SortOrder)}
+						borderClass="border-l border-[#77b944]/20"
+					/>
+				</FilterGroup>
+			</div>
 
 			{isLoading ? (
 				<div className="min-h-[50vh] pt-8">

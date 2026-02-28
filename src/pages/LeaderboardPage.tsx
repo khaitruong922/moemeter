@@ -15,21 +15,21 @@ const LeaderboardPage = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	// Load from localStorage first, then URL params, then defaults
-	const getInitialPeriod = () => {
+	const getInitialPeriod = (): string | null => {
 		const urlPeriod = searchParams.get('period');
 		if (urlPeriod) return urlPeriod;
 		const stored = localStorage.getItem('leaderboard_period');
-		return stored || 'all';
+		return stored || null;
 	};
 
-	const getInitialOrder = () => {
+	const getInitialOrder = (): string => {
 		const urlOrder = searchParams.get('order');
 		if (urlOrder) return urlOrder;
 		const stored = localStorage.getItem('leaderboard_order');
 		return stored || 'books';
 	};
 
-	const [period, setPeriod] = useState<string>(getInitialPeriod());
+	const [period, setPeriod] = useState<string | null>(getInitialPeriod());
 	const [order, setOrder] = useState<string>(getInitialOrder());
 
 	// Sync state with URL parameters and localStorage
@@ -41,7 +41,7 @@ const LeaderboardPage = () => {
 			setPeriod(urlPeriod);
 			localStorage.setItem('leaderboard_period', urlPeriod);
 		} else {
-			const storedPeriod = localStorage.getItem('leaderboard_period') || 'all';
+			const storedPeriod = localStorage.getItem('leaderboard_period') || null;
 			setPeriod(storedPeriod);
 		}
 
@@ -80,12 +80,12 @@ const LeaderboardPage = () => {
 							<button
 								type="button"
 								onClick={() => {
-									setPeriod('all');
-									localStorage.setItem('leaderboard_period', 'all');
-									setSearchParams({ order });
+									setPeriod(null);
+									localStorage.removeItem('leaderboard_period');
+									setSearchParams(order ? { order } : {});
 								}}
 								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer ${
-									period === 'all'
+									period === null
 										? 'bookmeter-green text-white'
 										: 'bg-white text-[#77b944] hover:bg-[#f0fae8]'
 								}`}
@@ -114,7 +114,7 @@ const LeaderboardPage = () => {
 								onClick={() => {
 									setOrder('books');
 									localStorage.setItem('leaderboard_order', 'books');
-									setSearchParams({ period, order: 'books' });
+									setSearchParams({ ...(period ? { period } : {}), order: 'books' });
 								}}
 								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer ${
 									order === 'books'
@@ -129,7 +129,7 @@ const LeaderboardPage = () => {
 								onClick={() => {
 									setOrder('pages');
 									localStorage.setItem('leaderboard_order', 'pages');
-									setSearchParams({ period, order: 'pages' });
+									setSearchParams({ ...(period ? { period } : {}), order: 'pages' });
 								}}
 								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer border-l border-[#77b944]/20 ${
 									order === 'pages'

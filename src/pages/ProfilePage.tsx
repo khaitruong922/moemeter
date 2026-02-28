@@ -99,9 +99,9 @@ const ProfilePage = () => {
 					</div>
 
 					{/* Tab Content */}
-					{activeTab === 'reads' && <ProfileReadsTab userId={userId} />}
+					{activeTab === 'reads' && <ProfileReadsTab userId={userId} pageType="reads" />}
 					{activeTab === 'lonely-books' && (
-						<ProfileReadsTab userId={userId} defaultFilter="lonely" />
+						<ProfileReadsTab userId={userId} pageType="lonely_books" />
 					)}
 					{activeTab === 'friends' && <ProfileFriendsTab userId={userId} />}
 				</div>

@@ -1,43 +1,52 @@
 import { API_URL } from './index';
 import type { Book, BooksApiResponse } from '../types/models';
+import type { SortOrder } from '../types/queryParams';
 
-export const getBooks = async (
-	page: number,
-	query = '',
-	field = 'all',
-	period = 'all',
-	userId?: number,
-	lonely?: boolean,
-	dateOrder?: 'ASC' | 'DESC'
-): Promise<BooksApiResponse> => {
-	const params = new URLSearchParams({
+type BooksQueryParams = {
+	page: number;
+	query?: string | null;
+	field?: string | null;
+	period?: string | null;
+	userId?: number | null;
+	lonely?: boolean | null;
+	include_rereads?: boolean | null;
+	dateOrder?: SortOrder;
+};
+
+export const getBooks = async (params: BooksQueryParams): Promise<BooksApiResponse> => {
+	const { page, query, field, period, userId, lonely, include_rereads, dateOrder } = params;
+	const searchParams = new URLSearchParams({
 		page: page.toString(),
 	});
 
 	if (query) {
-		params.append('q', query);
-		if (field !== 'all') {
-			params.append('field', field);
+		searchParams.append('q', query);
+		if (field) {
+			searchParams.append('field', field);
 		}
 	}
 
-	if (period !== 'all') {
-		params.append('period', period);
+	if (period) {
+		searchParams.append('period', period);
 	}
 
 	if (userId) {
-		params.append('user_id', userId.toString());
+		searchParams.append('user_id', userId.toString());
 	}
 
 	if (lonely) {
-		params.append('lonely', 'true');
+		searchParams.append('lonely', 'true');
+	}
+
+	if (include_rereads) {
+		searchParams.append('include_rereads', include_rereads.toString());
 	}
 
 	if (dateOrder) {
-		params.append('date_order', dateOrder);
+		searchParams.append('date_order', dateOrder);
 	}
 
-	const response = await fetch(`${API_URL}/books?${params}`);
+	const response = await fetch(`${API_URL}/books?${searchParams}`);
 	if (!response.ok) {
 		throw new Error('本の一覧を取得できませんでした');
 	}

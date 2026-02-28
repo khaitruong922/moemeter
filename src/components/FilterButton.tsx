@@ -1,8 +1,8 @@
 interface FilterButtonProps {
-	value: string;
-	currentValue: string;
+	value: string | null;
+	currentValue: string | null;
 	label: string;
-	onClick: (value: string) => void;
+	onClick: (value: string | null) => void;
 	borderClass?: string;
 }
 
@@ -34,7 +34,7 @@ interface FilterGroupProps {
 
 export const FilterGroup: React.FC<FilterGroupProps> = ({ children }) => {
 	return (
-		<div className="flex w-full rounded-lg overflow-hidden border border-[#77b944]/20">
+		<div className="inline-flex rounded-lg overflow-hidden border border-[#77b944]/20">
 			{children}
 		</div>
 	);
