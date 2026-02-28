@@ -21,15 +21,15 @@ export const LonelyLeaderboardTable = ({
 				<table className="min-w-full text-xs sm:text-base">
 					<thead className="bookmeter-green text-white text-center font-semibold text-sm md:text-base">
 						<tr>
-							<th className="px-2 sm:px-4 py-2">順位</th>
-							<th className="px-2 sm:px-4 py-2">メンバー</th>
-							<th className="px-2 sm:px-4 py-2 relative">
+							<th className="px-1 sm:px-4 py-2">順位</th>
+							<th className="px-1 sm:px-4 py-2">メンバー</th>
+							<th className="px-1 sm:px-4 py-2 relative">
 								<span>ぼっち本</span>
 								<Tooltip>
 									<p>そのメンバーだけが読んだ本</p>
 								</Tooltip>
 							</th>
-							<th className="px-2 sm:px-4 py-2 relative">
+							<th className="px-1 sm:px-4 py-2 relative">
 								<span>ぼっちポ日</span>
 								<Tooltip>
 									<p className="mb-2">すべてのぼっち本の読了日からの経過日数の合計</p>
