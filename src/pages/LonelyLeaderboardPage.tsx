@@ -14,9 +14,9 @@ const LonelyLeaderboardPage = () => {
 	// Load from localStorage first, then URL params, then defaults
 	const getInitialOrder = (): LonelyOrder => {
 		const urlOrder = searchParams.get('order');
-		if (urlOrder === 'days' || urlOrder === 'book_count') return urlOrder;
+		if (urlOrder === 'days' || urlOrder === 'book_count' || urlOrder === 'ratio') return urlOrder;
 		const stored = localStorage.getItem('lonely_leaderboard_order');
-		if (stored === 'days' || stored === 'book_count') return stored;
+		if (stored === 'days' || stored === 'book_count' || stored === 'ratio') return stored;
 		return 'days';
 	};
 
@@ -25,12 +25,12 @@ const LonelyLeaderboardPage = () => {
 	// Sync state with URL parameters and localStorage
 	useEffect(() => {
 		const urlOrder = searchParams.get('order');
-		if (urlOrder === 'days' || urlOrder === 'book_count') {
+		if (urlOrder === 'days' || urlOrder === 'book_count' || urlOrder === 'ratio') {
 			setOrder(urlOrder);
 			localStorage.setItem('lonely_leaderboard_order', urlOrder);
 		} else {
 			const storedOrder = localStorage.getItem('lonely_leaderboard_order');
-			if (storedOrder === 'days' || storedOrder === 'book_count') {
+			if (storedOrder === 'days' || storedOrder === 'book_count' || storedOrder === 'ratio') {
 				setOrder(storedOrder);
 			}
 		}
@@ -102,6 +102,21 @@ const LonelyLeaderboardPage = () => {
 								}`}
 							>
 								冊数順
+							</button>
+							<button
+								type="button"
+								onClick={() => {
+									setOrder('ratio');
+									localStorage.setItem('lonely_leaderboard_order', 'ratio');
+									setSearchParams({ order: 'ratio' });
+								}}
+								className={`text-sm sm:text-base py-2 px-4 sm:px-6 font-medium transition-colors cursor-pointer border-l border-[#77b944]/20 ${
+									order === 'ratio'
+										? 'bookmeter-green text-white'
+										: 'bg-white text-[#77b944] hover:bg-[#f0fae8]'
+								}`}
+							>
+								ぼっち率順
 							</button>
 							<button
 								type="button"

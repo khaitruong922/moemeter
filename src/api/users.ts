@@ -39,12 +39,14 @@ export const getLeaderboard = async (
 export type LonelyUser = User & {
 	lonely_book_count: number | string;
 	lonely_days: number | string;
+	lonely_ratio: number | string;
 	null_read_date_count: number | string;
 	book_count_rank: number | string;
 	days_rank: number | string;
+	ratio_rank: number | string;
 };
 
-export type LonelyOrder = 'days' | 'book_count';
+export type LonelyOrder = 'days' | 'book_count' | 'ratio';
 
 export const getLonelyLeaderboard = async (order: LonelyOrder = 'days'): Promise<LonelyUser[]> => {
 	const params = new URLSearchParams();

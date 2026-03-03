@@ -30,6 +30,14 @@ export const LonelyLeaderboardTable = ({
 								</Tooltip>
 							</th>
 							<th className="px-1 sm:px-4 py-2 relative">
+								{' '}
+								<span>ぼっち率</span>
+								<Tooltip>
+									<p>ぼっち本 ÷ 全冊数</p>
+								</Tooltip>
+							</th>
+							<th className="px-1 sm:px-4 py-2 relative">
+								{' '}
 								<span>ぼっちポ日</span>
 								<Tooltip>
 									<p className="mb-2">すべてのぼっち本の読了日からの経過日数の合計</p>

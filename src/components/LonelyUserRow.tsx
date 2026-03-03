@@ -21,15 +21,27 @@ const LonelyUserRow = ({ user, order, isCurrentUser }: Props) => {
 		typeof user.null_read_date_count === 'string'
 			? parseInt(user.null_read_date_count)
 			: user.null_read_date_count;
+	const lonelyRatio =
+		typeof user.lonely_ratio === 'string' ? parseFloat(user.lonely_ratio) : user.lonely_ratio;
 
 	const rank =
 		order === 'book_count'
 			? typeof user.book_count_rank === 'string'
 				? parseInt(user.book_count_rank)
 				: user.book_count_rank
-			: typeof user.days_rank === 'string'
-				? parseInt(user.days_rank)
-				: user.days_rank;
+			: order === 'ratio'
+				? typeof user.ratio_rank === 'string'
+					? parseInt(user.ratio_rank)
+					: user.ratio_rank
+				: typeof user.days_rank === 'string'
+					? parseInt(user.days_rank)
+					: user.days_rank;
+
+	const formatPercentage = (ratio: number): string => {
+		const percentage = ratio * 100;
+		const rounded = Math.round(percentage * 100) / 100;
+		return rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toString();
+	};
 
 	return (
 		<tr
@@ -66,6 +78,9 @@ const LonelyUserRow = ({ user, order, isCurrentUser }: Props) => {
 			</td>
 			<td className="text-sm sm:text-base font-bold px-1 sm:px-4 py-2 whitespace-nowrap text-center bookmeter-green-text">
 				{lonelyBookCount}冊
+			</td>
+			<td className="text-sm sm:text-base font-medium px-1 sm:px-4 py-2 whitespace-nowrap text-gray-700 text-center">
+				{formatPercentage(lonelyRatio)}%
 			</td>
 			<td className="text-sm sm:text-base font-medium px-1 sm:px-4 py-2 whitespace-nowrap text-gray-700 text-center">
 				<div>{lonelyDays.toLocaleString()}</div>
