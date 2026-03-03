@@ -103,6 +103,8 @@ export const ProfileReadsTab: React.FC<ProfileReadsTabProps> = ({ userId, pageTy
 						currentUserId={currentUserId}
 						fullWidth
 						isLonely={isLonely}
+						showCheck={currentUserId !== userId}
+						hideBookUsers={isLonely}
 					/>
 					{isFetchingNextPage && (
 						<div className="my-4">

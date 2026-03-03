@@ -7,6 +7,8 @@ interface Props {
 	currentUserId?: number;
 	fullWidth?: boolean;
 	isLonely?: boolean;
+	showCheck?: boolean;
+	hideBookUsers?: boolean;
 }
 
 export const BookList: React.FC<Props> = ({
@@ -15,6 +17,8 @@ export const BookList: React.FC<Props> = ({
 	currentUserId,
 	fullWidth = false,
 	isLonely = false,
+	showCheck,
+	hideBookUsers,
 }) => {
 	return (
 		<div className={`w-full divide-y divide-gray-200 ${fullWidth ? '' : 'max-w-4xl mx-auto'}`}>
@@ -26,6 +30,8 @@ export const BookList: React.FC<Props> = ({
 					users={users}
 					currentUserId={currentUserId}
 					isLonely={isLonely}
+					showCheck={showCheck}
+					hideBookUsers={hideBookUsers}
 				/>
 			))}
 		</div>
