@@ -10,7 +10,7 @@ const BooksLibraryPage: React.FC = () => {
 		const pageParam = searchParams.get('page');
 		return pageParam ? parseInt(pageParam, 10) : 1;
 	});
-	const perPage = 200;
+	const perPage = 100000;
 
 	const { data, isLoading, error } = useQuery<BooksLibraryApiResponse>({
 		queryKey: ['booksLibrary', currentPage, perPage],
@@ -32,7 +32,7 @@ const BooksLibraryPage: React.FC = () => {
 		const pages = [];
 		const showPages = 5; // Show 5 pages around current
 		let startPage = Math.max(1, currentPage - Math.floor(showPages / 2));
-		let endPage = Math.min(maxPage, startPage + showPages - 1);
+		const endPage = Math.min(maxPage, startPage + showPages - 1);
 
 		if (endPage - startPage + 1 < showPages) {
 			startPage = Math.max(1, endPage - showPages + 1);
