@@ -55,13 +55,9 @@ export interface BooksLibraryApiResponse {
 	max_page: number;
 }
 
-export const getBooksLibrary = async (
-	page: number,
-	perPage = 50
-): Promise<BooksLibraryApiResponse> => {
+export const getBooksLibrary = async (page: number): Promise<BooksLibraryApiResponse> => {
 	const params = new URLSearchParams({
 		page: page.toString(),
-		per_page: perPage.toString(),
 	});
 
 	const response = await fetch(`${API_URL}/books/library?${params}`);
