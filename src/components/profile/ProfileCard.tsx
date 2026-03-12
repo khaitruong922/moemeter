@@ -1,6 +1,7 @@
 import { UserAvatar } from '../UserAvatar';
 import { getUserBookmeterUrl } from '../../utils/bookmeter';
 import { getRankTextColorStyle } from '../../utils/rank';
+import { formatDate } from '../../utils/datetime';
 import type { RankedUser } from '../../api/users';
 
 interface ProfileCardProps {
@@ -9,6 +10,8 @@ interface ProfileCardProps {
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
 	const bookmeterUrl = getUserBookmeterUrl(user.id);
+	const registrationDate = formatDate(user.registration_date);
+	const firstLogDate = formatDate(user.first_log_date);
 
 	return (
 		<div className="lg:w-64 lg:flex-shrink-0">
@@ -44,6 +47,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
 								({user.pages_rank}位)
 							</span>
 						</div>
+						{registrationDate && (
+							<div className="text-xs text-gray-500">登録日: {registrationDate}</div>
+						)}
+						{firstLogDate && <div className="text-xs text-gray-500">記録初日: {firstLogDate}</div>}
 					</div>
 					<a
 						href={bookmeterUrl}

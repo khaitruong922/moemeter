@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import type { Review } from '../types/models';
 import { useState } from 'react';
 import { UserAvatar } from './UserAvatar';
+import { formatDate } from '../utils/datetime';
 
 interface ReviewCardProps {
 	review: Review;
@@ -61,10 +62,8 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review, isRead = false }
 			)}
 			<div className="flex items-center gap-2 mt-2">
 				<span className="text-xs bookmeter-green-text">★{niceCount}</span>
-				{review.created_at && (
-					<span className="text-xs text-gray-500">
-						{new Date(review.created_at).toLocaleDateString('ja-JP')}
-					</span>
+				{formatDate(review.created_at) && (
+					<span className="text-xs text-gray-500">{formatDate(review.created_at)}</span>
 				)}
 			</div>
 		</div>

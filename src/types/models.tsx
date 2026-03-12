@@ -28,6 +28,8 @@ export interface User {
 	books_read: number;
 	pages_read: number;
 	book_ids: number[];
+	registration_date: string | null;
+	first_log_date: string | null;
 }
 
 export interface Read {

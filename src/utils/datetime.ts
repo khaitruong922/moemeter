@@ -9,3 +9,8 @@ export const formatDatetime = (dateString?: string) => {
 	const s = String(d.getSeconds()).padStart(2, '0');
 	return `${y}/${m}/${day} ${h}:${min}:${s}`;
 };
+
+export const formatDate = (dateString?: string | null) => {
+	if (!dateString) return null;
+	return new Date(dateString).toLocaleDateString('ja-JP');
+};
